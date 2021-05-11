@@ -1,8 +1,8 @@
 package com.project.lms.entity;
 
+
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +25,6 @@ public class RoleEntity {
 	@Column(name = "name")
 	private String name;
 	
-	@OneToMany(mappedBy="roleId", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
 	private List<UserRoleEntity> users;
 }

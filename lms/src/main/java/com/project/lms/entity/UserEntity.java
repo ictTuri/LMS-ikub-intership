@@ -2,7 +2,6 @@ package com.project.lms.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,9 +36,9 @@ public class UserEntity {
 	@Column(name="password")
 	private String password;
 	
+	@OneToMany(mappedBy = "role")
+	private List<UserRoleEntity> roles;
+	
 	@Column(name="activated")
 	private boolean activated;
-	
-	@OneToMany(mappedBy="userId", cascade = CascadeType.ALL)
-	private List<UserRoleEntity> roles;
 }
