@@ -18,7 +18,3 @@ Admin after login he/her can have access on managing the users, activating them 
 Secretary after login can have access on creating, viewing, updating and deleting books 
 from inventory.
 
-####Database schema
-
-
-
