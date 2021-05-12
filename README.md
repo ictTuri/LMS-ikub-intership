@@ -19,4 +19,6 @@ Secretary after login can have access on creating, viewing, updating and deletin
 from inventory.
 
 ####Database schema
+
+
 ![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/develop/diagram.png?raw=true)
