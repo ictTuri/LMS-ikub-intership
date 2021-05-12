@@ -17,3 +17,4 @@ and proceed as per his/her role and authorities granted.
 Admin after login he/her can have access on managing the users, activating them and deleting.
 Secretary after login can have access on creating, viewing, updating and deleting books 
 from inventory.
+
