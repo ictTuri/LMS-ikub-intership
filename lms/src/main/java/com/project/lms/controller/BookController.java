@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.lms.dto.BookDto;
+import com.project.lms.dto.CustomResponseDto;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.service.BookService;
 
@@ -51,9 +52,8 @@ public class BookController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteBookById(@RequestParam("id") Long id){
-		bookService.deleteBookById(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<CustomResponseDto> deleteBookById(@RequestParam("id") Long id){
+		return new ResponseEntity<>(bookService.deleteBookById(id),HttpStatus.OK);
 	}
 	
 }

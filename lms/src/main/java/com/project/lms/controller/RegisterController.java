@@ -1,15 +1,31 @@
 package com.project.lms.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.project.lms.dto.CustomResponseDto;
+import com.project.lms.dto.UserCreateUpdateDto;
+import com.project.lms.service.UserService;
 
 @RestController
 @RequestMapping("api/v1/register")
 public class RegisterController {
 
-	@GetMapping()
-	public String register() {
-		return "Hello user";
+	private UserService userService;
+	
+	public RegisterController(UserService userService) {
+		super();
+		this.userService = userService;
+	}
+
+	@PostMapping()
+	public ResponseEntity<CustomResponseDto> registerStudent(@Valid @RequestBody UserCreateUpdateDto user) {
+		return new ResponseEntity<>(userService.registerStudent(user),HttpStatus.CREATED);
 	}
 }

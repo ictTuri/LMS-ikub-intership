@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class BookCreateUpdateDto {
+	
 	@NotBlank(message = "Title is Required!")
 	private String title;
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ import lombok.Data;
 public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name="user_id")
 	private Long id;
 	
 	@Column(name="first_name")
@@ -36,8 +37,8 @@ public class UserEntity {
 	@Column(name="password")
 	private String password;
 	
-	@OneToMany(mappedBy = "role")
-	private List<UserRoleEntity> roles;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<UserRoleEntity> usersRoles;
 	
 	@Column(name="activated")
 	private boolean activated;

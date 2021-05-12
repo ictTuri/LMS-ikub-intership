@@ -1,8 +1,21 @@
 package com.project.lms.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 import com.project.lms.entity.BookEntity;
 
-public interface BookRepository extends JpaRepository<BookEntity, Long>{
+public interface BookRepository{
+
+	List<BookEntity> getAll();
+
+	BookEntity getById(Long id);
+
+	BookEntity saveBook(BookEntity bookToCreate);
+	
+	BookEntity updateBook(BookEntity bookToUpdate);
+
+	void deleteBook(BookEntity bookToDelete);
+
+	boolean getBookByTitle(String title);
+	
 }
