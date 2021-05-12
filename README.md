@@ -20,4 +20,7 @@ from inventory.
 
 #### Database Schema
 
-//![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/diagram.png?raw=true)
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/diagram.png?raw=true)
+
+---
+###To Continue
