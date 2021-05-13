@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.lms.dto.CustomResponseDto;
-import com.project.lms.dto.UserCreateUpdateDto;
+import com.project.lms.dto.UserRegisterDto;
 import com.project.lms.service.UserService;
 
 @RestController
@@ -25,7 +25,7 @@ public class RegisterController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<CustomResponseDto> registerStudent(@Valid @RequestBody UserCreateUpdateDto user) {
+	public ResponseEntity<CustomResponseDto> registerStudent(@Valid @RequestBody UserRegisterDto user) {
 		return new ResponseEntity<>(userService.registerStudent(user),HttpStatus.CREATED);
 	}
 }

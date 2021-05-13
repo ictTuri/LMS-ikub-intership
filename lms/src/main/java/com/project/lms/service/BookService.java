@@ -2,8 +2,9 @@ package com.project.lms.service;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.project.lms.dto.BookDto;
-import com.project.lms.dto.CustomResponseDto;
 import com.project.lms.dto.BookCreateUpdateDto;
 
 public interface BookService {
@@ -14,11 +15,11 @@ public interface BookService {
 	BookDto getBookById(Long id);
 	
 	// Create new book from passed object
-	BookDto createBook(BookCreateUpdateDto book);
+	BookDto createBook(@Valid BookCreateUpdateDto book);
 	
 	// Update book by id
-	BookDto updateBookById(Long id, BookCreateUpdateDto book);
+	BookDto updateBookById(Long id,@Valid  BookCreateUpdateDto book);
 	
 	// Delete Book by id
-	CustomResponseDto deleteBookById(Long id);
+	void deleteBookById(Long id);
 }

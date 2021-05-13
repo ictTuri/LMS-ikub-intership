@@ -1,13 +1,12 @@
 package com.project.lms.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 
 import lombok.Data;
 
 @Data
-public class UserCreateUpdateDto {
+public class UserRegisterDto {
 	
 	@NotBlank(message = "First Name is mandatory!")
 	private String firstName;
@@ -15,7 +14,7 @@ public class UserCreateUpdateDto {
 	@NotBlank(message = "Last Name is mandatory!")
 	private String lastName;
 	
-	@NotBlank(message = "Email is mandatory!")
+	@Email(message = "Please enter a valid email!")
 	private String email;
 	
 	@NotBlank(message = "Username is mandatory!")
@@ -23,10 +22,5 @@ public class UserCreateUpdateDto {
 	
 	@NotBlank(message = "Password is mandatory!")
 	private String password;
-	
-	@NotBlank(message = "Role is mandatory!")
-	private String role;
-	
-	@NotNull(message = "Please provide activated value!")
-	private boolean activated;
+
 }

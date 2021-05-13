@@ -23,4 +23,20 @@ from inventory.
 ![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/diagram.png?raw=true)
 
 ---
-###To Continue
+#### Database Schema Shortened Explanation
+A user :
+* can have one or more roles
+* has an unique email
+* has an unique username
+
+A book :
+* has a title
+* title is unique
+
+---
+## Architecture
+This application is created using Spring Boot 2.4  <br />
+*Languages*: JAVA, SQL<br />
+*Tools*: STS Spring Tool SUite, Sonarlint, Postgresql and H2 for testing, Jpa Hibernate, Lombok<br />
+JUnit, Logger, Spring Security Jwt<br />
+*Type of Application*: Rest Api <br />

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.project.lms.converter.BookConverter;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
-import com.project.lms.dto.CustomResponseDto;
 import com.project.lms.entity.BookEntity;
 import com.project.lms.exception.MyExcMessages;
 import com.project.lms.repository.BookRepository;
@@ -26,12 +25,14 @@ public class BookServiceImpl implements BookService {
 		this.bookRepository = bookRepository;
 	}
 
+	// RETURNS ALL BOOKS
 	@Override
 	public List<BookDto> getAllBooks() {
 			List<BookEntity> booksToReturn = bookRepository.getAll();
 			return BookConverter.toListDto(booksToReturn);
 	}
 
+	// GET BOOK BY ID
 	@Override
 	public BookDto getBookById(Long id) {
 		BookEntity book = bookRepository.getById(id);
@@ -41,6 +42,7 @@ public class BookServiceImpl implements BookService {
 		throw new MyExcMessages("Book with given Id does not exist!");
 	}
 
+	// CREATE NEW BOOK ON DB
 	@Override
 	public BookDto createBook(BookCreateUpdateDto book) {
 		boolean existBookTitle = bookRepository.getBookByTitle(book.getTitle());
@@ -48,15 +50,16 @@ public class BookServiceImpl implements BookService {
 			BookEntity bookToCreate = BookConverter.toEntity(book);
 			return BookConverter.toDto(bookRepository.saveBook(bookToCreate));
 		}
-		throw new MyExcMessages("Book with title: "+book.getTitle()+" - already exist");
+		throw new MyExcMessages("Book with title : "+book.getTitle()+" - already exist");
 	}
 
+	// VALIDATED DATA AND UPDATES BOOK TITLE
 	@Override
 	public BookDto updateBookById(Long id, BookCreateUpdateDto book) {
 		BookEntity bookToUpdate = bookRepository.getById(id);
 		boolean existBookTitle = bookRepository.getBookByTitle(book.getTitle());
 		if(bookToUpdate != null) {
-			if(!existBookTitle) {
+			if(existBookTitle && book.getTitle().equals(bookToUpdate.getTitle())) {
 				bookToUpdate.setTitle(book.getTitle());
 				return BookConverter.toDto(bookRepository.updateBook(bookToUpdate));
 			}
@@ -65,14 +68,14 @@ public class BookServiceImpl implements BookService {
 		throw new MyExcMessages("Book with given Id does not exist!");
 	}
 
+	// DELETE BOOK IF FOUND BY ID
 	@Override
-	public CustomResponseDto deleteBookById(Long id) {
+	public void deleteBookById(Long id) {
 		BookEntity bookToDelete = bookRepository.getById(id);
 		if(bookToDelete != null) {
 			bookRepository.deleteBook(bookToDelete);
-			return new CustomResponseDto("Book with title: "+bookToDelete.getTitle()+" was deleted!");
 		}
-		return new CustomResponseDto("Can not find the book with given Id!");
+		throw new MyExcMessages("Can not find the book with given Id!");
 	}
 
 }

@@ -1,9 +1,17 @@
 package com.project.lms.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 import com.project.lms.entity.UserRoleEntity;
 
-public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Long>{
+public interface UserRoleRepository{
+
+	void saveUserRole(UserRoleEntity userRole);
+
+	List<UserRoleEntity> getAllUserRoles();
+
+	UserRoleEntity getUserRoleById(Long id);
+
+	void deleteUserRole(UserRoleEntity userRoleToDelete);
 
 }
