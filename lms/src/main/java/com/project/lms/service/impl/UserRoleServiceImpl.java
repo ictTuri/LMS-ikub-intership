@@ -90,7 +90,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 					if (!foundRole) {
 						userRoleToUpdate.setRole(roleToUpdate);
 						userRoleToUpdate.setUser(userToUpdate);
-						return UserRoleConverter.toDto(userRoleToUpdate);
+						return UserRoleConverter.toDto(userRoleRepository.updateUserRole(userRoleToUpdate));
 					}
 					throw new MyExcMessages("This Relation already exist!");
 				}
@@ -113,14 +113,16 @@ public class UserRoleServiceImpl implements UserRoleService {
 	@Override
 	public void deleteUserRole(long id) {
 		UserRoleEntity userRoleToDelete = userRoleRepository.getUserRoleById(id);
-		if(userRoleToDelete != null) {
-			List<RoleEntity> roleList = roleRepository.getUserRole(userRoleToDelete.getUser());
-			if(roleList.size()>1) {
-				userRoleRepository.deleteUserRole(userRoleToDelete);
+		if (userRoleToDelete != null) {
+			int roleListSize = roleRepository.getUserRole(userRoleToDelete.getUser()).size();
+			if (roleListSize > 1) {
+					userRoleToDelete.setRole(null);
+					userRoleToDelete.setUser(null);
+					userRoleRepository.deleteUserRole(userRoleRepository.updateUserRole(userRoleToDelete));
 			}
 			throw new MyExcMessages("This user has only this role!");
 		}
-		throw new MyExcMessages("User Role Relation with id: "+id+" was not found!");
+		throw new MyExcMessages("User Role Relation with id: " + id + " was not found!");
 	}
 
 }

@@ -16,6 +16,7 @@ import com.project.lms.dto.UserDto;
 import com.project.lms.entity.RoleEntity;
 import com.project.lms.entity.UserEntity;
 import com.project.lms.entity.UserRoleEntity;
+import com.project.lms.enums.Roles;
 import com.project.lms.exception.MyExcMessages;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
@@ -79,9 +80,9 @@ public class UserServiceImpl implements UserService {
 	public UserDto createUser(UserCreateUpdateDto user) {
 		boolean existUserWithUsernameEmail = userRepository.checkUserByUsernameEmail(user.getUsername(),
 				user.getEmail().toLowerCase());
-		String roleName = user.getRole().toString().toUpperCase();
+		String roleName = user.getRole().toUpperCase();
 		if (!existUserWithUsernameEmail) {
-			RoleEntity roleToInsert = roleRepository.getRole(roleName);
+			RoleEntity roleToInsert = roleRepository.getRole(Roles.valueOf(roleName).name());
 			if (roleToInsert != null) {
 				// Encoded password by BCrypt on 10 power
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -109,16 +110,16 @@ public class UserServiceImpl implements UserService {
 	public UserDto updateUser(Long id, @Valid UserCreateUpdateDto user) {
 		UserEntity userToUpdate = userRepository.getUserById(id);
 		if (userToUpdate != null) {
-			if (userToUpdate.getEmail().equalsIgnoreCase(user.getEmail())
+			if (!(userToUpdate.getEmail().equalsIgnoreCase(user.getEmail()))
 					&& userRepository.existEmail(user.getEmail())) {
-				if (userToUpdate.getUsername().equals(user.getUsername())
-						&& userRepository.existUsername(user.getUsername())) {
-					String roleName = user.getRole().toString().toUpperCase();
-					return updateValidationsExtracted(user, userToUpdate, roleName);
-				}
+				throw new MyExcMessages("Email: " + user.getEmail() + " is taken!");
+			}
+			if (!(userToUpdate.getUsername().equals(user.getUsername()))
+					&& userRepository.existUsername(user.getUsername())) {
 				throw new MyExcMessages("Username: " + user.getUsername() + " is taken!");
 			}
-			throw new MyExcMessages("Email: " + user.getEmail() + " is taken!");
+			String roleName = user.getRole().toString().toUpperCase();
+			return updateValidationsExtracted(user, userToUpdate, roleName);
 		}
 		throw new MyExcMessages("Can not find user with given Id: " + id);
 	}

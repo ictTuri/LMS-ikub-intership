@@ -14,4 +14,6 @@ public interface UserRoleRepository{
 
 	void deleteUserRole(UserRoleEntity userRoleToDelete);
 
+	UserRoleEntity updateUserRole(UserRoleEntity userRoleToUpdate);
+
 }

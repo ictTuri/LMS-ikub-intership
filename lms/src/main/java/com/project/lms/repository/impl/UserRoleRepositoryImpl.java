@@ -45,5 +45,10 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 	public void deleteUserRole(UserRoleEntity userRoleToDelete) {
 		em.remove(userRoleToDelete);
 	}
+
+	@Override
+	public UserRoleEntity updateUserRole(UserRoleEntity userRoleToUpdate) {
+		return em.merge(userRoleToUpdate);
+	}
 		
 }

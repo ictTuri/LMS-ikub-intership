@@ -1,4 +1,4 @@
-package com.project.lms.security;
+package com.project.lms.auth;
 
 import java.util.List;
 
@@ -15,18 +15,20 @@ import com.project.lms.entity.UserEntity;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
 
-@Service(value = "userDetailsService")
-public class UserDetailsServiceImpl implements UserDetailsService {
+@Service
+public class ApplicationUserService implements UserDetailsService{
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
 
-	private static final Logger logger = LogManager.getLogger(UserDetailsServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(ApplicationUserService.class);
+	
+	
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity userEntity = userRepository.getUserByUsername(username);
 		if (userEntity == null) {
 			throw new UsernameNotFoundException("User: "+username+" not found");
@@ -35,6 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
 		logger.info("getting user {}",userEntity);
 		
-		return UserPrincipal.build(userEntity, roleList);
+		return new ApplicationUser(userEntity, roleList);
 	}
+
 }
