@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,26 +32,31 @@ public class UserController {
 	}
 
 	@GetMapping()
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<List<UserDto>> showAllUsers(){
 		return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> showUserById(@PathVariable("id") Long id){
 		return new ResponseEntity<>(userService.getUserById(id),HttpStatus.OK);
 	}
 	
 	@PostMapping()
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserCreateUpdateDto user){
 		return new ResponseEntity<>(userService.createUser(user),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> updateUser(@PathVariable("id") long id, @Valid @RequestBody UserCreateUpdateDto user){
 		return new ResponseEntity<>(userService.updateUser(id,user),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> softDeleteUser(@PathVariable("id") long id){
 		userService.softDeleteUser(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

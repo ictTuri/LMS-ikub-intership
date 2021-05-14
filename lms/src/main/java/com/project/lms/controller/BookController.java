@@ -44,19 +44,19 @@ public class BookController {
 	}
 	
 	@PostMapping()
-	@PreAuthorize("hasAuthority('book:write')")
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY')")
 	public ResponseEntity<BookDto> createBook(@Valid @RequestBody BookCreateUpdateDto book){
 		return new ResponseEntity<>(bookService.createBook(book),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('book:write')")
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY')")
 	public ResponseEntity<BookDto> updateBookById(@Valid @PathVariable("id") long id,@RequestBody BookCreateUpdateDto book){
 		return new ResponseEntity<>(bookService.updateBookById(id, book),HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority('book:write')")
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY')")
 	public ResponseEntity<Void> deleteBookById(@PathVariable("id") long id){
 		bookService.deleteBookById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

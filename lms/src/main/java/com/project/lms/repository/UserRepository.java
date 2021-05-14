@@ -24,4 +24,6 @@ public interface UserRepository{
 
 	void updateUser(UserEntity userToDelete);
 
+	UserEntity getActivatedUserByUsername(String username);
+
 }

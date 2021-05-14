@@ -44,8 +44,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public CustomResponseDto registerStudent(UserRegisterDto user) {
 		// Get Student role object from DB
-		RoleEntity role = roleRepository.getRole("STUDENT");
+		RoleEntity role = roleRepository.getRole("ROLE_STUDENT");
 		UserEntity userToCreate = UserConverter.toEntity(user);
+		userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
 		UserRoleEntity userRole = new UserRoleEntity();
 		userRole.setRole(role);
 		userRole.setUser(userToCreate);
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto createUser(UserCreateUpdateDto user) {
 		boolean existUserWithUsernameEmail = userRepository.checkUserByUsernameEmail(user.getUsername(),
 				user.getEmail().toLowerCase());
-		String roleName = user.getRole().toUpperCase();
+		String roleName = user.getRole().toString().toUpperCase();
 		if (!existUserWithUsernameEmail) {
 			RoleEntity roleToInsert = roleRepository.getRole(roleName);
 			if (roleToInsert != null) {
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService {
 					&& userRepository.existEmail(user.getEmail())) {
 				if (userToUpdate.getUsername().equals(user.getUsername())
 						&& userRepository.existUsername(user.getUsername())) {
-					String roleName = user.getRole().toUpperCase();
+					String roleName = user.getRole().toString().toUpperCase();
 					return updateValidationsExtracted(user, userToUpdate, roleName);
 				}
 				throw new MyExcMessages("Username: " + user.getUsername() + " is taken!");
@@ -161,7 +162,7 @@ public class UserServiceImpl implements UserService {
 	// Helping method to go through roles 
 	public boolean isUserRoleConnected(List<RoleEntity> roles, UserCreateUpdateDto user) {
 		for (RoleEntity re : roles) {
-			if (re.getName().equalsIgnoreCase(user.getRole())) {
+			if (re.getName().equalsIgnoreCase(user.getRole().toString())) {
 				return  true;
 			}
 		}

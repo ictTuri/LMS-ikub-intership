@@ -3,6 +3,7 @@ package com.project.lms.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.project.lms.enums.Roles;
 
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class UserCreateUpdateDto {
 	private String password;
 	
 	@NotBlank(message = "Role is mandatory!")
-	private String role;
+	private Roles role;
 	
 	@NotNull(message = "Please provide activated value!")
 	private boolean activated;

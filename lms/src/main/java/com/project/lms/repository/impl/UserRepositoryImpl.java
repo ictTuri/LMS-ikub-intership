@@ -28,7 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
 			+ "OR ue.email = :email";
 	private static final String USER_BY_USERNAME = "FROM UserEntity ue WHERE ue.username = :username";
 	private static final String ACTIVE_USER_BY_ID = "FROM UserEntity ue WHERE ue.id = :id AND ue.activated = true";
-	
+	private static final String ACTIVE_USER_BY_USERNAME = "FROM UserEntity ue WHERE ue.username = :username AND ue.activated = true";
+
 	
 	@Override
 	public List<UserEntity> getAllUsers() {
@@ -104,6 +105,17 @@ public class UserRepositoryImpl implements UserRepository {
 	public UserEntity getActivatedUserById(long id) {
 		TypedQuery<UserEntity> query = em.createQuery(ACTIVE_USER_BY_ID, UserEntity.class)
 				.setParameter("id", id);
+		try {
+			return query.getSingleResult();
+		}catch(NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public UserEntity getActivatedUserByUsername(String username) {
+		TypedQuery<UserEntity> query = em.createQuery(ACTIVE_USER_BY_USERNAME, UserEntity.class)
+				.setParameter("username", username);
 		try {
 			return query.getSingleResult();
 		}catch(NoResultException e) {
