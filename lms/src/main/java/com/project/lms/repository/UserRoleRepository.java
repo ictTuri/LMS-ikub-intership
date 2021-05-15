@@ -2,6 +2,7 @@ package com.project.lms.repository;
 
 import java.util.List;
 
+import com.project.lms.entity.UserEntity;
 import com.project.lms.entity.UserRoleEntity;
 
 public interface UserRoleRepository{
@@ -15,5 +16,7 @@ public interface UserRoleRepository{
 	void deleteUserRole(UserRoleEntity userRoleToDelete);
 
 	UserRoleEntity updateUserRole(UserRoleEntity userRoleToUpdate);
+
+	List<UserRoleEntity> getThisUserRelations(UserEntity userToHardDelete);
 
 }

@@ -49,6 +49,7 @@ public class UserConverter {
 		userToReturn.setEmail(user.getEmail());
 		userToReturn.setUsername(user.getUsername());
 		userToReturn.setPassword(user.getPassword());
+		userToReturn.setActivated(user.isActivated());
 		return userToReturn;
 	}
 	

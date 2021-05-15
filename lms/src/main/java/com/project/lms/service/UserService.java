@@ -23,4 +23,6 @@ public interface UserService {
 
 	void softDeleteUser(long id);
 
+	void hardDeleteUser(long id);
+
 }

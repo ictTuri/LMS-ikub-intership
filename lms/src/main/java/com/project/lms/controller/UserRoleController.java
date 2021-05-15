@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +26,8 @@ import com.project.lms.service.UserRoleService;
 @RequestMapping("api/v1/user-roles")
 public class UserRoleController {
 	
+	private static final Logger logger = LogManager.getLogger(UserRoleController.class);
+	
 	private UserRoleService userRoleService;
 
 	public UserRoleController(UserRoleService userRoleService) {
@@ -40,24 +44,28 @@ public class UserRoleController {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<UserRoleDto> showUserRoleById(@PathVariable("id") Long id){
+		logger.info("Viewing user roles with id: {}",id);
 		return new ResponseEntity<>(userRoleService.getUserRoleById(id),HttpStatus.OK);
 	}
 	
 	@PostMapping()
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<UserRoleDto> createUserRole(@Valid @RequestBody UserRoleCreateUpdateDto userRole){
+		logger.info("Creating new user role: {}",userRole);
 		return new ResponseEntity<>(userRoleService.createUserRole(userRole),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<UserRoleDto> createUserRole(@PathVariable("id") long id ,@Valid @RequestBody UserRoleCreateUpdateDto userRole){
+		logger.info("Updating user role relation with id: {} and body: {}",id, userRole);
 		return new ResponseEntity<>(userRoleService.updateUserRole(id,userRole),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> softDeleteUser(@PathVariable("id") long id){
+		logger.info("Deleting user role relation with id: {}",id);
 		userRoleService.deleteUserRole(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

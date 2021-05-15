@@ -33,7 +33,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		this.authenticationManager = authenticationManager;
 		this.jwtConfig = jwtConfig;
 		this.secretKey = secretKey;
+		setFilterProcessesUrl("/api/v1/login"); 
 	}
+
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)

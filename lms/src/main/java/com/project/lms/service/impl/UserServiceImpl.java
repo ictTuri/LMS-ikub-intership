@@ -44,18 +44,26 @@ public class UserServiceImpl implements UserService {
 	// STUDENT REGISTRATION METHOD
 	@Override
 	public CustomResponseDto registerStudent(UserRegisterDto user) {
-		// Get Student role object from DB
-		RoleEntity role = roleRepository.getRole("ROLE_STUDENT");
-		UserEntity userToCreate = UserConverter.toEntity(user);
-		userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
-		UserRoleEntity userRole = new UserRoleEntity();
-		userRole.setRole(role);
-		userRole.setUser(userToCreate);
-		// Save User on DB
-		userRepository.saveUser(userToCreate);
-		// Save user role Relation on join table
-		userRoleRepository.saveUserRole(userRole);
-		return new CustomResponseDto("You have been register, please wait for the activation");
+		boolean existUsername = userRepository.existUsername(user.getUsername());
+				if(!existUsername) {
+					boolean existEmail = userRepository.existEmail(user.getEmail());
+					if(!existEmail) {
+						RoleEntity role = roleRepository.getRole("STUDENT");
+						UserEntity userToCreate = UserConverter.toEntity(user);
+						userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+						userToCreate.setEmail(user.getEmail().toLowerCase());
+						UserRoleEntity userRole = new UserRoleEntity();
+						userRole.setRole(role);
+						userRole.setUser(userToCreate);
+						// Save User on DB
+						userRepository.saveUser(userToCreate);
+						// Save user role Relation on join table
+						userRoleRepository.saveUserRole(userRole);
+						return new CustomResponseDto("You have been register, please wait for the activation");
+					}
+					throw new MyExcMessages("Email: "+user.getEmail()+" already exist");
+				}
+			throw new MyExcMessages("Username: "+user.getUsername()+" already exist");
 	}
 
 	// GET ALL USERS BUT NOT THE ROLES
@@ -74,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		}
 		throw new MyExcMessages("User with id: " + id + " can not be found");
 	}
- 
+
 	// CREATE NEW USER WITH ANY ROLE METHOD
 	@Override
 	public UserDto createUser(UserCreateUpdateDto user) {
@@ -105,7 +113,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// UPDATE USER DATA
-
 	@Override
 	public UserDto updateUser(Long id, @Valid UserCreateUpdateDto user) {
 		UserEntity userToUpdate = userRepository.getUserById(id);
@@ -130,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
 		if (roleToInsert != null) {
 			List<RoleEntity> roles = roleRepository.getUserRole(userToUpdate);
-			boolean foundRole = isUserRoleConnected(roles,user);
+			boolean foundRole = isUserRoleConnected(roles, user);
 			if (foundRole) {
 				userToUpdate.setFirstName(user.getFirstName());
 				userToUpdate.setLastName(user.getLastName());
@@ -160,11 +167,11 @@ public class UserServiceImpl implements UserService {
 		throw new MyExcMessages("Given Role is not valid,try Admin or Student or Secretary");
 	}
 
-	// Helping method to go through roles 
+	// Helping method to go through roles
 	public boolean isUserRoleConnected(List<RoleEntity> roles, UserCreateUpdateDto user) {
 		for (RoleEntity re : roles) {
-			if (re.getName().equalsIgnoreCase(user.getRole().toString())) {
-				return  true;
+			if (re.getName().equalsIgnoreCase(user.getRole())) {
+				return true;
 			}
 		}
 		return false;
@@ -173,12 +180,28 @@ public class UserServiceImpl implements UserService {
 	// SOFT DELETE USER BY ID
 	@Override
 	public void softDeleteUser(long id) {
-		UserEntity userToDelete = userRepository.getActivatedUserById(id);
-		if (userToDelete != null) {
-			userToDelete.setActivated(false);
-			userRepository.updateUser(userToDelete);
+		UserEntity userToSoftDelete = userRepository.getActivatedUserById(id);
+		if (userToSoftDelete != null) {
+			userToSoftDelete.setActivated(Boolean.FALSE);
+			userRepository.updateUser(userToSoftDelete);
+		}else {
+			throw new MyExcMessages("Can not find user with given id: " + id);
 		}
-		throw new MyExcMessages("Can not find user with given id: " + id);
 	}
+
+	@Override
+	public void hardDeleteUser(long id) {
+		UserEntity userToHardDelete = userRepository.getUserById(id);
+		if(userToHardDelete != null) {
+			List<UserRoleEntity> listOfRelations = userRoleRepository.getThisUserRelations(userToHardDelete);
+			for(UserRoleEntity ure : listOfRelations ) {
+				userRoleRepository.deleteUserRole(ure);
+			}
+				userRepository.deleteUser(userToHardDelete);
+		}else {
+			throw new MyExcMessages("Can not find user with id: "+id);
+		}	
+	}
+	
 
 }

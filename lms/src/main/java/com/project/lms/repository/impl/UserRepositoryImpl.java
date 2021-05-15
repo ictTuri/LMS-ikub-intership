@@ -123,4 +123,9 @@ public class UserRepositoryImpl implements UserRepository {
 		}
 	}
 
+	@Override
+	public void deleteUser(UserEntity userToHardDelete) {
+		em.remove(userToHardDelete);	
+	}
+
 }

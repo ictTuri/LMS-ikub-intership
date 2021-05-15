@@ -26,4 +26,6 @@ public interface UserRepository{
 
 	UserEntity getActivatedUserByUsername(String username);
 
+	void deleteUser(UserEntity userToHardDelete);
+
 }

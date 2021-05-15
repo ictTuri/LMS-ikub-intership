@@ -29,9 +29,9 @@ public class ApplicationUserService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserEntity userEntity = userRepository.getUserByUsername(username);
+		UserEntity userEntity = userRepository.getActivatedUserByUsername(username);
 		if (userEntity == null) {
-			throw new UsernameNotFoundException("User: "+username+" not found");
+			throw new UsernameNotFoundException("User: "+username+" not found or not activated!");
 		}
 		List<RoleEntity> roleList = roleRepository.getUserRole(userEntity);
 		

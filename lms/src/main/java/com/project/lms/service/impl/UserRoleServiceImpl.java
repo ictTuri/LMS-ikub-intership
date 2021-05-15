@@ -25,7 +25,6 @@ public class UserRoleServiceImpl implements UserRoleService {
 	private UserRoleRepository userRoleRepository;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
-
 	public UserRoleServiceImpl(UserRoleRepository userRoleRepository, UserRepository userRepository,
 			RoleRepository roleRepository) {
 		super();
@@ -116,13 +115,13 @@ public class UserRoleServiceImpl implements UserRoleService {
 		if (userRoleToDelete != null) {
 			int roleListSize = roleRepository.getUserRole(userRoleToDelete.getUser()).size();
 			if (roleListSize > 1) {
-					userRoleToDelete.setRole(null);
-					userRoleToDelete.setUser(null);
-					userRoleRepository.deleteUserRole(userRoleRepository.updateUserRole(userRoleToDelete));
+				userRoleRepository.deleteUserRole(userRoleToDelete);
+			}else {
+				throw new MyExcMessages("This user has only this role!");
 			}
-			throw new MyExcMessages("This user has only this role!");
+		}else {
+			throw new MyExcMessages("User Role Relation with id: " + id + " was not found!");
 		}
-		throw new MyExcMessages("User Role Relation with id: " + id + " was not found!");
 	}
 
 }
