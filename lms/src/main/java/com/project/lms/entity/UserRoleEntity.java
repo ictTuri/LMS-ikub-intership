@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "user_role")
 @NoArgsConstructor
+@Document(collection = "user_role")
 public class UserRoleEntity {
 	
 	@Id

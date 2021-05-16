@@ -50,5 +50,10 @@ public class RoleRepositoryImpl implements RoleRepository {
 	public List<RoleEntity> getUserRole(UserEntity user) {
 		return em.createQuery(GET_USER_ROLES, RoleEntity.class).setParameter("user", user).getResultList();
 	}
+
+	@Override
+	public void saveRole(RoleEntity role) {
+		em.persist(role);
+	}
 	
 }

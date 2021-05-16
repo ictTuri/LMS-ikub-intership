@@ -3,6 +3,7 @@ package com.project.lms.repository.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -54,7 +55,7 @@ public class BookRepositoryImpl implements BookRepository {
 	}
 
 	@Override
-	public boolean getBookByTitle(String title) {
+	public boolean checkBookByTitle(String title) {
 		TypedQuery<BookEntity> query = em.createQuery(BOOK_BY_TITLE, BookEntity.class)
 				.setParameter("title", title);
 		try {
@@ -63,5 +64,17 @@ public class BookRepositoryImpl implements BookRepository {
 			return false;
 		}
 	}
+
+	@Override
+	public BookEntity getBookByTitle(String title) {
+		TypedQuery<BookEntity> query = em.createQuery(BOOK_BY_TITLE, BookEntity.class)
+				.setParameter("title", title);
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 
 }

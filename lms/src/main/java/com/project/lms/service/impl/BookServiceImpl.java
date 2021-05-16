@@ -45,7 +45,7 @@ public class BookServiceImpl implements BookService {
 	// CREATE NEW BOOK ON DB
 	@Override
 	public BookDto createBook(BookCreateUpdateDto book) {
-		boolean existBookTitle = bookRepository.getBookByTitle(book.getTitle());
+		boolean existBookTitle = bookRepository.checkBookByTitle(book.getTitle());
 		if(!existBookTitle) {
 			BookEntity bookToCreate = BookConverter.toEntity(book);
 			return BookConverter.toDto(bookRepository.saveBook(bookToCreate));
@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto updateBookById(Long id, BookCreateUpdateDto book) {
 		BookEntity bookToUpdate = bookRepository.getById(id);
-		boolean existBookTitle = bookRepository.getBookByTitle(book.getTitle());
+		boolean existBookTitle = bookRepository.checkBookByTitle(book.getTitle());
 		if(bookToUpdate != null) {
 			if(existBookTitle && book.getTitle().equals(bookToUpdate.getTitle())) {
 				bookToUpdate.setTitle(book.getTitle());

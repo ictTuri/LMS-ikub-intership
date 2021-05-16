@@ -8,18 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.lms.entity.UserEntity;
+import com.project.lms.repository.UserRepository;
+import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
 @Transactional
 class UserRepositoryImplTest {
 
 	@Autowired
-	private UserRepositoryImpl userRepository;
+	private UserRepository userRepository;
 
 	
 	@Test
 	void givenUsername_whenRetrieved_thenGetUserData() {
-		UserEntity user = UserUtil.createUser();
+		UserEntity user = UserUtil.userTest();
 		userRepository.saveUser(user);
 		String username = "test";
 		
@@ -30,7 +32,7 @@ class UserRepositoryImplTest {
 	
 	@Test
 	void givenUser_whenUpdate_thenGetUpdatedUser() {
-		UserEntity user = UserUtil.createUser();
+		UserEntity user = UserUtil.userTest();
 		userRepository.saveUser(user);
 		user.setFirstName("testUpdate");
 		
@@ -42,7 +44,7 @@ class UserRepositoryImplTest {
 	@Test
 	void givenUser_whenSave_thenGetCreatedUser() {
 		Integer userSize = userRepository.getAllUsers().size();
-		UserEntity user = UserUtil.createUserAdmin();
+		UserEntity user = UserUtil.userAdmin();
 
 		userRepository.saveUser(user);
 		
@@ -62,7 +64,7 @@ class UserRepositoryImplTest {
 	
 	@Test
 	void givenUser_whenSoftDelete_thenGetNoResult() {
-		UserEntity user = UserUtil.createUserAdmin();
+		UserEntity user = UserUtil.userAdmin();
 		userRepository.saveUser(user);
 
 		user.setActivated(false);

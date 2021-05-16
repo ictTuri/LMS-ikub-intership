@@ -1,5 +1,6 @@
 package com.project.lms.repository.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -63,7 +64,7 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 		try {
 			return query.getResultList();
 		} catch (IllegalStateException e) {
-			return null;
+			return Collections.emptyList();
 		}
 	}
 

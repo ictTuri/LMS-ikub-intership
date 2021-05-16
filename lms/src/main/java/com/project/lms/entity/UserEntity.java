@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
@@ -19,6 +21,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}),@UniqueConstraint(columnNames = {"email"})})
+@Document(collection = "users")
 public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

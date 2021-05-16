@@ -8,9 +8,9 @@ public interface UserRepository{
 
 	void saveUser(UserEntity userToCreate);
 
-	List<UserEntity> getAllUsers();
-
 	UserEntity getUserById(Long id);
+
+	List<UserEntity> getAllUsers();
 
 	boolean checkUserByUsernameEmail(String username, String email);
 

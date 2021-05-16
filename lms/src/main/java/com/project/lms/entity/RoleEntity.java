@@ -13,16 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "roles")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Document(collection = "roles")
 public class RoleEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

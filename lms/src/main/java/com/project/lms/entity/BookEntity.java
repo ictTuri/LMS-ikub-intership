@@ -7,11 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "books")
+@Document(collection = "books")
 public class BookEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

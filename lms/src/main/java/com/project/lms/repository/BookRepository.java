@@ -16,6 +16,8 @@ public interface BookRepository{
 
 	void deleteBook(BookEntity bookToDelete);
 
-	boolean getBookByTitle(String title);
+	boolean checkBookByTitle(String title);
+
+	BookEntity getBookByTitle(String title);
 	
 }

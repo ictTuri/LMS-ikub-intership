@@ -1,27 +1,29 @@
-package com.project.lms.repository.impl;
+package com.project.lms.utils;
 
 import com.project.lms.entity.UserEntity;
 
 public class UserUtil {
-	public static UserEntity createUser() {
+	public static UserEntity userTest() {
 		UserEntity user = new UserEntity();
 		user.setFirstName("test");
 		user.setLastName("test");
 		user.setEmail("test@gmail.com");
-		user.setPassword("test");
 		user.setUsername("test");
+		user.setPassword("$2a$10$OpdoAtzBqkQnJgEStCvXkelzh9wzqvPeapEFhyL2dVvC0awCPYxoy");
 		user.setActivated(true);
+		user.setUserRoles(null);
 		return user;
 	}
 	
-	public static UserEntity createUserAdmin() {
+	public static UserEntity userAdmin() {
 		UserEntity user = new UserEntity();
 		user.setFirstName("admin");
 		user.setLastName("admin");
 		user.setEmail("admin@gmail.com");
-		user.setPassword("admin");
+		user.setPassword("$2a$10$IZNCfsR8Mw14kdA1TFGlD.P./VoEPo7k7unJ0rePZPPE4PBVwfGHy");
 		user.setUsername("admin");
 		user.setActivated(true);
+		user.setUserRoles(null);
 		return user;
 	}
 }

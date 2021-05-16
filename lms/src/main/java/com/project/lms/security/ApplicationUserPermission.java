@@ -1,5 +1,6 @@
 package com.project.lms.security;
 
+
 public enum ApplicationUserPermission {
 		BOOK_READ("book:read"),
 		BOOK_WRITE("book:write"),
