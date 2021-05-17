@@ -19,5 +19,5 @@ public interface BookRepository{
 	boolean checkBookByTitle(String title);
 
 	BookEntity getBookByTitle(String title);
-	
+
 }

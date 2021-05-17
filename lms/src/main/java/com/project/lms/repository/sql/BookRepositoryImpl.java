@@ -1,4 +1,4 @@
-package com.project.lms.repository.impl;
+package com.project.lms.repository.sql;
 
 import java.util.List;
 
@@ -6,12 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.project.lms.entity.BookEntity;
 import com.project.lms.repository.BookRepository;
 
+
 @Repository
+@Profile("sql")
 public class BookRepositoryImpl implements BookRepository {
 
 	private EntityManager em;
@@ -21,11 +24,9 @@ public class BookRepositoryImpl implements BookRepository {
 		this.em = em;
 	}
 
-	private static final String GET_ALL_BOOKS = "FROM BookEntity ";
-	private static final String BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
-	
 	@Override
 	public List<BookEntity> getAll() {
+		final String GET_ALL_BOOKS = "FROM BookEntity ";
 		return em.createQuery(GET_ALL_BOOKS, BookEntity.class).getResultList();
 	}
 
@@ -56,6 +57,7 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public boolean checkBookByTitle(String title) {
+		final String BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
 		TypedQuery<BookEntity> query = em.createQuery(BOOK_BY_TITLE, BookEntity.class)
 				.setParameter("title", title);
 		try {
@@ -67,6 +69,7 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public BookEntity getBookByTitle(String title) {
+		final String BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
 		TypedQuery<BookEntity> query = em.createQuery(BOOK_BY_TITLE, BookEntity.class)
 				.setParameter("title", title);
 		try {
@@ -75,6 +78,5 @@ public class BookRepositoryImpl implements BookRepository {
 			return null;
 		}
 	}
-
 
 }

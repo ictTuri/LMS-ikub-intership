@@ -17,6 +17,7 @@ import com.project.lms.repository.UserRepository;
 
 @Service
 public class ApplicationUserService implements UserDetailsService{
+	
 	@Autowired
 	private UserRepository userRepository;
 	

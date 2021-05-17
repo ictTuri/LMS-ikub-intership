@@ -1,12 +1,12 @@
-package com.project.lms.repository.impl;
+package com.project.lms.repository.sql;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.project.lms.entity.UserEntity;
@@ -14,7 +14,7 @@ import com.project.lms.entity.UserRoleEntity;
 import com.project.lms.repository.UserRoleRepository;
 
 @Repository
-@Transactional
+@Profile("sql")
 public class UserRoleRepositoryImpl implements UserRoleRepository {
 
 	private EntityManager em;
@@ -24,11 +24,10 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 		this.em = em;
 	}
 
-	private static final String GET_ALL_USER_ROLES = "FROM UserRoleEntity";
-	private static final String GET_THIS_USER_RELATIONS = "FROM UserRoleEntity ure WHERE ure.user = :user";
 
 	@Override
 	public List<UserRoleEntity> getAllUserRoles() {
+		final String GET_ALL_USER_ROLES = "FROM UserRoleEntity";
 		return em.createQuery(GET_ALL_USER_ROLES, UserRoleEntity.class).getResultList();
 	}
 
@@ -59,6 +58,7 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 
 	@Override
 	public List<UserRoleEntity> getThisUserRelations(UserEntity userToHardDelete) {
+		final String GET_THIS_USER_RELATIONS = "FROM UserRoleEntity ure WHERE ure.user = :user";
 		TypedQuery<UserRoleEntity> query = em.createQuery(GET_THIS_USER_RELATIONS, UserRoleEntity.class)
 				.setParameter("user", userToHardDelete);
 		try {
