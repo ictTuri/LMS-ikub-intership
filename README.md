@@ -34,6 +34,25 @@ A book :
 * title is unique
 
 ---
+#### Operation Explained
+_User_ Admin :
+* Access to all users and user-roles relations
+* Access to create, read, update and delete to users and user-roles
+* Can not delete a role user relation if it is the only one for the user
+* Can add new user-role relations 
+* Access to activate deactivated user 
+* Can soft delete and hard delete users
+* Can add roles to his account and have additional accesses
+
+_User_ Secretary:
+* Access to create, read, update and delete books
+* Can not add a book if the book already exist
+
+_User_ Student
+* After activation user has access to view books
+* Can view books by id and all
+
+---
 ## Architecture
 This application is created using Spring Boot 2.4  <br />
 *Languages*: JAVA, SQL<br />
