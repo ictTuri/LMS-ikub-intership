@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,11 +29,13 @@ public class UserRoleEntity {
 	@Column(name="user_role_id")
 	private Long id;
 	
+	@DBRef(lazy = true)
 	@JsonManagedReference
 	@ManyToOne()
 	@JoinColumn(name = "user_id")  
 	private UserEntity user;
 	
+	@DBRef(lazy = true)
 	@JsonManagedReference
 	@ManyToOne()
 	@JoinColumn(name = "role_id")  

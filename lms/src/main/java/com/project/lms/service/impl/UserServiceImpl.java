@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
 					&& userRepository.existUsername(user.getUsername())) {
 				throw new MyExcMessages("Username: " + user.getUsername() + " is taken!");
 			}
-			String roleName = user.getRole().toString().toUpperCase();
+			String roleName = user.getRole().toUpperCase();
 			return updateValidationsExtracted(user, userToUpdate, roleName);
 		}
 		throw new MyExcMessages("Can not find user with given Id: " + id);

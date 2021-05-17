@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -29,6 +30,7 @@ public class RoleEntity {
 	@Column(name = "role_id")
 	private Integer id;
 	
+	@DBRef(lazy = true)
 	@JsonBackReference
 	@OneToMany(mappedBy = "role")
 	private Set<UserRoleEntity> userRoles = new HashSet<>();

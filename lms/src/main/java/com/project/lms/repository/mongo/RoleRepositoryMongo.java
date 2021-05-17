@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.project.lms.entity.RoleEntity;
@@ -16,16 +18,18 @@ import com.project.lms.repository.RoleRepository;
 public class RoleRepositoryMongo implements RoleRepository{
 
 	@Autowired
-	private MongoTemplate mongoTemplate;
+	private MongoTemplate mt;
 	
 	@Override
 	public RoleEntity getRoleById(int id) {
-		return null;
+		return mt.findById(id, RoleEntity.class);
 	}
 
 	@Override
 	public RoleEntity getRole(String name) {
-		return null;
+		Query query = new Query()
+				.addCriteria(Criteria.where("name").is(name));
+		return mt.findOne(query, RoleEntity.class);
 	}
 
 	@Override
@@ -35,7 +39,8 @@ public class RoleRepositoryMongo implements RoleRepository{
 
 	@Override
 	public void saveRole(RoleEntity role) {
-		
+		// Save a new role
+		mt.insert(role, "roles");
 	}
 
 }

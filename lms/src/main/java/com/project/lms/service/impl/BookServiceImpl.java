@@ -57,13 +57,12 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto updateBookById(Long id, BookCreateUpdateDto book) {
 		BookEntity bookToUpdate = bookRepository.getById(id);
-		boolean existBookTitle = bookRepository.checkBookByTitle(book.getTitle());
 		if(bookToUpdate != null) {
-			if(existBookTitle && book.getTitle().equals(bookToUpdate.getTitle())) {
-				bookToUpdate.setTitle(book.getTitle());
-				return BookConverter.toDto(bookRepository.updateBook(bookToUpdate));
+			if(!(book.getTitle().equals(bookToUpdate.getTitle())) && bookRepository.checkBookByTitle(book.getTitle())) {
+				throw new MyExcMessages("Book with title: "+book.getTitle()+" -already exist");
 			}
-			throw new MyExcMessages("Book with title: "+book.getTitle()+" -already exist");
+			bookToUpdate.setTitle(book.getTitle());
+			return BookConverter.toDto(bookRepository.updateBook(bookToUpdate));
 		}
 		throw new MyExcMessages("Book with given Id does not exist!");
 	}
