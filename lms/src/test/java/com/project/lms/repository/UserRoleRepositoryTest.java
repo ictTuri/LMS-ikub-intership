@@ -1,4 +1,4 @@
-package com.project.lms.repository.impl;
+package com.project.lms.repository;
 
 import java.util.List;
 
@@ -12,15 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.project.lms.entity.RoleEntity;
 import com.project.lms.entity.UserEntity;
 import com.project.lms.entity.UserRoleEntity;
-import com.project.lms.repository.RoleRepository;
-import com.project.lms.repository.UserRepository;
-import com.project.lms.repository.UserRoleRepository;
 import com.project.lms.utils.RoleUtil;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
 @Transactional
-class UserRoleRepositoryImplTest {
+class UserRoleRepositoryTest {
 	
 	@Autowired
 	private UserRoleRepository userRoleRepo;

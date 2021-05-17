@@ -20,7 +20,7 @@ public class UserConverter {
 		userToReturn.setLastName(user.getLastName());
 		userToReturn.setEmail(user.getEmail());
 		userToReturn.setUsername(user.getUsername());
-		userToReturn.setActivated(user.isActivated());
+		userToReturn.setActivated(user.getActivated());
 		return userToReturn;
 	}
 	
@@ -37,7 +37,7 @@ public class UserConverter {
 		userToReturn.setEmail(user.getEmail());
 		userToReturn.setUsername(user.getUsername());
 		userToReturn.setRoles(rolesName);
-		userToReturn.setActivated(user.isActivated());
+		userToReturn.setActivated(user.getActivated());
 		return userToReturn;
 	}
 	

@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +19,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}),@UniqueConstraint(columnNames = {"email"})})
+@Table(name = "users")
 @Document(collection = "users")
 public class UserEntity {
 	@Id
@@ -44,7 +43,7 @@ public class UserEntity {
 	private String password;
 
 	@Column(name="activated")
-	private boolean activated;
+	private Boolean activated;
 
 	@JsonBackReference
 	@OneToMany(mappedBy = "user")

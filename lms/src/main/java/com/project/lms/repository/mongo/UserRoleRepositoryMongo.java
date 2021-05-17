@@ -21,37 +21,31 @@ public class UserRoleRepositoryMongo implements UserRoleRepository{
 	
 	@Override
 	public void saveUserRole(UserRoleEntity userRole) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public List<UserRoleEntity> getAllUserRoles() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public UserRoleEntity getUserRoleById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void deleteUserRole(UserRoleEntity userRoleToDelete) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public UserRoleEntity updateUserRole(UserRoleEntity userRoleToUpdate) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<UserRoleEntity> getThisUserRelations(UserEntity userToHardDelete) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -1,4 +1,4 @@
-package com.project.lms.repository.impl;
+package com.project.lms.repository;
 
 import javax.transaction.Transactional;
 
@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.lms.entity.UserEntity;
-import com.project.lms.repository.UserRepository;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
 @Transactional
-class UserRepositoryImplTest {
+class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -67,10 +66,10 @@ class UserRepositoryImplTest {
 		UserEntity user = UserUtil.userAdmin();
 		userRepository.saveUser(user);
 
-		user.setActivated(false);
+		user.setActivated(Boolean.FALSE);
 		userRepository.updateUser(user);
 		
-		Assertions.assertNull(userRepository.getActivatedUserById(1));
+		Assertions.assertNull(userRepository.getActivatedUserById(2));
 	}
 
 }

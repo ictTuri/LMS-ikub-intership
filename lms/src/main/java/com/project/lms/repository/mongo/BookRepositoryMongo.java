@@ -19,43 +19,36 @@ public class BookRepositoryMongo implements BookRepository{
 	
 	@Override
 	public List<BookEntity> getAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public BookEntity getById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public BookEntity saveBook(BookEntity bookToCreate) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public BookEntity updateBook(BookEntity bookToUpdate) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void deleteBook(BookEntity bookToDelete) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean checkBookByTitle(String title) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public BookEntity getBookByTitle(String title) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

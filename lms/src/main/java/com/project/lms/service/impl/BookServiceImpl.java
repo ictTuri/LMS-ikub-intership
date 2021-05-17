@@ -78,4 +78,8 @@ public class BookServiceImpl implements BookService {
 		throw new MyExcMessages("Can not find the book with given Id!");
 	}
 
+	public BookEntity getBookById(String title) {
+		return bookRepository.getBookByTitle(title);
+	}
+
 }

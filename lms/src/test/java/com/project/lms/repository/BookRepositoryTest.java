@@ -1,4 +1,4 @@
-package com.project.lms.repository.impl;
+package com.project.lms.repository;
 
 import javax.transaction.Transactional;
 
@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.lms.entity.BookEntity;
-import com.project.lms.repository.BookRepository;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest
 @Transactional
-class BookRepositoryImplTest {
+class BookRepositoryTest {
 
 	@Autowired
 	private BookRepository bookRepository;

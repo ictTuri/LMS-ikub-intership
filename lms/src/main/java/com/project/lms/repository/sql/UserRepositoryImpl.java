@@ -13,7 +13,7 @@ import com.project.lms.entity.UserEntity;
 import com.project.lms.repository.UserRepository;
 
 @Repository
-@Profile("sql")
+@Profile({"sql","test"})
 public class UserRepositoryImpl implements UserRepository {
 	
 	private EntityManager em;

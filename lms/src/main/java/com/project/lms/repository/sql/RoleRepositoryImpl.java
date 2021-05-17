@@ -14,7 +14,7 @@ import com.project.lms.entity.UserEntity;
 import com.project.lms.repository.RoleRepository;
 
 @Repository
-@Profile("sql")
+@Profile({"sql","test"})
 public class RoleRepositoryImpl implements RoleRepository {
 
 	private EntityManager em;

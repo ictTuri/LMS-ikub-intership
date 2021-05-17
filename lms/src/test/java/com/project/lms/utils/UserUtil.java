@@ -5,6 +5,7 @@ import com.project.lms.entity.UserEntity;
 public class UserUtil {
 	public static UserEntity userTest() {
 		UserEntity user = new UserEntity();
+		user.setId(null);
 		user.setFirstName("test");
 		user.setLastName("test");
 		user.setEmail("test@gmail.com");
@@ -17,6 +18,7 @@ public class UserUtil {
 	
 	public static UserEntity userAdmin() {
 		UserEntity user = new UserEntity();
+		user.setId(null);
 		user.setFirstName("admin");
 		user.setLastName("admin");
 		user.setEmail("admin@gmail.com");

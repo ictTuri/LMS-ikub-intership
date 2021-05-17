@@ -20,25 +20,21 @@ public class RoleRepositoryMongo implements RoleRepository{
 	
 	@Override
 	public RoleEntity getRoleById(int id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public RoleEntity getRole(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<RoleEntity> getUserRole(UserEntity user) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void saveRole(RoleEntity role) {
-		// TODO Auto-generated method stub
 		
 	}
 

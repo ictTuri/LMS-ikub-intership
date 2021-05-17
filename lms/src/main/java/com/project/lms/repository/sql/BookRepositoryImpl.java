@@ -14,7 +14,7 @@ import com.project.lms.repository.BookRepository;
 
 
 @Repository
-@Profile("sql")
+@Profile({"sql","test"})
 public class BookRepositoryImpl implements BookRepository {
 
 	private EntityManager em;

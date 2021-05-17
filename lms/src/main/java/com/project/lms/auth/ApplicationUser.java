@@ -39,7 +39,7 @@ public class ApplicationUser implements UserDetails{
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
-        this.isEnabled = user.isActivated();
+        this.isEnabled = user.getActivated();
     }
 
     @Override
