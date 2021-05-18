@@ -16,11 +16,11 @@ import com.project.lms.repository.RoleRepository;
 
 @Repository
 @Profile("mongo")
-public class RoleRepositoryMongo implements RoleRepository{
+public class RoleRepositoryMongo implements RoleRepository {
 
 	private MongoTemplate mt;
 	private SequenceService ss;
-	
+
 	public RoleRepositoryMongo(MongoTemplate mt, SequenceService ss) {
 		super();
 		this.mt = mt;
@@ -34,8 +34,7 @@ public class RoleRepositoryMongo implements RoleRepository{
 
 	@Override
 	public RoleEntity getRole(String name) {
-		Query query = new Query()
-				.addCriteria(Criteria.where("name").is(name));
+		Query query = new Query().addCriteria(Criteria.where("name").is(name));
 		return mt.findOne(query, RoleEntity.class);
 	}
 
