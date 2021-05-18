@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.project.lms.entity.RoleEntity;
-import com.project.lms.entity.UserEntity;
-import com.project.lms.entity.UserRoleEntity;
+import com.project.lms.model.RoleEntity;
+import com.project.lms.model.UserEntity;
+import com.project.lms.model.UserRoleEntity;
 import com.project.lms.utils.RoleUtil;
 import com.project.lms.utils.UserUtil;
 

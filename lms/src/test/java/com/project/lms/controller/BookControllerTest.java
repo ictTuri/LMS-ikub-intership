@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import com.project.lms.converter.BookConverter;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 import com.project.lms.service.BookService;
 import com.project.lms.utils.BookUtil;
 

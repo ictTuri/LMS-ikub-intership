@@ -1,4 +1,4 @@
-package com.project.lms.entity;
+package com.project.lms.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,9 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,6 +24,10 @@ import lombok.Data;
 @Table(name = "users")
 @Document(collection = "users")
 public class UserEntity {
+	
+	@Transient
+	public static final String SEQUENCE_NAME = "users_sequence";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="user_id")
@@ -44,8 +49,8 @@ public class UserEntity {
 	private String password;
 
 	@Column(name="activated")
-	private Boolean activated;
-
+	private boolean activated;
+	
 	@DBRef(lazy = true)
 	@JsonBackReference
 	@OneToMany(mappedBy = "user")

@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.project.lms.converter.UserConverter;
 import com.project.lms.dto.UserDto;
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.service.UserService;
 import com.project.lms.utils.UserUtil;
 

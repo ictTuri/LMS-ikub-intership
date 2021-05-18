@@ -1,6 +1,6 @@
 package com.project.lms.utils;
 
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 
 public class BookUtil {
 	public static BookEntity bookOne() {

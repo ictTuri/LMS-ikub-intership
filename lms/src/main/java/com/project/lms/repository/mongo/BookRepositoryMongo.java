@@ -2,23 +2,29 @@ package com.project.lms.repository.mongo;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
+import com.project.lms.mongoconfig.SequenceService;
 import com.project.lms.repository.BookRepository;
 
 @Repository
-@Profile(value = "mongo")
+@Profile("mongo")
 public class BookRepositoryMongo implements BookRepository{
 
-	@Autowired
 	private MongoTemplate mt;
+	private SequenceService ss;
 	
+	public BookRepositoryMongo(MongoTemplate mt, SequenceService ss) {
+		super();
+		this.mt = mt;
+		this.ss = ss;
+	}
+
 	@Override
 	public List<BookEntity> getAll() {
 		return mt.findAll(BookEntity.class);
@@ -31,6 +37,7 @@ public class BookRepositoryMongo implements BookRepository{
 
 	@Override
 	public BookEntity saveBook(BookEntity bookToCreate) {
+		bookToCreate.setId(ss.generateSequence(BookEntity.SEQUENCE_NAME));
 		return mt.insert(bookToCreate);
 	}
 

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.lms.dto.UserRegisterDto;
+import com.project.lms.model.RoleEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.dto.UserCreateUpdateDto;
 import com.project.lms.dto.UserDto;
-import com.project.lms.entity.RoleEntity;
-import com.project.lms.entity.UserEntity;
 
 public class UserConverter {
 	
@@ -20,7 +20,7 @@ public class UserConverter {
 		userToReturn.setLastName(user.getLastName());
 		userToReturn.setEmail(user.getEmail());
 		userToReturn.setUsername(user.getUsername());
-		userToReturn.setActivated(user.getActivated());
+		userToReturn.setActivated(user.isActivated());
 		return userToReturn;
 	}
 	
@@ -37,7 +37,7 @@ public class UserConverter {
 		userToReturn.setEmail(user.getEmail());
 		userToReturn.setUsername(user.getUsername());
 		userToReturn.setRoles(rolesName);
-		userToReturn.setActivated(user.getActivated());
+		userToReturn.setActivated(user.isActivated());
 		return userToReturn;
 	}
 	

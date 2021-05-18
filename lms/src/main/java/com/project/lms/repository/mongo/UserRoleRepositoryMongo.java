@@ -2,28 +2,35 @@ package com.project.lms.repository.mongo;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.project.lms.entity.UserEntity;
-import com.project.lms.entity.UserRoleEntity;
+import com.project.lms.model.UserEntity;
+import com.project.lms.model.UserRoleEntity;
+import com.project.lms.mongoconfig.SequenceService;
 import com.project.lms.repository.UserRoleRepository;
 
 
 @Repository
-@Profile(value = "mongo")
+@Profile("mongo")
 public class UserRoleRepositoryMongo implements UserRoleRepository{
 
-	@Autowired
 	private MongoTemplate mt;
+	private SequenceService ss;
 	
+	public UserRoleRepositoryMongo(MongoTemplate mt, SequenceService ss) {
+		super();
+		this.mt = mt;
+		this.ss = ss;
+	}
+
 	@Override
 	public void saveUserRole(UserRoleEntity userRole) {
 		// Save new User-Role relation
+		userRole.setId(ss.generateSequence(UserRoleEntity.SEQUENCE_NAME));
 		mt.insert(userRole, "user_role");
 	}
 

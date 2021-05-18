@@ -15,7 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.lms.dto.UserDto;
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
 import com.project.lms.service.impl.UserServiceImpl;

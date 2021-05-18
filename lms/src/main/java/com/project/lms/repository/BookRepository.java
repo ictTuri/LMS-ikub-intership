@@ -2,7 +2,7 @@ package com.project.lms.repository;
 
 import java.util.List;
 
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 
 public interface BookRepository{
 

@@ -9,8 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.project.lms.entity.RoleEntity;
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.RoleEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.security.ApplicationUserRole;
 import com.project.lms.security.UserAuthority;
 
@@ -39,7 +39,7 @@ public class ApplicationUser implements UserDetails{
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
-        this.isEnabled = user.getActivated();
+        this.isEnabled = user.isActivated();
     }
 
     @Override

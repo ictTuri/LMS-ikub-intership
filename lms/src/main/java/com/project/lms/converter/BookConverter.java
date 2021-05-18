@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 
 public class BookConverter {
 	

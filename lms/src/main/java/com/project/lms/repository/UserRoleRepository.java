@@ -2,8 +2,8 @@ package com.project.lms.repository;
 
 import java.util.List;
 
-import com.project.lms.entity.UserEntity;
-import com.project.lms.entity.UserRoleEntity;
+import com.project.lms.model.UserEntity;
+import com.project.lms.model.UserRoleEntity;
 
 public interface UserRoleRepository{
 

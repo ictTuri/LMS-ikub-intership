@@ -1,6 +1,6 @@
 package com.project.lms.utils;
 
-import com.project.lms.entity.RoleEntity;
+import com.project.lms.model.RoleEntity;
 
 public class RoleUtil {
 	public static RoleEntity adminRole() {

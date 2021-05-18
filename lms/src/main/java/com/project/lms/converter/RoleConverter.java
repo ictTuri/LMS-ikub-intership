@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.project.lms.dto.RoleCreateUpdateDto;
 import com.project.lms.dto.RoleDto;
-import com.project.lms.entity.RoleEntity;
+import com.project.lms.model.RoleEntity;
 
 public class RoleConverter {
 

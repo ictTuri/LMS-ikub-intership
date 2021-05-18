@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.project.lms.entity.RoleEntity;
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.RoleEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
 

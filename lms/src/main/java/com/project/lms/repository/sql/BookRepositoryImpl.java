@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 import com.project.lms.repository.BookRepository;
 
 

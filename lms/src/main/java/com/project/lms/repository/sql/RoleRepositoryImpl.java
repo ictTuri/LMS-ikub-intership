@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import com.project.lms.entity.RoleEntity;
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.RoleEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RoleRepository;
 
 @Repository
@@ -25,7 +25,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 	}
 
 	@Override
-	public RoleEntity getRoleById(int id) {
+	public RoleEntity getRoleById(Long id) {
 		try {
 			return em.find(RoleEntity.class, id);
 		} catch (IllegalArgumentException  e) {

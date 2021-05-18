@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.project.lms.converter.BookConverter;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 import com.project.lms.repository.BookRepository;
 import com.project.lms.service.impl.BookServiceImpl;
 import com.project.lms.utils.BookUtil;

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.project.lms.entity.BookEntity;
+import com.project.lms.model.BookEntity;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest

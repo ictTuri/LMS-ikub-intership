@@ -1,6 +1,6 @@
 package com.project.lms.utils;
 
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.UserEntity;
 
 public class UserUtil {
 	public static UserEntity userTest() {

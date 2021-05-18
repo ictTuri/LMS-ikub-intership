@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.lms.dto.UserRoleDto;
-import com.project.lms.entity.UserRoleEntity;
+import com.project.lms.model.UserRoleEntity;
 
 public class UserRoleConverter {
 

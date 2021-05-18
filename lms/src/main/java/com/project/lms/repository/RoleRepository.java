@@ -2,12 +2,12 @@ package com.project.lms.repository;
 
 import java.util.List;
 
-import com.project.lms.entity.RoleEntity;
-import com.project.lms.entity.UserEntity;
+import com.project.lms.model.RoleEntity;
+import com.project.lms.model.UserEntity;
 
 public interface RoleRepository{
 
-	RoleEntity getRoleById(int id);
+	RoleEntity getRoleById(Long id);
 
 	RoleEntity getRole(String name);
 
