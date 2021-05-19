@@ -84,6 +84,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- MONGODB EMBEDDED dependency -->
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- MONGODB dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -92,12 +98,8 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-mongodb</artifactId>
-<!-- 			<exclusions>
-				<exclusion>
-					<groupId>org.mongodb</groupId>
-					<artifactId>mongo-java-driver</artifactId>
-				</exclusion>
-			</exclusions> -->
+			<!-- <exclusions> <exclusion> <groupId>org.mongodb</groupId> <artifactId>mongo-java-driver</artifactId> 
+				</exclusion> </exclusions> -->
 		</dependency>
 		<!-- JPA dependency -->
 		<dependency>

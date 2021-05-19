@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import com.project.lms.converter.BookConverter;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
-import com.project.lms.exception.MyExcMessages;
+import com.project.lms.exception.ObjectFilteredNotFound;
+import com.project.lms.exception.ObjectIdNotFound;
 import com.project.lms.model.BookEntity;
 import com.project.lms.repository.BookRepository;
 import com.project.lms.service.BookService;
@@ -39,7 +40,7 @@ public class BookServiceImpl implements BookService {
 		if(book != null) {
 			return BookConverter.toDto(book);
 		}
-		throw new MyExcMessages("Book with given Id does not exist!");
+		throw new ObjectIdNotFound("Book with given Id does not exist!");
 	}
 
 	// CREATE NEW BOOK ON DB
@@ -50,7 +51,7 @@ public class BookServiceImpl implements BookService {
 			BookEntity bookToCreate = BookConverter.toEntity(book);
 			return BookConverter.toDto(bookRepository.saveBook(bookToCreate));
 		}
-		throw new MyExcMessages("Book with title : "+book.getTitle()+" - already exist");
+		throw new ObjectFilteredNotFound("Book with title : "+book.getTitle()+" - already exist");
 	}
 
 	// VALIDATED DATA AND UPDATES BOOK TITLE
@@ -59,12 +60,12 @@ public class BookServiceImpl implements BookService {
 		BookEntity bookToUpdate = bookRepository.getById(id);
 		if(bookToUpdate != null) {
 			if(!(book.getTitle().equals(bookToUpdate.getTitle())) && bookRepository.checkBookByTitle(book.getTitle())) {
-				throw new MyExcMessages("Book with title: "+book.getTitle()+" -already exist");
+				throw new ObjectFilteredNotFound("Book with title: "+book.getTitle()+" -already exist");
 			}
 			bookToUpdate.setTitle(book.getTitle());
 			return BookConverter.toDto(bookRepository.updateBook(bookToUpdate));
 		}
-		throw new MyExcMessages("Book with given Id does not exist!");
+		throw new ObjectIdNotFound("Book with given Id does not exist!");
 	}
 
 	// DELETE BOOK IF FOUND BY ID
@@ -74,7 +75,7 @@ public class BookServiceImpl implements BookService {
 		if(bookToDelete != null) {
 			bookRepository.deleteBook(bookToDelete);
 		}
-		throw new MyExcMessages("Can not find the book with given Id!");
+		throw new ObjectIdNotFound("Can not find the book with given Id!");
 	}
 
 	public BookEntity getBookById(String title) {

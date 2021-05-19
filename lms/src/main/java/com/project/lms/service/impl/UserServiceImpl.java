@@ -14,7 +14,8 @@ import com.project.lms.dto.UserCreateUpdateDto;
 import com.project.lms.dto.UserRegisterDto;
 import com.project.lms.dto.UserDto;
 import com.project.lms.enums.Roles;
-import com.project.lms.exception.MyExcMessages;
+import com.project.lms.exception.CustomExceptionMessage;
+import com.project.lms.exception.ObjectIdNotFound;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
@@ -61,9 +62,9 @@ public class UserServiceImpl implements UserService {
 						userRoleRepository.saveUserRole(userRole);
 						return new CustomResponseDto("You have been register, please wait for the activation");
 					}
-					throw new MyExcMessages("Email: "+user.getEmail()+" already exist");
+					throw new CustomExceptionMessage("Email: "+user.getEmail()+" already exist");
 				}
-			throw new MyExcMessages("Username: "+user.getUsername()+" already exist");
+			throw new CustomExceptionMessage("Username: "+user.getUsername()+" already exist");
 	}
 
 	// GET ALL USERS BUT NOT THE ROLES
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
 			List<RoleEntity> roles = roleRepository.getUserRole(userToReturn);
 			return UserConverter.toDtoWithRoles(userToReturn, roles);
 		}
-		throw new MyExcMessages("User with id: " + id + " can not be found");
+		throw new ObjectIdNotFound("User with id: " + id + " can not be found");
 	}
 
 	// CREATE NEW USER WITH ANY ROLE METHOD
@@ -107,9 +108,9 @@ public class UserServiceImpl implements UserService {
 				List<RoleEntity> rolesToReturn = roleRepository.getUserRole(userToReturn);
 				return UserConverter.toDtoWithRoles(userToReturn, rolesToReturn);
 			}
-			throw new MyExcMessages("Given Role is not valid,try Admin or Student or Secretary");
+			throw new CustomExceptionMessage("Given Role is not valid,try Admin or Student or Secretary");
 		}
-		throw new MyExcMessages("Username or email already exist!");
+		throw new CustomExceptionMessage("Username or email already exist!");
 	}
 
 	// UPDATE USER DATA
@@ -119,16 +120,16 @@ public class UserServiceImpl implements UserService {
 		if (userToUpdate != null) {
 			if (!(userToUpdate.getEmail().equalsIgnoreCase(user.getEmail()))
 					&& userRepository.existEmail(user.getEmail())) {
-				throw new MyExcMessages("Email: " + user.getEmail() + " is taken!");
+				throw new CustomExceptionMessage("Email: " + user.getEmail() + " is taken!");
 			}
 			if (!(userToUpdate.getUsername().equals(user.getUsername()))
 					&& userRepository.existUsername(user.getUsername())) {
-				throw new MyExcMessages("Username: " + user.getUsername() + " is taken!");
+				throw new CustomExceptionMessage("Username: " + user.getUsername() + " is taken!");
 			}
 			String roleName = user.getRole().toUpperCase();
 			return updateValidationsExtracted(user, userToUpdate, roleName);
 		}
-		throw new MyExcMessages("Can not find user with given Id: " + id);
+		throw new ObjectIdNotFound("Can not find user with given Id: " + id);
 	}
 
 	// VALIDATION EXTRACTED FOR USER UPDATE
@@ -164,7 +165,7 @@ public class UserServiceImpl implements UserService {
 				return UserConverter.toDtoWithRoles(userToUpdate, roles);
 			}
 		}
-		throw new MyExcMessages("Given Role is not valid,try Admin or Student or Secretary");
+		throw new CustomExceptionMessage("Given Role is not valid,try Admin or Student or Secretary");
 	}
 
 	// Helping method to go through roles
@@ -185,7 +186,7 @@ public class UserServiceImpl implements UserService {
 			userToSoftDelete.setActivated(Boolean.FALSE);
 			userRepository.updateUser(userToSoftDelete);
 		}else {
-			throw new MyExcMessages("Can not find user with given id: " + id);
+			throw new ObjectIdNotFound("Can not find user with given id: " + id);
 		}
 	}
 
@@ -199,7 +200,7 @@ public class UserServiceImpl implements UserService {
 			}
 				userRepository.deleteUser(userToHardDelete);
 		}else {
-			throw new MyExcMessages("Can not find user with id: "+id);
+			throw new ObjectIdNotFound("Can not find user with id: "+id);
 		}	
 	}
 	

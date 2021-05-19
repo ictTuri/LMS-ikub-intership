@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import com.project.lms.exception.ErrorFormat;
-import com.project.lms.exception.MyExcMessages;
+import com.project.lms.exception.CustomExceptionMessage;
 
 @Component
 @RestControllerAdvice
@@ -32,7 +32,7 @@ public class MyExceptionHandler {
 		return errors;
 	}
 
-	@ExceptionHandler(value = { MyExcMessages.class })
+	@ExceptionHandler(value = { CustomExceptionMessage.class })
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
 		ErrorFormat errorBody = new ErrorFormat();
 		errorBody.setMessage(ex.getMessage());

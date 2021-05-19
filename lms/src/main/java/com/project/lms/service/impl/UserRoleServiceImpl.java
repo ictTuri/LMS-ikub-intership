@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.project.lms.converter.UserRoleConverter;
 import com.project.lms.dto.UserRoleCreateUpdateDto;
 import com.project.lms.dto.UserRoleDto;
-import com.project.lms.exception.MyExcMessages;
+import com.project.lms.exception.CustomExceptionMessage;
+import com.project.lms.exception.ObjectFilteredNotFound;
+import com.project.lms.exception.ObjectIdNotFound;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
@@ -44,7 +46,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 		if (userRoleToReturn != null) {
 			return UserRoleConverter.toDto(userRoleToReturn);
 		}
-		throw new MyExcMessages("User Role Relation with id: " + id + " can not be found");
+		throw new ObjectIdNotFound("User Role Relation with id: " + id + " can not be found");
 	}
 
 	@Override
@@ -68,11 +70,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 					userRoleRepository.saveUserRole(userRoleToAdd);
 					return UserRoleConverter.toDto(userRoleToAdd);
 				}
-				throw new MyExcMessages("Relation between User and Role already exist!");
+				throw new CustomExceptionMessage("Relation between User and Role already exist!");
 			}
-			throw new MyExcMessages("Given Role is not valid,try Admin or Student or Secretary");
+			throw new CustomExceptionMessage("Given Role is not valid,try Admin or Student or Secretary");
 		}
-		throw new MyExcMessages("There is no user with username: " + userRole.getUsername());
+		throw new ObjectFilteredNotFound("There is no user with username: " + userRole.getUsername());
 	}
 
 	@Override
@@ -91,13 +93,13 @@ public class UserRoleServiceImpl implements UserRoleService {
 						userRoleToUpdate.setUser(userToUpdate);
 						return UserRoleConverter.toDto(userRoleRepository.updateUserRole(userRoleToUpdate));
 					}
-					throw new MyExcMessages("This Relation already exist!");
+					throw new CustomExceptionMessage("This Relation already exist!");
 				}
-				throw new MyExcMessages("Role with name: " + id + " not found !");
+				throw new ObjectIdNotFound("Role with name: " + id + " not found !");
 			}
-			throw new MyExcMessages("User Role Relation with id: " + id + " not found!");
+			throw new ObjectIdNotFound("User Role Relation with id: " + id + " not found!");
 		}
-		throw new MyExcMessages("User Role Relation with id: " + id + " not found !");
+		throw new ObjectIdNotFound("User Role Relation with id: " + id + " not found !");
 	}
 
 	public boolean isUserRoleConnected(List<RoleEntity> roles, UserRoleCreateUpdateDto user) {
@@ -117,10 +119,10 @@ public class UserRoleServiceImpl implements UserRoleService {
 			if (roleListSize > 1) {
 				userRoleRepository.deleteUserRole(userRoleToDelete);
 			}else {
-				throw new MyExcMessages("This user has only this role!");
+				throw new CustomExceptionMessage("This user has only this role!");
 			}
 		}else {
-			throw new MyExcMessages("User Role Relation with id: " + id + " was not found!");
+			throw new ObjectIdNotFound("User Role Relation with id: " + id + " was not found!");
 		}
 	}
 
