@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Document(collection = "user_role")
 public class UserRoleEntity {
-	
+
 	@Transient
 	public static final String SEQUENCE_NAME = "user_role_sequence";
 	

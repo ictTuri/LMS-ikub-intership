@@ -15,4 +15,6 @@ public interface RoleRepository{
 
 	void saveRole(RoleEntity role);
 
+	List<RoleEntity> getAllRoles();
+
 }

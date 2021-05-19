@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
+import com.project.lms.model.UserRoleEntity;
 import com.project.lms.mongoconfig.SequenceService;
 import com.project.lms.repository.RoleRepository;
 
@@ -39,10 +40,14 @@ public class RoleRepositoryMongo implements RoleRepository {
 	}
 
 	@Override
-	public List<RoleEntity> getUserRole(UserEntity user) {
-		List<RoleEntity> list = new ArrayList<>();
-		list.add(new RoleEntity("ADMIN"));
-		return list;
+	public List<RoleEntity> getUserRole(UserEntity user){
+		Query query = new Query().addCriteria(Criteria.where("user").is(user));
+		List<UserRoleEntity> list  = mt.find(query, UserRoleEntity.class);
+		List<RoleEntity> listRoles = new ArrayList<>();
+		for(UserRoleEntity ure : list) {
+			listRoles.add(ure.getRole());
+		}
+		return listRoles;
 	}
 
 	@Override
@@ -50,6 +55,11 @@ public class RoleRepositoryMongo implements RoleRepository {
 		// Save a new role
 		role.setId(ss.generateSequence(RoleEntity.SEQUENCE_NAME));
 		mt.insert(role, "roles");
+	}
+
+	@Override
+	public List<RoleEntity> getAllRoles() {
+		return mt.findAll(RoleEntity.class,	 "roles");
 	}
 
 }

@@ -14,7 +14,7 @@ import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RoleRepository;
 
 @Repository
-@Profile({"sql","test"})
+@Profile({ "sql", "test" })
 public class RoleRepositoryImpl implements RoleRepository {
 
 	private EntityManager em;
@@ -28,7 +28,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 	public RoleEntity getRoleById(Long id) {
 		try {
 			return em.find(RoleEntity.class, id);
-		} catch (IllegalArgumentException  e) {
+		} catch (IllegalArgumentException e) {
 			return null;
 		}
 	}
@@ -36,11 +36,10 @@ public class RoleRepositoryImpl implements RoleRepository {
 	@Override
 	public RoleEntity getRole(String name) {
 		final String ROLE_BY_NAME = "FROM RoleEntity re  WHERE re.name = :name";
-		TypedQuery<RoleEntity> query = em.createQuery(ROLE_BY_NAME, RoleEntity.class)
-				.setParameter("name", name);
+		TypedQuery<RoleEntity> query = em.createQuery(ROLE_BY_NAME, RoleEntity.class).setParameter("name", name);
 		try {
 			return query.getSingleResult();
-		}catch(NoResultException e) {
+		} catch (NoResultException e) {
 			return null;
 		}
 	}
@@ -55,5 +54,10 @@ public class RoleRepositoryImpl implements RoleRepository {
 	public void saveRole(RoleEntity role) {
 		em.persist(role);
 	}
-	
+
+	@Override
+	public List<RoleEntity> getAllRoles() {
+		final String GET_ALL_ROLES = "FROM RoleEntity";
+		return em.createQuery(GET_ALL_ROLES, RoleEntity.class).getResultList();
+	}
 }
