@@ -2,7 +2,7 @@
 
 This is a Rest Api Spring Boot Library Management System that manages books and users!
 
-**Authors**: Artur Molla <br />
+**Author**: Artur Molla <br />
 **Version**: 1.0.0
 
 ---
@@ -53,9 +53,25 @@ _User_ Student
 * Can view books by id and all
 
 ---
+#### Technical details on testing
+_Testing_ runs on 2 profiles:
+* "mongo":
+* It test the mongo repository operations
+* It initializes an embedded mongo database 
+* It is not transactional so the tests are made having that in mind
+* If test does not run in your end / check their order as the data get saved from one to another
+
+* "test":
+* It test the sql repository operations
+* It initializes an embedded H2 database
+* It is transactional so the tests are made having that in mind
+
+* Controller and Service tests runs on both profiles !
+---
+
 ## Architecture
 This application is created using Spring Boot 2.4  <br />
-*Languages*: JAVA, SQL<br />
-*Tools*: STS Spring Tool SUite, Sonarlint, Postgresql and H2 for testing, Jpa Hibernate, Lombok<br />
+* Languages*: JAVA, SQL<br />
+* Tools*: STS Spring Tool SUite, Sonarlint, Postgresql and H2 for testing, Jpa Hibernate, Lombok<br />
 JUnit, Logger, Spring Security Jwt<br />
-*Type of Application*: Rest Api <br />
+* Type of Application*: Rest Api <br />
