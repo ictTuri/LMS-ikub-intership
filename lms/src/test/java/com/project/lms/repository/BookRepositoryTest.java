@@ -47,14 +47,14 @@ class BookRepositoryTest {
 	
 	@Test
 	void givenBook_whenSave_thenGetCreatedBook() {
-		Integer BookSize = bookRepository.getAll().size();
+		Integer bookSize = bookRepository.getAll().size();
 		BookEntity bookFour = BookUtil.bookFour();
 		BookEntity bookFive = BookUtil.bookFive();
 
 		bookRepository.saveBook(bookFour);
 		bookRepository.saveBook(bookFive);
 		
-		Assertions.assertEquals(BookSize+2, bookRepository.getAll().size());
+		Assertions.assertEquals(bookSize+2, bookRepository.getAll().size());
 		Assertions.assertNotNull(bookRepository.getBookByTitle("Red Vision"));
 	}
 	

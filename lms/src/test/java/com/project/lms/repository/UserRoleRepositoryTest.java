@@ -68,19 +68,4 @@ class UserRoleRepositoryTest {
 		Assertions.assertEquals(roleStudent, userRoleRetrieved.get(0).getRole());
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
