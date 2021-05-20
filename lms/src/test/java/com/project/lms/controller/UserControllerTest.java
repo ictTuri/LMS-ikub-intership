@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.project.lms.converter.UserConverter;
+import com.project.lms.dto.UserCreateUpdateDto;
 import com.project.lms.dto.UserDto;
 import com.project.lms.model.UserEntity;
 import com.project.lms.service.UserService;
@@ -54,6 +55,28 @@ class UserControllerTest {
 		assertNotNull(allUsers);
 		assertEquals(!users.isEmpty(),allUsers.hasBody());
 		verify(userService).getAllUsers();
+	}
+	
+	@Test
+	void givenUser_WhenSave_getUserDto() {
+		UserEntity userOne = UserUtil.userAdmin();
+		UserCreateUpdateDto userToSave = new UserCreateUpdateDto();
+		userToSave.setFirstName(userOne.getFirstName());
+		userToSave.setLastName(userOne.getLastName());
+		userToSave.setEmail(userOne.getEmail());
+		userToSave.setUsername(userOne.getUsername());
+		userToSave.setActivated(userOne.isActivated());
+		userToSave.setRole("Admin");
+		userToSave.setPassword(userOne.getPassword());
+		UserDto userToReturn= UserConverter.toDto(userOne); 
+		
+		Mockito.when(userService.createUser(userToSave)).thenReturn(userToReturn);
+		ResponseEntity<UserDto> newUser = userController.createUser(userToSave);
+		
+		assertEquals(HttpStatus.CREATED, newUser.getStatusCode());
+		assertEquals(newUser.getBody().getUsername(),userToSave.getUsername());
+		assertNotNull(newUser);
+		verify(userService).createUser(userToSave);
 	}
 	
 	
