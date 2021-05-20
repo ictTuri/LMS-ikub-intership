@@ -57,7 +57,7 @@ public class UserRoleController {
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ResponseEntity<UserRoleDto> createUserRole(@PathVariable("id") long id ,@Valid @RequestBody UserRoleCreateUpdateDto userRole){
+	public ResponseEntity<UserRoleDto> updateUserRole(@PathVariable("id") long id ,@Valid @RequestBody UserRoleCreateUpdateDto userRole){
 		logger.info("Updating user role relation with id: {} and body: {}",id, userRole);
 		return new ResponseEntity<>(userRoleService.updateUserRole(id,userRole),HttpStatus.OK);
 	}
