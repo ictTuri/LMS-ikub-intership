@@ -14,11 +14,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import com.project.lms.exception.ErrorFormat;
+import com.project.lms.exception.InvalidPasswordException;
+import com.project.lms.exception.ObjectFilteredNotFound;
+import com.project.lms.exception.ObjectIdNotFound;
+import com.project.lms.exception.UserNotFoundException;
 import com.project.lms.exception.CustomExceptionMessage;
 
 @Component
 @RestControllerAdvice
 public class MyExceptionHandler {
+	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -32,7 +37,11 @@ public class MyExceptionHandler {
 		return errors;
 	}
 
-	@ExceptionHandler(value = { CustomExceptionMessage.class })
+	@ExceptionHandler(value = { CustomExceptionMessage.class, 
+			ObjectFilteredNotFound.class, 
+			ObjectIdNotFound.class, 
+			InvalidPasswordException.class,
+			UserNotFoundException.class})
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
 		ErrorFormat errorBody = new ErrorFormat();
 		errorBody.setMessage(ex.getMessage());
