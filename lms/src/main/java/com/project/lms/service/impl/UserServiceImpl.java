@@ -118,12 +118,10 @@ public class UserServiceImpl implements UserService {
 	public UserDto updateUser(Long id, @Valid UserCreateUpdateDto user) {
 		UserEntity userToUpdate = userRepository.getUserById(id);
 		if (userToUpdate != null) {
-			if (!(userToUpdate.getEmail().equalsIgnoreCase(user.getEmail()))
-					&& userRepository.existEmail(user.getEmail())) {
+			if (existEmail(user, userToUpdate)) {
 				throw new CustomExceptionMessage("Email: " + user.getEmail() + " is taken!");
 			}
-			if (!(userToUpdate.getUsername().equals(user.getUsername()))
-					&& userRepository.existUsername(user.getUsername())) {
+			if (existUsername(user, userToUpdate)) {
 				throw new CustomExceptionMessage("Username: " + user.getUsername() + " is taken!");
 			}
 			String roleName = user.getRole().toUpperCase();
@@ -132,37 +130,35 @@ public class UserServiceImpl implements UserService {
 		throw new ObjectIdNotFound("Can not find user with given Id: " + id);
 	}
 
+	private boolean existUsername(UserCreateUpdateDto user, UserEntity userToUpdate) {
+		return !(userToUpdate.getUsername().equals(user.getUsername()))
+				&& userRepository.existUsername(user.getUsername());
+	}
+
+	private boolean existEmail(UserCreateUpdateDto user, UserEntity userToUpdate) {
+		return !(userToUpdate.getEmail().equalsIgnoreCase(user.getEmail()))
+				&& userRepository.existEmail(user.getEmail());
+	}
+
 	// VALIDATION EXTRACTED FOR USER UPDATE
 	private UserDto updateValidationsExtracted(UserCreateUpdateDto user, UserEntity userToUpdate, String roleName) {
 		RoleEntity roleToInsert = roleRepository.getRole(roleName);
-
 		if (roleToInsert != null) {
 			List<RoleEntity> roles = roleRepository.getUserRole(userToUpdate);
+			UserEntity userConverted = UserConverter.updateConvert(userToUpdate, user);
+			userConverted.setPassword(passwordEncoder.encode(user.getPassword()));
 			boolean foundRole = isUserRoleConnected(roles, user);
 			if (foundRole) {
-				userToUpdate.setFirstName(user.getFirstName());
-				userToUpdate.setLastName(user.getLastName());
-				userToUpdate.setEmail(user.getEmail());
-				userToUpdate.setUsername(user.getUsername());
-				userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-				userToUpdate.setActivated(user.isActivated());
-				userRepository.updateUser(userToUpdate);
+				userRepository.updateUser(userConverted);
 				return UserConverter.toDtoWithRoles(userToUpdate, roles);
 			} else {
-				userToUpdate.setFirstName(user.getFirstName());
-				userToUpdate.setLastName(user.getLastName());
-				userToUpdate.setEmail(user.getEmail());
-				userToUpdate.setUsername(user.getUsername());
-				userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-				userToUpdate.setActivated(user.isActivated());
 				UserRoleEntity userRoleRelation = new UserRoleEntity();
 				userRoleRelation.setRole(roleToInsert);
-				userRoleRelation.setUser(userToUpdate);
-				userRepository.updateUser(userToUpdate);
+				userRoleRelation.setUser(userConverted);
+				userRepository.updateUser(userConverted);
 				userRoleRepository.saveUserRole(userRoleRelation);
-				userRepository.saveUser(userToUpdate);
 				roles.add(roleToInsert);
-				return UserConverter.toDtoWithRoles(userToUpdate, roles);
+				return UserConverter.toDtoWithRoles(userConverted, roles);
 			}
 		}
 		throw new CustomExceptionMessage("Given Role is not valid,try Admin or Student or Secretary");

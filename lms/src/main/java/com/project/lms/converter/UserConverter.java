@@ -72,4 +72,14 @@ public class UserConverter {
 		return usersToReturn;
 	}
 	
+	public static UserEntity updateConvert(UserEntity userToUpdate, UserCreateUpdateDto userDto) {
+		userToUpdate.setFirstName(userDto.getFirstName());
+		userToUpdate.setLastName(userDto.getLastName());
+		userToUpdate.setEmail(userDto.getEmail());
+		userToUpdate.setUsername(userDto.getUsername());
+		userToUpdate.setActivated(userDto.isActivated());
+		return userToUpdate;
+	}
+	
+	
 }
