@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import com.project.lms.exception.ErrorFormat;
-import com.project.lms.exception.InvalidPasswordException;
+import com.project.lms.exception.InvalidCredentialsException;
 import com.project.lms.exception.ObjectFilteredNotFound;
 import com.project.lms.exception.ObjectIdNotFound;
 import com.project.lms.exception.UserNotFoundException;
@@ -40,8 +41,9 @@ public class MyExceptionHandler {
 	@ExceptionHandler(value = { CustomExceptionMessage.class, 
 			ObjectFilteredNotFound.class, 
 			ObjectIdNotFound.class, 
-			InvalidPasswordException.class,
-			UserNotFoundException.class})
+			InvalidCredentialsException.class,
+			UserNotFoundException.class,
+			BadCredentialsException.class})
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
 		ErrorFormat errorBody = new ErrorFormat();
 		errorBody.setMessage(ex.getMessage());
