@@ -109,4 +109,10 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Can not find rezervation with id: " + id);
 	}
 
+//	@Override
+//	public UserEntity getUser() {
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		return  userRepository.getUserByUsername(username);	
+//	}
+
 }
