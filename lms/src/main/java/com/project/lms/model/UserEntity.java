@@ -56,6 +56,11 @@ public class UserEntity {
 	@OneToMany(mappedBy = "user")
 	private Set<UserRoleEntity> userRoles = new HashSet<>();
 	
+	@DBRef(lazy = true)
+	@JsonBackReference
+	@OneToMany(mappedBy = "student")
+	private Set<RezervationEntity> rezervations = new HashSet<>();
+	
 	@Override
 	public String toString() {
 		return "UserEntity [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
