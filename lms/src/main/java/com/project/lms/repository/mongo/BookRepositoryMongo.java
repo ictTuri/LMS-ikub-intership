@@ -66,4 +66,12 @@ public class BookRepositoryMongo implements BookRepository{
 		return mt.findOne(query, BookEntity.class);
 	}
 
+	@Override
+	public boolean isTaken(String bookTitle) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("title").is(bookTitle))
+				.addCriteria(Criteria.where("taken").is(false));
+			return mt.findOne(query, BookEntity.class) != null;
+	}
+
 }

@@ -20,4 +20,6 @@ public interface BookRepository{
 
 	BookEntity getBookByTitle(String title);
 
+	boolean isTaken(String bookTitle);
+
 }

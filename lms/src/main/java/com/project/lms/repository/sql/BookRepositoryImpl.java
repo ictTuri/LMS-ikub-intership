@@ -79,4 +79,16 @@ public class BookRepositoryImpl implements BookRepository {
 		}
 	}
 
+	@Override
+	public boolean isTaken(String bookTitle) {
+		final String BOOK_NOT_TAKEN = "FROM BookEntity be WHERE be.title = :title and taken = false";
+		TypedQuery<BookEntity> query = em.createQuery(BOOK_NOT_TAKEN, BookEntity.class)
+				.setParameter("title", bookTitle);
+		try {
+			return query.getResultList().get(0) != null;
+		} catch (IndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+
 }

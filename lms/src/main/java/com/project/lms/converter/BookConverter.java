@@ -22,6 +22,7 @@ public class BookConverter {
 		BookEntity bookToReturn = new BookEntity();
 		bookToReturn.setId(null);
 		bookToReturn.setTitle(book.getTitle());
+		bookToReturn.setTaken(false);
 		return bookToReturn;
 	}
 	

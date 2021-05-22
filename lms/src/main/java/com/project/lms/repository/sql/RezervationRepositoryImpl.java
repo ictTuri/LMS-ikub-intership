@@ -4,9 +4,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
+
 import com.project.lms.model.RezervationEntity;
 import com.project.lms.repository.RezervationRepository;
 
+@Repository
+@Profile({"sql","test"})
 public class RezervationRepositoryImpl implements RezervationRepository {
 
 	private EntityManager em;
@@ -29,6 +34,17 @@ public class RezervationRepositoryImpl implements RezervationRepository {
 		} catch (IllegalArgumentException  e) {
 			return null;
 		}
+	}
+
+	@Override
+	public RezervationEntity saveRezervation(RezervationEntity entityCreate) {
+		em.persist(entityCreate);
+		return entityCreate;
+	}
+
+	@Override
+	public RezervationEntity updateRezervation(RezervationEntity entityCreate) {
+		return em.merge(entityCreate);
 	}
 	
 	

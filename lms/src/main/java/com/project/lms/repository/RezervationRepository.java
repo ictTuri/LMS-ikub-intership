@@ -10,4 +10,8 @@ public interface RezervationRepository {
 
 	RezervationEntity findById(long id);
 
+	RezervationEntity saveRezervation(RezervationEntity entityCreate);
+
+	RezervationEntity updateRezervation(RezervationEntity entityCreate);
+
 }
