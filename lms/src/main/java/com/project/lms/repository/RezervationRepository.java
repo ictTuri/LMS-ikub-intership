@@ -14,4 +14,6 @@ public interface RezervationRepository {
 
 	RezervationEntity updateRezervation(RezervationEntity entityCreate);
 
+	void deleteRezervation(RezervationEntity rezervationToDelete);
+
 }

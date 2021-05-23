@@ -46,6 +46,11 @@ public class RezervationRepositoryImpl implements RezervationRepository {
 	public RezervationEntity updateRezervation(RezervationEntity entityCreate) {
 		return em.merge(entityCreate);
 	}
+
+	@Override
+	public void deleteRezervation(RezervationEntity rezervationToDelete) {
+		em.remove(rezervationToDelete);
+	}
 	
 	
 

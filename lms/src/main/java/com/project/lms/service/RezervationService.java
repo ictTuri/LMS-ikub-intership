@@ -17,4 +17,6 @@ public interface RezervationService {
 
 	RezervationDto updateRezervation(long id, @Valid RezervationCreateUpdateDto rezervation);
 
+	void deleteRezervation(long id);
+
 }

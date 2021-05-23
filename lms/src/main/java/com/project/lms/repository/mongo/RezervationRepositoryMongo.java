@@ -44,4 +44,10 @@ public class RezervationRepositoryMongo implements RezervationRepository {
 		return mt.save(entityCreate, "rezervations");
 	}
 
+	@Override
+	public void deleteRezervation(RezervationEntity rezervationToDelete) {
+		//Deletes rezervations from DB
+		mt.remove(rezervationToDelete, "rezervations");
+	}
+
 }

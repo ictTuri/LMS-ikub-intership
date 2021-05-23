@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,6 +61,14 @@ public class RezervationController {
 	public ResponseEntity<RezervationDto> updateRezervation(@PathVariable("id") long id,@Valid @RequestBody RezervationCreateUpdateDto rezervation){
 		logger.info("Creating new rezervation: {} - {}",rezervation.getBookTitle(), rezervation.getUsername());
 		return new ResponseEntity<>(rezervationService.updateRezervation(id,rezervation), HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY','ROLE_ADMIN')")
+	public ResponseEntity<Void> deleteRezervation(@PathVariable("id") long id){
+		logger.info("Deleting rezervation with id: {}",id);
+		rezervationService.deleteRezervation(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 }

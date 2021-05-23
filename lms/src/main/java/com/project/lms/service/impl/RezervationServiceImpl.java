@@ -109,6 +109,22 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Can not find rezervation with id: " + id);
 	}
 
+	@Override
+	public void deleteRezervation(long id) {
+		RezervationEntity rezervationToDelete = rezervationRepository.findById(id);
+		if(rezervationToDelete != null) {
+			if(rezervationToDelete.getReturnDate()!=null) {
+				BookEntity book = bookRepository.getBookByTitle(rezervationToDelete.getBook().getTitle());
+				book.setTaken(false);
+				bookRepository.updateBook(book);
+				rezervationRepository.deleteRezervation(rezervationToDelete);
+			}
+			throw new CustomExceptionMessage("This Rezervation is not closed yet. Book is not returned!");
+		}
+		throw new ObjectIdNotFound("Can not find Rezervation with id: "+id);
+	}
+
+	
 //	@Override
 //	public UserEntity getUser() {
 //		String username = SecurityContextHolder.getContext().getAuthentication().getName();
