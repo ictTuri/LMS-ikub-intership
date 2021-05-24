@@ -59,7 +59,8 @@ public class BookServiceImpl implements BookService {
 		boolean existBookTitle = bookRepository.checkBookByTitle(book.getTitle());
 		if(!existBookTitle) {
 			BookEntity bookToCreate = BookConverter.toEntity(book);
-			return BookConverter.toDto(bookRepository.saveBook(bookToCreate));
+			BookEntity bookToReturn = bookRepository.saveBook(bookToCreate);
+			return BookConverter.toDto(bookToReturn);
 		}
 		throw new ObjectFilteredNotFound("Book with title : "+book.getTitle()+" - already exist");
 	}

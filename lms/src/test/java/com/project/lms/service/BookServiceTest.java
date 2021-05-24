@@ -14,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.project.lms.converter.BookConverter;
-import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
 import com.project.lms.model.BookEntity;
 import com.project.lms.repository.BookRepository;
@@ -51,19 +49,6 @@ class BookServiceTest {
 		assertEquals(2, size);
 		verify(bookRepository).getAll();
 
-	}
-
-	@Test
-	void givenBookCreateDto_WhenSave_thenGetSaved() {
-		BookCreateUpdateDto bookCreateDto = new BookCreateUpdateDto();
-		bookCreateDto.setTitle(bookOne.getTitle());
-
-		Mockito.when(bookRepository.saveBook(bookOne)).thenReturn(bookOne);
-		bookDto = BookConverter.toDto(bookOne);
-		BookDto createBook = bookService.createBook(bookCreateDto);
-		assertEquals(createBook, bookDto);
-
-		verify(bookRepository).saveBook(bookOne);
 	}
 
 	@Test

@@ -1,6 +1,5 @@
 package com.project.lms.repository;
 
-
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -121,6 +120,6 @@ class RezervationRepositoryTest {
 
 		rezervationsRepository.deleteRezervation(rezervationOne);
 		
-		Assertions.assertNull(rezervationsRepository.findById(1));
+		Assertions.assertEquals(0, rezervationsRepository.myRezervations(student).size());
 	}
 }
