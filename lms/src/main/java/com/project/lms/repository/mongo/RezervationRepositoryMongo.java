@@ -7,8 +7,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.project.lms.model.RezervationEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.mongoconfig.SequenceService;
 import com.project.lms.repository.RezervationRepository;
+
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 @Repository
 @Profile("mongo")
@@ -48,6 +52,13 @@ public class RezervationRepositoryMongo implements RezervationRepository {
 	public void deleteRezervation(RezervationEntity rezervationToDelete) {
 		//Deletes rezervations from DB
 		mt.remove(rezervationToDelete, "rezervations");
+	}
+
+	@Override
+	public List<RezervationEntity> myRezervations(UserEntity thisUser){
+		Query query = new Query()
+				.addCriteria(Criteria.where("student").is(thisUser));
+		return mt.find(query, RezervationEntity.class);
 	}
 
 }

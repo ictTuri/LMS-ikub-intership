@@ -38,11 +38,13 @@ public class RezervationServiceImpl implements RezervationService {
 		this.bookRepository = bookRepository;
 	}
 
+	// SHOWS ALL REZERVATIONS
 	@Override
 	public List<RezervationDto> showAllRezervation() {
 		return RezervationConverter.toListDto(rezervationRepository.findAll());
 	}
 
+	// SHOWS REZERVATION BY ID
 	@Override
 	public RezervationDto showRezervationById(long id) {
 		RezervationEntity rezervation = rezervationRepository.findById(id);
@@ -52,6 +54,7 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Rezervation with id: " + id + " can not be found");
 	}
 
+	// CREATE NEW REZERVATION BY BOOK TITLE AND USER USERNAME
 	@Override
 	public RezervationDto createRezervation(RezervationCreateUpdateDto rezervation) {
 		UserEntity student = userRepository.getActivatedUserByUsername(rezervation.getUsername());
@@ -73,6 +76,7 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new UserNotFoundException("Username: " + rezervation.getUsername() + " not found or deactivated !");
 	}
 
+	// UPDATE REZERVATION. TAKES A TITLE AND USERNAME
 	@Override
 	public RezervationDto updateRezervation(long id, @Valid RezervationCreateUpdateDto rezervation) {
 		RezervationEntity rezervationForUpdate = rezervationRepository.findById(id);
@@ -109,11 +113,12 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Can not find rezervation with id: " + id);
 	}
 
+	
 	@Override
 	public void deleteRezervation(long id) {
 		RezervationEntity rezervationToDelete = rezervationRepository.findById(id);
-		if(rezervationToDelete != null) {
-			if(rezervationToDelete.getReturnDate()!=null) {
+		if (rezervationToDelete != null) {
+			if (rezervationToDelete.getReturnDate() != null) {
 				BookEntity book = bookRepository.getBookByTitle(rezervationToDelete.getBook().getTitle());
 				book.setTaken(false);
 				bookRepository.updateBook(book);
@@ -121,14 +126,7 @@ public class RezervationServiceImpl implements RezervationService {
 			}
 			throw new CustomExceptionMessage("This Rezervation is not closed yet. Book is not returned!");
 		}
-		throw new ObjectIdNotFound("Can not find Rezervation with id: "+id);
+		throw new ObjectIdNotFound("Can not find Rezervation with id: " + id);
 	}
-
-	
-//	@Override
-//	public UserEntity getUser() {
-//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//		return  userRepository.getUserByUsername(username);	
-//	}
 
 }

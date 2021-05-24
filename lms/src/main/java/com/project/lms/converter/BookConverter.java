@@ -15,6 +15,7 @@ public class BookConverter {
 		BookDto bookToReturn = new BookDto();
 		bookToReturn.setId(book.getId());
 		bookToReturn.setTitle(book.getTitle());
+		bookToReturn.setTaken(book.getTaken());
 		return bookToReturn;
 	}
 	

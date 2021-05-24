@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.project.lms.model.RezervationEntity;
+import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RezervationRepository;
 
 @Repository
@@ -50,6 +51,12 @@ public class RezervationRepositoryImpl implements RezervationRepository {
 	@Override
 	public void deleteRezervation(RezervationEntity rezervationToDelete) {
 		em.remove(rezervationToDelete);
+	}
+
+	@Override
+	public List<RezervationEntity> myRezervations(UserEntity thisUser) {
+		final String GET_THIS_USER_REZERVATIONS = "FROM RezervationEntity re WHERE re.student = : user";
+		return em.createQuery(GET_THIS_USER_REZERVATIONS, RezervationEntity.class).setParameter("user", thisUser).getResultList();
 	}
 	
 	

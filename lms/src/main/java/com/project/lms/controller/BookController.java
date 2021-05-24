@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.lms.dto.BookDto;
+import com.project.lms.dto.RezervationDto;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.service.BookService;
 
@@ -71,4 +72,24 @@ public class BookController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	@PostMapping("/{id}/rezerve")
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	public ResponseEntity<RezervationDto> rezerveBookById(@PathVariable("id") Long id){
+		logger.info("Renting book with id: {}",id);
+		return new ResponseEntity<>(bookService.rezerveBookById(id),HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/mybooks")
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	public ResponseEntity<List<RezervationDto>> myRezervedBooks(){
+		logger.info("Getting Student rezervations");
+		return new ResponseEntity<>(bookService.myRezervedBooks(),HttpStatus.OK);
+	}
+	
+	@GetMapping("/mybooks/{id}")
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	public ResponseEntity<RezervationDto> myRezervedBookById(@PathVariable("id") long id){
+		logger.info("Getting Student rezervation by id: {}",id);
+		return new ResponseEntity<>(bookService.myRezervedBookById(id),HttpStatus.OK);
+	}
 }

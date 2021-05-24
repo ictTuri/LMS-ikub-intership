@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.project.lms.dto.BookDto;
+import com.project.lms.dto.RezervationDto;
 import com.project.lms.dto.BookCreateUpdateDto;
 
 public interface BookService {
@@ -22,4 +23,13 @@ public interface BookService {
 	
 	// Delete Book by id
 	void deleteBookById(Long id);
+
+	// Put a new Rezervation from logged in Student 
+	RezervationDto rezerveBookById(Long id);
+
+	// Return list of Rezervations of the logged in Student
+	List<RezervationDto> myRezervedBooks();
+
+	// Return rezervation by id
+	RezervationDto myRezervedBookById(long id);
 }
