@@ -55,8 +55,13 @@ public class RezervationRepositoryImpl implements RezervationRepository {
 
 	@Override
 	public List<RezervationEntity> myRezervations(UserEntity thisUser) {
-		final String GET_THIS_USER_REZERVATIONS = "FROM RezervationEntity re WHERE re.student = : user";
-		return em.createQuery(GET_THIS_USER_REZERVATIONS, RezervationEntity.class).setParameter("user", thisUser).getResultList();
+		final String GET_THIS_USER_REZERVATIONS = "SELECT re FROM RezervationEntity re WHERE re.student = :user";
+		try{
+			return em.createQuery(GET_THIS_USER_REZERVATIONS, RezervationEntity.class)
+					.setParameter("user", thisUser).getResultList();
+		}catch(IllegalStateException e) {
+			return null;
+		}
 	}
 	
 	

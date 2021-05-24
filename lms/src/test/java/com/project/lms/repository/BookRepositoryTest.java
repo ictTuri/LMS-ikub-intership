@@ -77,7 +77,5 @@ class BookRepositoryTest {
 		
 		Assertions.assertNull(bookRepository.getBookByTitle(bookOne.getTitle()));
 	}
-	
-	
 
 }
