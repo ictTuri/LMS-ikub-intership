@@ -123,5 +123,4 @@ class RezervationRepositoryTest {
 		
 		Assertions.assertNull(rezervationsRepository.findById(1));
 	}
-
 }

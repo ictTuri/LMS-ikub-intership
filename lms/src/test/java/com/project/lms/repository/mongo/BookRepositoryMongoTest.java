@@ -74,7 +74,5 @@ class BookRepositoryMongoTest {
 		
 		Assertions.assertNull(bookRepository.getBookByTitle(bookOne.getTitle()));
 	}
-	
-	
 
 }

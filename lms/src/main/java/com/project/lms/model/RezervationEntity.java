@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -21,6 +22,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "rezervations")
+@Document(collection = "rezervations")
 public class RezervationEntity {
 
 	@Transient
