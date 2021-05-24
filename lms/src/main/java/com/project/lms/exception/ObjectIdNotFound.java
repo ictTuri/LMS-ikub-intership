@@ -7,4 +7,8 @@ public class ObjectIdNotFound extends RuntimeException{
 	public ObjectIdNotFound(String message) {
 		super(message);
 	}
+
+	public ObjectIdNotFound(String message, Throwable cause) {
+		super(message, cause);
+	}
 }
