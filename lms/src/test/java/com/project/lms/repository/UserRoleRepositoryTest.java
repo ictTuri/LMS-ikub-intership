@@ -2,8 +2,6 @@ package com.project.lms.repository;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import com.project.lms.utils.RoleUtil;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
-@Transactional
 class UserRoleRepositoryTest {
 	
 	@Autowired
@@ -42,8 +39,8 @@ class UserRoleRepositoryTest {
 		
 		List<UserRoleEntity> userRoleRetrieved = userRoleRepo.getThisUserRelations(user);
 		
-		Assertions.assertEquals(user, userRoleRetrieved.get(0).getUser());
-		Assertions.assertEquals(role, userRoleRetrieved.get(0).getRole());
+		Assertions.assertEquals(user.getUsername(), userRoleRetrieved.get(0).getUser().getUsername());
+		Assertions.assertEquals(role.getName(), userRoleRetrieved.get(0).getRole().getName());
 	}
 
 	@Test
@@ -64,8 +61,8 @@ class UserRoleRepositoryTest {
 		
 		List<UserRoleEntity> userRoleRetrieved = userRoleRepo.getThisUserRelations(user);
 		
-		Assertions.assertEquals(user, userRoleRetrieved.get(0).getUser());
-		Assertions.assertEquals(roleStudent, userRoleRetrieved.get(0).getRole());
+		Assertions.assertEquals(user.getUsername(), userRoleRetrieved.get(0).getUser().getUsername());
+		Assertions.assertEquals(roleStudent.getName(), userRoleRetrieved.get(0).getRole().getName());
 		
 	}
 }

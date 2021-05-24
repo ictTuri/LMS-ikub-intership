@@ -4,11 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 
 import com.project.lms.model.BookEntity;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest
+@Profile("mongo")
 class BookRepositoryMongoTest {
 
 	@Autowired
@@ -67,12 +69,15 @@ class BookRepositoryMongoTest {
 	
 	@Test
 	void givenBook_whenDelete_thenGetNoResult() {
-		BookEntity bookOne = BookUtil.bookOne();
-		bookRepository.saveBook(bookOne);
-
-		bookRepository.deleteBook(bookOne);
+		BookEntity thisBook = new BookEntity();
+		thisBook.setTaken(false);
+		thisBook.setTitle("Unique Title");
+		bookRepository.saveBook(thisBook);
+		BookEntity bookToDelete = bookRepository.getBookByTitle("Unique Title");
 		
-		Assertions.assertNull(bookRepository.getBookByTitle(bookOne.getTitle()));
+		bookRepository.deleteBook(bookToDelete);
+		
+		Assertions.assertNull(bookRepository.getBookByTitle(thisBook.getTitle()));
 	}
 
 }

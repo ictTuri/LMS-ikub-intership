@@ -1,7 +1,5 @@
 package com.project.lms.repository;
 
-import javax.transaction.Transactional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import com.project.lms.model.UserEntity;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
-@Transactional
 class UserRepositoryTest {
 
 	@Autowired
@@ -33,9 +30,12 @@ class UserRepositoryTest {
 	void givenUser_whenUpdate_thenGetUpdatedUser() {
 		UserEntity user = UserUtil.userTest();
 		userRepository.saveUser(user);
-		user.setFirstName("testUpdate");
 		
-		userRepository.updateUser(user);
+		UserEntity userToUpdate = userRepository.getUserByUsername(user.getUsername());
+		
+		userToUpdate.setFirstName("testUpdate");
+		
+		userRepository.updateUser(userToUpdate);
 		
 		Assertions.assertEquals("testUpdate", userRepository.getUserByUsername("test").getFirstName());
 	}
@@ -53,7 +53,7 @@ class UserRepositoryTest {
 	
 	@Test
 	void givenWrongUsername_whenRetrieved_thenGetNoResult() {
-		String username = "test";
+		String username = "notAUser";
 		
 		UserEntity user = userRepository.getUserByUsername(username);
 		

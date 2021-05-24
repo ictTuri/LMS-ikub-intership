@@ -2,7 +2,6 @@ package com.project.lms.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import com.project.lms.model.RoleEntity;
 import com.project.lms.utils.RoleUtil;
 
 @SpringBootTest
-@Transactional
 class RoleRepositoryTest {
 
 	@Autowired

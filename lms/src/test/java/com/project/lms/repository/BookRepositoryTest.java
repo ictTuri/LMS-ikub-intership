@@ -1,6 +1,5 @@
 package com.project.lms.repository;
 
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import com.project.lms.model.BookEntity;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest
-@Transactional
 class BookRepositoryTest {
 
 	@Autowired
@@ -37,9 +35,10 @@ class BookRepositoryTest {
 	void givenBook_whenUpdate_thenGetUpdatedBook() {
 		BookEntity bookThree = BookUtil.bookThree();
 		bookRepository.saveBook(bookThree);
-		bookThree.setTitle("Day Light");
+		
 		
 		BookEntity bookId = bookRepository.getBookByTitle(bookThree.getTitle());
+		bookThree.setTitle("Day Light");
 		bookRepository.updateBook(bookThree);
 		
 		Assertions.assertEquals("Day Light", bookRepository.getById(bookId.getId()).getTitle());

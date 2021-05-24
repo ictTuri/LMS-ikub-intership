@@ -2,7 +2,6 @@ package com.project.lms.repository;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import com.project.lms.utils.BookUtil;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
-@Transactional
 class RezervationRepositoryTest {
 	
 	@Autowired
@@ -53,26 +51,6 @@ class RezervationRepositoryTest {
 	}
 	
 	@Test
-	void givenRezervation_whenUpdate_thenGetUpdatedRezervation() {
-		BookEntity bookOne = BookUtil.bookOne();
-		UserEntity student = UserUtil.userTest();
-		bookRepository.saveBook(bookOne);
-		userRepository.saveUser(student);
-		
-		RezervationEntity rezervationOne = new RezervationEntity();
-		rezervationOne.setBook(bookOne);
-		rezervationOne.setStudent(student);
-		
-		rezervationsRepository.saveRezervation(rezervationOne);
-		rezervationOne.setBook(BookUtil.bookFour());
-
-		rezervationsRepository.updateRezervation(rezervationOne);
-		
-		Assertions.assertEquals(BookUtil.bookFour()
-				.getTitle(), rezervationsRepository.updateRezervation(rezervationOne).getBook().getTitle());
-	}
-	
-	@Test
 	void givenRezervation_whenSave_thenGetCreatedRezervation() {
 		Integer rezervationSize = rezervationsRepository.findAll().size();
 		BookEntity bookOne = BookUtil.bookOne();
@@ -99,10 +77,11 @@ class RezervationRepositoryTest {
 	@Test
 	void givenWrongUser_whenRetrieved_thenGetNoResult() {
 		UserEntity user = UserUtil.userAdmin();
+		userRepository.saveUser(user);
 		
 		List<RezervationEntity> rezervations = rezervationsRepository.myRezervations(user);
 		
-		Assertions.assertNull(rezervations);
+		Assertions.assertEquals(0, rezervations.size());
 	}
 	
 	
