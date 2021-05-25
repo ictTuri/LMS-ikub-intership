@@ -130,18 +130,18 @@ public class UserServiceImpl implements UserService {
 		throw new ObjectIdNotFound("Can not find user with given Id: " + id);
 	}
 
-	private boolean existUsername(UserCreateUpdateDto user, UserEntity userToUpdate) {
+	public boolean existUsername(UserCreateUpdateDto user, UserEntity userToUpdate) {
 		return !(userToUpdate.getUsername().equals(user.getUsername()))
 				&& userRepository.existUsername(user.getUsername());
 	}
 
-	private boolean existEmail(UserCreateUpdateDto user, UserEntity userToUpdate) {
+	public boolean existEmail(UserCreateUpdateDto user, UserEntity userToUpdate) {
 		return !(userToUpdate.getEmail().equalsIgnoreCase(user.getEmail()))
 				&& userRepository.existEmail(user.getEmail());
 	}
 
 	// VALIDATION EXTRACTED FOR USER UPDATE
-	private UserDto updateValidationsExtracted(UserCreateUpdateDto user, UserEntity userToUpdate, String roleName) {
+	public UserDto updateValidationsExtracted(UserCreateUpdateDto user, UserEntity userToUpdate, String roleName) {
 		RoleEntity roleToInsert = roleRepository.getRole(roleName);
 		if (roleToInsert != null) {
 			List<RoleEntity> roles = roleRepository.getUserRole(userToUpdate);
