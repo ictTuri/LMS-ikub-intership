@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContext;
 
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
+import com.project.lms.exception.CustomExceptionMessage;
 import com.project.lms.exception.ObjectFilteredNotFound;
 import com.project.lms.exception.ObjectIdNotFound;
 import com.project.lms.model.BookEntity;
@@ -90,7 +91,7 @@ class BookServiceTest {
 		Mockito.when(bookRepository.getById(id)).thenReturn(bookEntity);
 		Mockito.when(bookRepository.checkBookByTitle(book.getTitle())).thenReturn(true);
 		
-		assertThrows(ObjectFilteredNotFound.class, ()->{bookService.updateBookById(id, book);});
+		assertThrows(CustomExceptionMessage.class, ()->{bookService.updateBookById(id, book);});
 	}
 	
 	@Test

@@ -70,7 +70,7 @@ public class BookServiceImpl implements BookService {
 		BookEntity bookToUpdate = bookRepository.getById(id);
 		if(bookToUpdate != null) {
 			if(!(book.getTitle().equals(bookToUpdate.getTitle())) && bookRepository.checkBookByTitle(book.getTitle())) {
-				throw new ObjectFilteredNotFound("Book with title: "+book.getTitle()+" -already exist");
+				throw new CustomExceptionMessage("Book with title: "+book.getTitle()+" -already exist");
 			}
 			bookToUpdate.setTitle(book.getTitle());
 			return BookConverter.toDto(bookRepository.updateBook(bookToUpdate));
@@ -82,7 +82,10 @@ public class BookServiceImpl implements BookService {
 	public void deleteBookById(Long id) {
 		BookEntity bookToDelete = bookRepository.getById(id);
 		if(bookToDelete != null) {
-			bookRepository.deleteBook(bookToDelete);
+			if(bookToDelete.getTaken() == false) {
+				bookRepository.deleteBook(bookToDelete);
+			}
+			throw new CustomExceptionMessage("Ca not delete . Is Rented by a Student!");
 		}
 		throw new ObjectIdNotFound("Can not find the book with given Id!");
 	}

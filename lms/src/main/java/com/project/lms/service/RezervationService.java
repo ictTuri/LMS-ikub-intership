@@ -19,4 +19,6 @@ public interface RezervationService {
 
 	void deleteRezervation(long id);
 
+	RezervationDto closeRezervation(long id);
+
 }

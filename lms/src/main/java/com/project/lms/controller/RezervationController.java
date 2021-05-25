@@ -56,6 +56,13 @@ public class RezervationController {
 		return new ResponseEntity<>(rezervationService.createRezervation(rezervation), HttpStatus.CREATED);
 	}
 	
+	@PutMapping("/{id}/close")
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY','ROLE_ADMIN')")
+	public ResponseEntity<RezervationDto> closeRezervation(@PathVariable("id") long id){
+		logger.info("Closing rezervation with id: {} ",id);
+		return new ResponseEntity<>(rezervationService.closeRezervation(id), HttpStatus.OK);
+	}
+	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_SECRETARY','ROLE_ADMIN')")
 	public ResponseEntity<RezervationDto> updateRezervation(@PathVariable("id") long id,@Valid @RequestBody RezervationCreateUpdateDto rezervation){

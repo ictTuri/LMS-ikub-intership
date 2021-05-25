@@ -1,5 +1,6 @@
 package com.project.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -113,7 +114,6 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Can not find rezervation with id: " + id);
 	}
 
-	
 	@Override
 	public void deleteRezervation(long id) {
 		RezervationEntity rezervationToDelete = rezervationRepository.findById(id);
@@ -127,6 +127,20 @@ public class RezervationServiceImpl implements RezervationService {
 			throw new CustomExceptionMessage("This Rezervation is not closed yet. Book is not returned!");
 		}
 		throw new ObjectIdNotFound("Can not find Rezervation with id: " + id);
+	}
+
+	@Override
+	public RezervationDto closeRezervation(long id) {
+		RezervationEntity rezervationToClose = rezervationRepository.findById(id);
+		if(rezervationToClose != null) {
+			BookEntity book = bookRepository.getBookByTitle(rezervationToClose.getBook().getTitle());
+			book.setTaken(false);
+			rezervationToClose.setReturnDate(LocalDateTime.now());
+			rezervationRepository.updateRezervation(rezervationToClose);
+			bookRepository.updateBook(book);
+			return RezervationConverter.toDto(rezervationToClose);
+		}
+		throw new ObjectIdNotFound("Can not find rezervation with given id");
 	}
 
 }
