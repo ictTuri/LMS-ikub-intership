@@ -1,5 +1,6 @@
 package com.project.lms.service;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -7,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -225,6 +225,103 @@ class UserServiceTest {
 		assertNotEquals(true, existEmail);
 	}
 	
+	@Test
+	void givenUserAndUserUpdate_whenCheckExist_thenReturnTrue() {
+		UserEntity userToUpdate = UserUtil.userAdmin();
+		UserCreateUpdateDto user = new UserCreateUpdateDto();
+		user.setUsername("test");
+		
+		Mockito.when(userRepository.existUsername(user.getUsername())).thenReturn(true);
+		
+		boolean existUsername = userService.existUsername(user, userToUpdate);
+		assertTrue(existUsername);
+		assertEquals(true, existUsername);
+		assertNotEquals(false, existUsername);
+	}
+	
+	@Test
+	void givenUserAndUserUpdate_whenCheckExistEmail_thenReturnTrue() {
+		UserEntity userToUpdate = UserUtil.userAdmin();
+		UserCreateUpdateDto user = new UserCreateUpdateDto();
+		user.setUsername(userToUpdate.getUsername());
+		user.setEmail("test@gmail.com");
+		
+		Mockito.when(userRepository.existEmail(user.getEmail())).thenReturn(true);
+		
+		boolean existEmail = userService.existEmail(user, userToUpdate);
+		assertTrue(existEmail);
+		assertEquals(true, existEmail);
+		assertNotEquals(false, existEmail);
+	}
+	
+	@Test
+	void givenRolesAndUser_whenCheckConnection_thenReturnBoolean() {
+		List<RoleEntity> roles = new ArrayList<>();
+		roles.add(RoleUtil.adminRole());
+		roles.add(RoleUtil.studentRole());
+		UserCreateUpdateDto user =  new UserCreateUpdateDto();
+		user.setRole("ADMIN");
+		
+		boolean alreadyHasRole = userService.isUserRoleConnected(roles, user);
+		
+		assertTrue(alreadyHasRole);
+		assertEquals(true, alreadyHasRole);
+	}
+	
+	
+	@Test
+	void givenUser_whensoftDelete_thenThrowNothing() {
+		long id = 1;
+		UserEntity userToDelete = UserUtil.userTest();
+		userToDelete.setId(id);
+		userToDelete.setActivated(true);
+		
+		Mockito.when(userRepository.getActivatedUserById(id)).thenReturn(userToDelete);
+		Mockito.doNothing().when(userRepository).updateUser(userToDelete);
+		
+		assertDoesNotThrow(()-> userService.softDeleteUser(id));
+	}
+	
+	@Test
+	void givenWrongId_whensoftDelete_thenThrowException() {
+		long id = 1;
+		
+		Mockito.when(userRepository.getActivatedUserById(id)).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class, ()->{
+			userService.softDeleteUser(id);
+		});
+	}
+	
+	@Test
+	void givenUser_whenHardDelete_thenThrowNothing() {
+		long id = 1;
+		UserEntity userToDelete = UserUtil.userTest();
+		userToDelete.setId(id);
+		userToDelete.setActivated(true);
+		UserRoleEntity userRole = new UserRoleEntity();
+		List<UserRoleEntity> list = new ArrayList<>();
+		userRole.setRole(RoleUtil.adminRole());
+		userRole.setUser(userToDelete);
+		
+		Mockito.when(userRoleRepository.getThisUserRelations(userToDelete)).thenReturn(list);
+		Mockito.when(userRepository.getUserById(id)).thenReturn(userToDelete);
+		
+		Mockito.doNothing().when(userRepository).deleteUser(userToDelete);
+		
+		assertDoesNotThrow(()-> userService.hardDeleteUser(id));
+	}
+	
+	@Test
+	void givenWrongId_whenHardDelete_thenThrowException() {
+		long id = 1;
+		
+		Mockito.when(userRepository.getActivatedUserById(id)).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class, ()->{
+			userService.hardDeleteUser(id);
+		});
+	}
 
 	
 }

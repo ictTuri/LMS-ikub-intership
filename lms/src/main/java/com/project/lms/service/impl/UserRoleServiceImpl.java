@@ -97,7 +97,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 				}
 				throw new ObjectIdNotFound("Role with name: " + id + " not found !");
 			}
-			throw new ObjectIdNotFound("User Role Relation with id: " + id + " not found!");
+			throw new ObjectIdNotFound("User with given username: " + userRole.getUsername() + " not found!");
 		}
 		throw new ObjectIdNotFound("User Role Relation with id: " + id + " not found !");
 	}
