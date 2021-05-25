@@ -2,7 +2,6 @@ package com.project.lms.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +19,13 @@ import com.project.lms.service.RoleService;
 @RequestMapping("api/v1/roles")
 public class RoleController {
 
-	@Autowired
 	private RoleService roleService;
-	
+
+	public RoleController(RoleService roleService) {
+		super();
+		this.roleService = roleService;
+	}
+
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<List<RoleDto>> showAllRoles(){

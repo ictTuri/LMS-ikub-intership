@@ -73,5 +73,71 @@ class UserRoleControllerTest {
 		assertThrows(ObjectIdNotFound.class, ()->{userRoleController.updateUserRole(id, userRole);});
 		verify(userRoleService).updateUserRole(id, userRole);
 	}
-
+	
+	@Test
+	void givenUserRole_WhenShowById_getOkStatus() {
+		long id = 1;
+		UserRoleDto userRole = new UserRoleDto();
+		userRole.setUser(UserConverter.toDto(UserUtil.userAdmin()));
+		userRole.setRole(RoleConverter.toDto(RoleUtil.adminRole()));
+		
+		Mockito.when(userRoleService.getUserRoleById(id)).thenReturn(userRole);
+		
+		ResponseEntity<?> userRoleRetrieved  = userRoleController.showUserRoleById(id);
+		
+		assertNotNull(userRoleRetrieved);
+		assertEquals(HttpStatus.OK, userRoleRetrieved.getStatusCode());
+		verify(userRoleService).getUserRoleById(id);
+	}
+	
+	@Test
+	void givenUserRole_WhenCreate_getCreatedStatus() {
+		UserRoleCreateUpdateDto userRoleCreate = new UserRoleCreateUpdateDto();
+		userRoleCreate.setRole("ADMIN");
+		userRoleCreate.setUsername("TestUserName");
+		
+		UserRoleDto userRole = new UserRoleDto();
+		userRole.setUser(UserConverter.toDto(UserUtil.userAdmin()));
+		userRole.setRole(RoleConverter.toDto(RoleUtil.adminRole()));
+		
+		Mockito.when(userRoleService.createUserRole(userRoleCreate)).thenReturn(userRole);
+		
+		ResponseEntity<?> userRoleSaved  = userRoleController.createUserRole(userRoleCreate);
+		
+		assertNotNull(userRoleSaved);
+		assertEquals(HttpStatus.CREATED, userRoleSaved.getStatusCode());
+		verify(userRoleService).createUserRole(userRoleCreate);
+	}
+	
+	@Test
+	void givenUserRole_WhenUpdate_getOkStatus() {
+		UserRoleCreateUpdateDto userRoleCreate = new UserRoleCreateUpdateDto();
+		userRoleCreate.setRole("ADMIN");
+		userRoleCreate.setUsername("TestUserName");
+		long id = 1;
+		
+		UserRoleDto userRole = new UserRoleDto();
+		userRole.setUser(UserConverter.toDto(UserUtil.userAdmin()));
+		userRole.setRole(RoleConverter.toDto(RoleUtil.adminRole()));
+		
+		Mockito.when(userRoleService.updateUserRole(id,userRoleCreate)).thenReturn(userRole);
+		
+		ResponseEntity<?> userRoleUpdated  = userRoleController.updateUserRole(id, userRoleCreate);
+		
+		assertNotNull(userRoleUpdated);
+		assertEquals(HttpStatus.OK, userRoleUpdated.getStatusCode());
+		verify(userRoleService).updateUserRole(id, userRoleCreate);
+	}
+	
+	@Test
+	void givenUserRole_WhenDelete_getVoid() {
+		long id = 1;
+		
+		Mockito.doNothing().when(userRoleService).deleteUserRole(id);
+		
+		ResponseEntity<?> userRoleDeleted  = userRoleController.softDeleteUser(id);
+		
+		assertNotNull(userRoleDeleted);
+		assertEquals(HttpStatus.NO_CONTENT, userRoleDeleted.getStatusCode());
+	}
 }

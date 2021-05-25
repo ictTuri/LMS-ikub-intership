@@ -100,6 +100,81 @@ class UserControllerTest {
 		verify(userService).updateUser(id, userToSave);
 	}
 	
+	@Test
+	void givenId_WhenRequestUser_GetOK() {
+		long id = 1;
+		UserDto user = UserConverter.toDto(UserUtil.userAdmin());
+		
+		Mockito.when(userService.getUserById(id)).thenReturn(user);
+		
+		ResponseEntity<UserDto> userById = userController.showUserById(id);
+
+		assertNotNull(userById);
+		assertEquals(HttpStatus.OK, userById.getStatusCode());
+		verify(userService).getUserById(id);
+	}
+	
+	@Test
+	void givenUser_WhenUpdate_GetOK() {
+		long id = 1;
+		UserCreateUpdateDto userToUpdate = new UserCreateUpdateDto();
+		userToUpdate.setUsername("test");
+		UserDto user = UserConverter.toDto(UserUtil.userAdmin());
+		
+		Mockito.when(userService.updateUser(id,userToUpdate)).thenReturn(user);
+		
+		ResponseEntity<UserDto> userUpdated = userController.updateUser(id, userToUpdate);
+
+		assertNotNull(userUpdated);
+		assertEquals(HttpStatus.OK, userUpdated.getStatusCode());
+		verify(userService).updateUser(id,userToUpdate);
+	}
+	
+	@Test
+	void givenUser_WhenSoftDelete_GetNoContent() {
+		long id = 1;
+		
+		Mockito.doNothing().when(userService).softDeleteUser(id);
+		
+		ResponseEntity<Void> userSoftDeleted = userController.softDeleteUser(id);
+
+		assertNotNull(userSoftDeleted);
+		assertEquals(HttpStatus.NO_CONTENT, userSoftDeleted.getStatusCode());
+		verify(userService).softDeleteUser(id);
+	}
+	
+	@Test
+	void givenUser_WhenHardDelete_GetNoContent() {
+		long id = 1;
+		
+		Mockito.doNothing().when(userService).hardDeleteUser(id);
+		
+		ResponseEntity<Void> userHardDeleted = userController.hardDeleteUser(id);
+
+		assertNotNull(userHardDeleted);
+		assertEquals(HttpStatus.NO_CONTENT, userHardDeleted.getStatusCode());
+		verify(userService).hardDeleteUser(id);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

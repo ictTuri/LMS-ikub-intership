@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,38 @@ class RezervationControllerTest {
 		ResponseEntity<?> rezervationById = rezervationController.showRezervationById(1);
 		assertNotNull(rezervationById);
 		assertEquals(HttpStatus.OK, rezervationById.getStatusCode());
+	}
+	
+	@Test
+	void givenRezervation_whenClose_thenReturnClosedRezervation() {
+		long id = 1;
+		RezervationDto rezervation = new RezervationDto();
+		rezervation.setBookTitle("HellBringer");
+		rezervation.setId(Long.valueOf(1));
+		rezervation.setStudentUsername("TestStudent");
+		rezervation.setReturnDate(LocalDateTime.now());
+		
+		
+		Mockito.when(rezervationService.closeRezervation(id)).thenReturn(rezervation);
+		
+		ResponseEntity<?> rezervationClosed = rezervationController.closeRezervation(id);
+		assertNotNull(rezervationClosed);
+		assertEquals(HttpStatus.OK, rezervationClosed.getStatusCode());
+	}
+	
+	@Test
+	void givenRezervation_whenUpdate_thenReturnDto() {
+		long id = 1;
+		RezervationDto returnDto = new RezervationDto();
+		returnDto.setBookTitle("HellBringer");
+		returnDto.setStudentUsername("TestUsername");
+		RezervationCreateUpdateDto rezervationUpdate = new RezervationCreateUpdateDto();
+		
+		Mockito.when(rezervationService.updateRezervation(id,rezervationUpdate)).thenReturn(returnDto);
+		
+		ResponseEntity<?> rezervationUpdated = rezervationController.updateRezervation(id, rezervationUpdate);
+		assertNotNull(rezervationUpdated);
+		assertEquals(HttpStatus.CREATED, rezervationUpdated.getStatusCode());
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.project.lms.repository.mongo;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,8 +13,6 @@ import org.springframework.context.annotation.Profile;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
-import com.project.lms.repository.RoleRepository;
-import com.project.lms.repository.UserRepository;
 import com.project.lms.utils.RoleUtil;
 import com.project.lms.utils.UserUtil;
 
@@ -24,10 +24,10 @@ class UserRoleRepositoryMongoTest {
 	private UserRoleRepositoryMongo userRoleRepo;
 	
 	@Autowired
-	private RoleRepository roleRepo;
+	private RoleRepositoryMongo roleRepo;
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserRepositoryMongo userRepo;
 	
 	@Test
 	void givenUserRole_whenRetrievedByUser_thenCheckUserRetrieved() {
@@ -70,5 +70,21 @@ class UserRoleRepositoryMongoTest {
 		
 	}
 	
+	@Test
+	void givenUserRole_whenAskedForAll_thenGetAllUserRole() {
+		List<UserRoleEntity> userRoleRetrieved = userRoleRepo.getAllUserRoles();
+		
+		assertNotNull(userRoleRetrieved);
+	}
+	
+	@Test
+	void givenId_whenAskedForUserRole_thengetUserRole() {
+		long id = 1;
+		
+		UserRoleEntity userRoleRetrieved = userRoleRepo.getUserRoleById(id);
+		
+		assertNotNull(userRoleRetrieved);
+		assertNotNull(userRoleRetrieved.getUser());
+	}
 
 }

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import com.project.lms.converter.BookConverter;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
+import com.project.lms.dto.RezervationDto;
 import com.project.lms.model.BookEntity;
 import com.project.lms.service.BookService;
 import com.project.lms.utils.BookUtil;
@@ -88,4 +89,61 @@ class BookControllerTest {
 		assertNotNull(bookById);
 		assertEquals(HttpStatus.OK, bookById.getStatusCode());
 	}
+	
+	@Test
+	void givenBook_whenUpdate_thenReturnDto() {
+		long id = 1;
+		BookCreateUpdateDto dtoForUpdate = new BookCreateUpdateDto();
+		dtoForUpdate.setTitle("Hellbringer");
+		BookDto dtoToGet = new BookDto();
+		dtoToGet.setTitle("Hellbringer");
+
+		Mockito.when(bookService.updateBookById(id,dtoForUpdate)).thenReturn(dtoToGet);
+		
+		ResponseEntity<BookDto> bookUpdated = bookController.updateBookById(id, dtoForUpdate);
+		assertNotNull(bookUpdated);
+		assertEquals(HttpStatus.CREATED, bookUpdated.getStatusCode());
+	}
+	
+	@Test
+	void givenId_whenRezerveBook_thenReturnRezervationDto() {
+		long id = 1;
+		RezervationDto rezervation = new RezervationDto();
+		rezervation.setBookTitle("One Piece");
+
+		Mockito.when(bookService.rezerveBookById(id)).thenReturn(rezervation);
+		
+		ResponseEntity<RezervationDto> rezervationToGet = bookController.rezerveBookById(id);
+		assertNotNull(rezervationToGet);
+		assertEquals(HttpStatus.CREATED, rezervationToGet.getStatusCode());
+	}
+	
+	@Test
+	void givenUser_whenGetMyBook_thenReturnList() {
+		List<RezervationDto> list = new ArrayList<>();
+		list.add(new RezervationDto());
+		list.add(new RezervationDto());
+		list.add(new RezervationDto());
+		
+		Mockito.when(bookService.myRezervedBooks()).thenReturn(list);
+		
+		ResponseEntity<List<RezervationDto>> myRezervations = bookController.myRezervedBooks();
+		assertNotNull(myRezervations);
+		assertEquals(3, myRezervations.getBody().size());
+		assertEquals(HttpStatus.OK, myRezervations.getStatusCode());
+	}
+	
+	@Test
+	void givenId_whenGetMyRezervationById_thenReturnRezervation() {
+		long id = 1;
+		RezervationDto rezervation = new RezervationDto();
+		
+		Mockito.when(bookService.myRezervedBookById(id)).thenReturn(rezervation);
+		
+		ResponseEntity<RezervationDto> myRezervationById = bookController.myRezervedBookById(id);
+		assertNotNull(myRezervationById);
+		assertEquals(null, myRezervationById.getBody().getBookTitle());
+		assertEquals(HttpStatus.OK, myRezervationById.getStatusCode());
+	}
+	
 }

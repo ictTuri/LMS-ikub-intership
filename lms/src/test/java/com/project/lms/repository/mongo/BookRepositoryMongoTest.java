@@ -1,5 +1,8 @@
 package com.project.lms.repository.mongo;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +81,27 @@ class BookRepositoryMongoTest {
 		bookRepository.deleteBook(bookToDelete);
 		
 		Assertions.assertNull(bookRepository.getBookByTitle(thisBook.getTitle()));
+	}
+	
+	@Test
+	void givenTitle_whenCheckByTitle_thenGetBoolean() {
+		String title = "Unique Title";
+		
+		Boolean doesNotExist = bookRepository.checkBookByTitle(title);
+		assertFalse(doesNotExist);
+		
+		title = "Hellbringer";
+		Boolean exist = bookRepository.checkBookByTitle(title);
+		
+		assertTrue(exist);
+	}
+	
+	@Test
+	void givenTitle_whenCheckIfTaken_thenGetBoolean() {
+		String title = "Hellbringer";
+		
+		Boolean notTaken = bookRepository.isTaken(title);
+		assertFalse(notTaken);
 	}
 
 }
