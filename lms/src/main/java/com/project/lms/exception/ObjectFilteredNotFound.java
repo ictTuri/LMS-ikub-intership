@@ -8,7 +8,4 @@ public class ObjectFilteredNotFound extends RuntimeException{
 		super(message);
 	}
 
-	public ObjectFilteredNotFound(String message, Throwable cause) {
-		super(message, cause);
-	}
 }
