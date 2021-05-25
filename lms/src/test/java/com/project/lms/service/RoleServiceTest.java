@@ -1,6 +1,8 @@
 package com.project.lms.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.project.lms.dto.RoleCreateUpdateDto;
+import com.project.lms.dto.RoleDto;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.service.impl.RoleServiceImpl;
@@ -37,5 +41,18 @@ class RoleServiceTest {
 		int size = roleService.showAllRoles().size();
 		assertEquals(3, size);
 		verify(roleRepository).getAllRoles();
+	}
+	
+	@Test
+	void givenRole_whenCreate_validateRole() {
+		RoleEntity roleEntity = RoleUtil.secretaryRole();
+		RoleCreateUpdateDto roleCreate = new RoleCreateUpdateDto();
+		roleCreate.setName("SECRETARY");
+		
+		doNothing().when(roleRepository).saveRole(roleEntity);
+		
+		RoleDto returned = roleService.createNewRole(roleCreate);
+		assertEquals("SECRETARY", returned.getName());
+		assertNotEquals(returned.getClass().getTypeName(),roleCreate.getClass().getTypeName());
 	}
 }
