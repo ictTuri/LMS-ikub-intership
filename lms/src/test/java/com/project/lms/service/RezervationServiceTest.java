@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.project.lms.converter.RezervationConverter;
 import com.project.lms.dto.RezervationCreateUpdateDto;
 import com.project.lms.dto.RezervationDto;
 import com.project.lms.exception.CustomExceptionMessage;
@@ -72,6 +73,9 @@ class RezervationServiceTest {
 		assertThrows(ObjectIdNotFound.class, () -> {
 			rezervationService.updateRezervation(id, rezervation);
 		});
+		
+		
+		
 	}
 
 	@Test
@@ -136,6 +140,18 @@ class RezervationServiceTest {
 		assertThrows(CustomExceptionMessage.class, () -> {
 			rezervationService.createRezervation(rezervation);
 			});
+		
+		
+		Mockito.when(bookRepository.isTaken(Mockito.anyString())).thenReturn(true);
+		RezervationEntity rezervationEntity = RezervationConverter.toEntityCreate(book, user);
+		Mockito.when(rezervationRepository.saveRezervation(rezervationEntity)).thenReturn(rezervationEntity);
+		book.setTaken(true);
+		Mockito.when(bookRepository.updateBook(book)).thenReturn(book);
+		RezervationDto dtoToGet = rezervationService.createRezervation(rezervation);
+		
+		assertNotNull(dtoToGet);
+		assertDoesNotThrow(()->rezervationService.createRezervation(rezervation));
+		assertEquals(RezervationDto.class.getTypeName(), dtoToGet.getClass().getTypeName());
 	}
 	
 	@Test
@@ -191,4 +207,41 @@ class RezervationServiceTest {
 			rezervationService.closeRezervation(id);
 		});
 	}
+	
+	@Test
+	void givenRezervation_whenUpdate_thenCheckValidations() {
+		UserEntity user = UserUtil.userTest();
+		BookEntity book = BookUtil.bookThree();
+		long id = 1;
+		RezervationCreateUpdateDto rezervationDto = new RezervationCreateUpdateDto();
+		rezervationDto.setUsername(user.getUsername());
+		rezervationDto.setBookTitle(book.getTitle());
+		RezervationEntity rezervation = new RezervationEntity();
+		rezervation.setBook(book);
+		rezervation.setStudent(user);
+		rezervation.setId(id);
+		
+		
+		Mockito.when(rezervationRepository.findById(id)).thenReturn(rezervation);
+		Mockito.when(userRepository.getActivatedUserByUsername(rezervationDto.getUsername())).thenReturn(null);
+		
+		assertThrows(UserNotFoundException.class, ()->{
+			rezervationService.updateRezervation(id, rezervationDto);
+		});
+		
+		Mockito.when(userRepository.getActivatedUserByUsername(rezervationDto.getUsername())).thenReturn(user);
+		Mockito.when(bookRepository.getBookByTitle(rezervationDto.getBookTitle())).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class, ()->{
+			rezervationService.updateRezervation(id, rezervationDto);
+		});
+		
+		Mockito.when(bookRepository.getBookByTitle(rezervationDto.getBookTitle())).thenReturn(book);
+		Mockito.when(bookRepository.isTaken(book.getTitle())).thenReturn(false);
+		
+		assertThrows(CustomExceptionMessage.class, ()->{
+			rezervationService.updateRezervation(id, rezervationDto);
+		});
+	}
+	
 }

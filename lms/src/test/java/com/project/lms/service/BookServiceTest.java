@@ -119,5 +119,17 @@ class BookServiceTest {
 		
 		assertThrows(ObjectIdNotFound.class,()->{bookService.deleteBookById(Long.valueOf(2));});
 	}
-
+	
+	@Test
+	void givenBook_WhenRezerve_thenThrow() {
+		long id = 1;
+		BookEntity book = BookUtil.bookFive();
+		book.setTaken(true);
+		when(bookRepository.getById(id)).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class,()->{bookService.rezerveBookById(id);});
+		
+		when(bookRepository.getById(id)).thenReturn(book);
+		assertThrows(CustomExceptionMessage.class,()->{bookService.rezerveBookById(id);});
+	}
 }
