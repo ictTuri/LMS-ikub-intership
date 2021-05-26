@@ -7,13 +7,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 
 import com.project.lms.model.BookEntity;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest
-@Profile("mongo")
 class BookRepositoryMongoTest {
 
 	@Autowired

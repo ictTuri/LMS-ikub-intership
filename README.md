@@ -53,6 +53,12 @@ _User_ Student
 * Can view books by id and all
 
 ---
+#### Maven Testing
+* Run Maven Clean and Then Maven Test
+* Main Profile set to "mongo"
+* Mongo Repository Tested along with Repository Interface
+
+---
 #### Technical details on testing
 _Testing_ runs on 2 profiles:
 * "mongo":
