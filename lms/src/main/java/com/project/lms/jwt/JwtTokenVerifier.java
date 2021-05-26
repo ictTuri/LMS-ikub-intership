@@ -1,7 +1,6 @@
 package com.project.lms.jwt;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,12 +48,14 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
 		try {
 
+			@SuppressWarnings("deprecation")
 			Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 
 			Claims body = claimsJws.getBody();
-
+			
 			String username = body.getSubject();
 
+			@SuppressWarnings("unchecked")
 			var authorities = (List<Map<String, String>>) body.get("authorities");
 
 			Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()

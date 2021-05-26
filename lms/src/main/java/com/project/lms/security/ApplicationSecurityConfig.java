@@ -30,6 +30,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final ApplicationUserService applicationUserService;
 	private final SecretKey secretKey;
 	private final JwtConfig jwtConfig;
+	
 
 	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService,
 			SecretKey secretKey, JwtConfig jwtConfig) {
@@ -51,7 +52,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 						.sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-						.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+						.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, "api/v1/login"))
 						.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
 						.authorizeRequests()
 						.anyRequest()

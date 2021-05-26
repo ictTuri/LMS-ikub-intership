@@ -30,12 +30,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	private static String USERNOTAUTHENTICATED = "Unable to Authenticate! Check username and password!";
 
 	public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig,
-			SecretKey secretKey) {
+			SecretKey secretKey, String filterProcessesUrl) {
 		this.authenticationManager = authenticationManager;
 		this.jwtConfig = jwtConfig;
 		this.secretKey = secretKey;
-		setFilterProcessesUrl("/api/v1/login");
+		super.setFilterProcessesUrl(filterProcessesUrl);
 	}
+
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -66,6 +67,5 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 					.signWith(secretKey).compact();
 
 			response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
-		
 	}
 }

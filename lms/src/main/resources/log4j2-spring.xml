@@ -31,7 +31,7 @@
         </Root>
 
         <!-- LOG "com.project.lms*" at TRACE level -->
-        <Logger name="com.project" level="trace"></Logger>
+        <Logger name="com.project" level="debug"></Logger>
     </Loggers>
 
 </Configuration>
