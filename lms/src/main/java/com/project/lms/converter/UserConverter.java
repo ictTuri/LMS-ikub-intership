@@ -46,7 +46,7 @@ public class UserConverter {
 		userToReturn.setId(null);
 		userToReturn.setFirstName(user.getFirstName());
 		userToReturn.setLastName(user.getLastName());
-		userToReturn.setEmail(user.getEmail());
+		userToReturn.setEmail(user.getEmail().toLowerCase());
 		userToReturn.setUsername(user.getUsername());
 		userToReturn.setPassword(user.getPassword());
 		userToReturn.setActivated(user.isActivated());
@@ -58,7 +58,7 @@ public class UserConverter {
 		userToReturn.setId(null);
 		userToReturn.setFirstName(user.getFirstName());
 		userToReturn.setLastName(user.getLastName());
-		userToReturn.setEmail(user.getEmail());
+		userToReturn.setEmail(user.getEmail().toLowerCase());
 		userToReturn.setUsername(user.getUsername());
 		userToReturn.setPassword(user.getPassword());
 		return userToReturn;

@@ -42,7 +42,11 @@ public class UserServiceImpl implements UserService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	// STUDENT REGISTRATION METHOD
+	/*
+	 * Create a new user Student in database
+	 * Validate unique email and username 
+	 * After validation it returns a response and create a deactivated user
+	 */
 	@Override
 	public CustomResponseDto registerStudent(UserRegisterDto user) {
 		boolean existUsername = userRepository.existUsername(user.getUsername());
@@ -52,7 +56,6 @@ public class UserServiceImpl implements UserService {
 						RoleEntity role = roleRepository.getRole("STUDENT");
 						UserEntity userToCreate = UserConverter.toEntity(user);
 						userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
-						userToCreate.setEmail(user.getEmail().toLowerCase());
 						UserRoleEntity userRole = new UserRoleEntity();
 						userRole.setRole(role);
 						userRole.setUser(userToCreate);
@@ -67,13 +70,18 @@ public class UserServiceImpl implements UserService {
 			throw new CustomExceptionMessage("Username: "+user.getUsername()+" already exist");
 	}
 
-	// GET ALL USERS BUT NOT THE ROLES
+	/*
+	 * returns all users but with no roles
+	 */
 	@Override
 	public List<UserDto> getAllUsers() {
 		return UserConverter.toListDto(userRepository.getAllUsers());
 	}
 
-	// GET ONE USER WITH ASSIGNED ROLES TO IT
+	/*
+	 * Return user by id and corresponding roles
+	 * If id invalid it throws exception
+	 */
 	@Override
 	public UserDto getUserById(Long id) {
 		UserEntity userToReturn = userRepository.getUserById(id);
@@ -84,7 +92,11 @@ public class UserServiceImpl implements UserService {
 		throw new ObjectIdNotFound("User with id: " + id + " can not be found");
 	}
 
-	// CREATE NEW USER WITH ANY ROLE METHOD
+	/*
+	 * Create a new user from Admin
+	 * Validates username and email uniques 
+	 * Can be save activated or deactivated
+	 */
 	@Override
 	public UserDto createUser(UserCreateUpdateDto user) {
 		boolean existUserWithUsernameEmail = userRepository.checkUserByUsernameEmail(user.getUsername(),
@@ -95,7 +107,6 @@ public class UserServiceImpl implements UserService {
 			if (roleToInsert != null) {
 				// Encoded password by BCrypt on 10 power
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
-				user.setEmail(user.getEmail().toLowerCase());
 				UserEntity userToSave = UserConverter.toEntity(user);
 				// Save user on DB
 				userRepository.saveUser(userToSave);
@@ -113,7 +124,10 @@ public class UserServiceImpl implements UserService {
 		throw new CustomExceptionMessage("Username or email already exist!");
 	}
 
-	// UPDATE USER DATA
+	/*
+	 * Update user 
+	 * Validates Data and compare to Database
+	 */
 	@Override
 	public UserDto updateUser(Long id, @Valid UserCreateUpdateDto user) {
 		UserEntity userToUpdate = userRepository.getUserById(id);
@@ -130,17 +144,27 @@ public class UserServiceImpl implements UserService {
 		throw new ObjectIdNotFound("Can not find user with given Id: " + id);
 	}
 
+	/*
+	 * Check if username already exist
+	 */
 	public boolean existUsername(UserCreateUpdateDto user, UserEntity userToUpdate) {
 		return !(userToUpdate.getUsername().equals(user.getUsername()))
 				&& userRepository.existUsername(user.getUsername());
 	}
 
+	/*
+	 * check if email already exist
+	 */
 	public boolean existEmail(UserCreateUpdateDto user, UserEntity userToUpdate) {
 		return !(userToUpdate.getEmail().equalsIgnoreCase(user.getEmail()))
 				&& userRepository.existEmail(user.getEmail());
 	}
 
-	// VALIDATION EXTRACTED FOR USER UPDATE
+	/*
+	 * Extra validation on update
+	 * Check if a new role is inserted and validates 
+	 * against the list of roles that user currently have
+	 */
 	public UserDto updateValidationsExtracted(UserCreateUpdateDto user, UserEntity userToUpdate, String roleName) {
 		RoleEntity roleToInsert = roleRepository.getRole(roleName);
 		if (roleToInsert != null) {
@@ -164,7 +188,9 @@ public class UserServiceImpl implements UserService {
 		throw new CustomExceptionMessage("Given Role is not valid,try Admin or Student or Secretary");
 	}
 
-	// Helping method to go through roles
+	/*
+	 * Check if there is a connection between roles of user and the new role passed
+	 */
 	public boolean isUserRoleConnected(List<RoleEntity> roles, UserCreateUpdateDto user) {
 		for (RoleEntity re : roles) {
 			if (re.getName().equalsIgnoreCase(user.getRole())) {
@@ -174,7 +200,9 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
-	// SOFT DELETE USER BY ID
+	/*
+	 * Soft delete a user from DB
+	 */
 	@Override
 	public void softDeleteUser(long id) {
 		UserEntity userToSoftDelete = userRepository.getActivatedUserById(id);
@@ -186,6 +214,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/*
+	 * Hard Delee a user from DB 
+	 * Also deletes the user roles
+	 */
 	@Override
 	public void hardDeleteUser(long id) {
 		UserEntity userToHardDelete = userRepository.getUserById(id);

@@ -39,13 +39,19 @@ public class RezervationServiceImpl implements RezervationService {
 		this.bookRepository = bookRepository;
 	}
 
-	// SHOWS ALL REZERVATIONS
+	/*
+	 * reterns all rezervations
+	 * If non it returns an empty list
+	 */
 	@Override
 	public List<RezervationDto> showAllRezervation() {
 		return RezervationConverter.toListDto(rezervationRepository.findAll());
 	}
 
-	// SHOWS REZERVATION BY ID
+	/*
+	 * Returns a rezervation by id
+	 * If id invalid it throws exception
+	 */
 	@Override
 	public RezervationDto showRezervationById(long id) {
 		RezervationEntity rezervation = rezervationRepository.findById(id);
@@ -55,7 +61,11 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Rezervation with id: " + id + " can not be found");
 	}
 
-	// CREATE NEW REZERVATION BY BOOK TITLE AND USER USERNAME
+	/*
+	 * Create new rezervation
+	 * If book taken, username or book not found
+	 * It throws Exception
+	 */
 	@Override
 	public RezervationDto createRezervation(RezervationCreateUpdateDto rezervation) {
 		UserEntity student = userRepository.getActivatedUserByUsername(rezervation.getUsername());
@@ -77,7 +87,11 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new UserNotFoundException("Username: " + rezervation.getUsername() + " not found or deactivated !");
 	}
 
-	// UPDATE REZERVATION. TAKES A TITLE AND USERNAME
+	/*
+	 * Update rezervation
+	 * It takes rzervation by id if exist 
+	 * And update user and book
+	 */
 	@Override
 	public RezervationDto updateRezervation(long id, @Valid RezervationCreateUpdateDto rezervation) {
 		RezervationEntity rezervationForUpdate = rezervationRepository.findById(id);
@@ -87,25 +101,7 @@ public class RezervationServiceImpl implements RezervationService {
 				BookEntity book = bookRepository.getBookByTitle(rezervation.getBookTitle());
 				if (book != null) {
 					boolean notTaken = bookRepository.isTaken(book.getTitle());
-					if (notTaken) {
-						if (book.getTitle().equalsIgnoreCase(rezervationForUpdate.getBook().getTitle())) {
-							RezervationEntity entity = rezervationRepository
-									.updateRezervation(RezervationConverter.toEntityCreate(book, student));
-							book.setTaken(true);
-							bookRepository.updateBook(book);
-							return RezervationConverter.toDto(entity);
-						}
-						BookEntity bookNotTaken = bookRepository
-								.getBookByTitle(rezervationForUpdate.getBook().getTitle());
-						bookNotTaken.setTaken(false);
-						bookRepository.updateBook(bookNotTaken);
-						RezervationEntity entity = rezervationRepository
-								.updateRezervation(RezervationConverter.toEntityCreate(book, student));
-						book.setTaken(true);
-						bookRepository.updateBook(book);
-						return RezervationConverter.toDto(entity);
-					}
-					throw new CustomExceptionMessage("This book is already taken");
+					return checkIfBookTaken(rezervationForUpdate, student, book, notTaken);
 				}
 				throw new ObjectIdNotFound("Can not find book with title: " + rezervation.getBookTitle());
 			}
@@ -114,6 +110,34 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Can not find rezervation with id: " + id);
 	}
 
+	/*
+	 * Performs the update based on validations required
+	 */
+	private RezervationDto checkIfBookTaken(RezervationEntity rezervationForUpdate, UserEntity student, BookEntity book,
+			boolean notTaken) {
+		if (notTaken) {
+			if (book.getTitle().equalsIgnoreCase(rezervationForUpdate.getBook().getTitle())) {
+				RezervationEntity entity = rezervationRepository.updateRezervation(RezervationConverter.toEntityCreate(book, student));
+				book.setTaken(true);
+				bookRepository.updateBook(book);
+				return RezervationConverter.toDto(entity);
+			}
+			BookEntity bookNotTaken = bookRepository.getBookByTitle(rezervationForUpdate.getBook().getTitle());
+			bookNotTaken.setTaken(false);
+			bookRepository.updateBook(bookNotTaken);
+			RezervationEntity entity = rezervationRepository.updateRezervation(RezervationConverter.toEntityCreate(book, student));
+			book.setTaken(true);
+			bookRepository.updateBook(book);
+			return RezervationConverter.toDto(entity);
+		}
+		throw new CustomExceptionMessage("This book is already taken");
+	}
+
+	/*
+	 * Deletes a Rezervation
+	 * If Rezervation does not have a return date yet
+	 * It Throws exception
+	 */
 	@Override
 	public void deleteRezervation(long id) {
 		RezervationEntity rezervationToDelete = rezervationRepository.findById(id);
@@ -129,6 +153,11 @@ public class RezervationServiceImpl implements RezervationService {
 		throw new ObjectIdNotFound("Can not find Rezervation with id: " + id);
 	}
 
+	/*
+	 * Closes a Rezervation
+	 * It sets a Return date and mark book as not taken
+	 * If rezervation is not found by id it throws exception
+	 */
 	@Override
 	public RezervationDto closeRezervation(long id) {
 		RezervationEntity rezervationToClose = rezervationRepository.findById(id);

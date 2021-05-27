@@ -35,11 +35,18 @@ public class UserRoleServiceImpl implements UserRoleService {
 		this.roleRepository = roleRepository;
 	}
 
+	/*
+	 * Return list of all relations of user-role
+	 */
 	@Override
 	public List<UserRoleDto> getAllUserRole() {
 		return UserRoleConverter.toDtoList(userRoleRepository.getAllUserRoles());
 	}
 
+	/*
+	 * Return a user-role relation based on id
+	 * If id not found throws exception
+	 */
 	@Override
 	public UserRoleDto getUserRoleById(Long id) {
 		UserRoleEntity userRoleToReturn = userRoleRepository.getUserRoleById(id);
@@ -49,6 +56,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 		throw new ObjectIdNotFound("User Role Relation with id: " + id + " can not be found");
 	}
 
+	/*
+	 * Create a new relation user-role
+	 * If role or user does not exist throws exception
+	 * If user-role relation already exist it throws exception
+	 */
 	@Override
 	public UserRoleDto createUserRole(UserRoleCreateUpdateDto userRole) {
 		UserEntity userToConnect = userRepository.getUserByUsername(userRole.getUsername());
@@ -77,6 +89,10 @@ public class UserRoleServiceImpl implements UserRoleService {
 		throw new ObjectFilteredNotFound("There is no user with username: " + userRole.getUsername());
 	}
 
+	/*
+	 * Update an relation user-role
+	 * if invalid data passed it throws exception
+	 */
 	@Override
 	public UserRoleDto updateUserRole(long id, UserRoleCreateUpdateDto userRole) {
 		UserRoleEntity userRoleToUpdate = userRoleRepository.getUserRoleById(id);
@@ -102,6 +118,9 @@ public class UserRoleServiceImpl implements UserRoleService {
 		throw new ObjectIdNotFound("User Role Relation with id: " + id + " not found !");
 	}
 
+	/*
+	 * Checks if user-role relation exists
+	 */
 	public boolean isUserRoleConnected(List<RoleEntity> roles, UserRoleCreateUpdateDto user) {
 		for (RoleEntity re : roles) {
 			if (re.getName().equalsIgnoreCase(user.getRole())) {
@@ -111,6 +130,10 @@ public class UserRoleServiceImpl implements UserRoleService {
 		return false;
 	}
 
+	/*
+	 * delete a user-role relation 
+	 * If it is only one user-role relation it throws exception
+	 */
 	@Override
 	public void deleteUserRole(long id) {
 		UserRoleEntity userRoleToDelete = userRoleRepository.getUserRoleById(id);
