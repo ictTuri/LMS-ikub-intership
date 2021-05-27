@@ -13,9 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 
+import com.project.lms.converter.BookConverter;
 import com.project.lms.dto.BookCreateUpdateDto;
 import com.project.lms.dto.BookDto;
 import com.project.lms.exception.CustomExceptionMessage;
@@ -24,8 +23,10 @@ import com.project.lms.exception.ObjectIdNotFound;
 import com.project.lms.model.BookEntity;
 import com.project.lms.repository.BookRepository;
 import com.project.lms.repository.RezervationRepository;
+import com.project.lms.repository.UserRepository;
 import com.project.lms.service.impl.BookServiceImpl;
 import com.project.lms.utils.BookUtil;
+
 
 @SpringBootTest
 class BookServiceTest {
@@ -34,15 +35,12 @@ class BookServiceTest {
 
 	@Mock
 	private BookRepository bookRepository;
+	
+	@Mock
+	private UserRepository userRepository;
 
 	@Mock
 	private RezervationRepository rezervationRepository;
-	
-	@Mock
-	private SecurityContext securityContext;
-	
-	@Mock
-	private Authentication authentication;
 
 	private BookEntity bookOne, BookTwo;
 	private BookDto bookDto;
@@ -115,9 +113,11 @@ class BookServiceTest {
 	
 	@Test
 	void givenBookId_WhenDelete_thenThrow() {
-		when(bookRepository.getById(Mockito.anyLong())).thenReturn(null);
+		long id = 1;
 		
-		assertThrows(ObjectIdNotFound.class,()->{bookService.deleteBookById(Long.valueOf(2));});
+		when(bookRepository.getById(id)).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class,()->{bookService.deleteBookById(id);});
 	}
 	
 	@Test
@@ -132,4 +132,54 @@ class BookServiceTest {
 		when(bookRepository.getById(id)).thenReturn(book);
 		assertThrows(CustomExceptionMessage.class,()->{bookService.rezerveBookById(id);});
 	}
+	
+	@Test
+	void givenBook_WhenUpdate_thenGoThrough() {
+		long id = 1;
+		BookEntity book = BookUtil.bookFive();
+		BookCreateUpdateDto bookDto = new BookCreateUpdateDto();
+		bookDto.setTitle("Three Stones");
+		
+		Mockito.when(bookRepository.getById(id)).thenReturn(book);
+		Mockito.when(bookRepository.checkBookByTitle(bookDto.getTitle())).thenReturn(false);
+		Mockito.when(bookRepository.updateBook(book)).thenReturn(book);
+		
+		BookDto dtoToGet = bookService.updateBookById(id, bookDto);
+		assertNotNull(dtoToGet);
+		assertEquals(book.getTitle(), dtoToGet.getTitle());
+	}
+	
+	@Test
+	void givenId_WhenGet_thenGoThrough() {
+		long id = 1;
+		BookEntity book = BookUtil.bookFour();
+		
+		Mockito.when(bookRepository.getById(id)).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class, ()->bookService.getBookById(id));
+		
+		Mockito.when(bookRepository.getById(id)).thenReturn(book);
+		
+		BookDto dtoBook = bookService.getBookById(id);
+		
+		assertNotNull(dtoBook);
+		assertEquals(book.getTitle(), dtoBook.getTitle());
+		assertDoesNotThrow(()->bookService.getBookById(id));
+	}
+	
+	@Test
+	void givenDto_WhenCreate_thenGoThrough() {
+		BookEntity book = BookUtil.bookFour();
+		BookCreateUpdateDto dto = new BookCreateUpdateDto();
+		dto.setTitle(book.getTitle());
+		
+		Mockito.when(bookRepository.checkBookByTitle(dto.getTitle())).thenReturn(false);
+		BookEntity bookToCreate = BookConverter.toEntity(dto);
+		Mockito.when(bookRepository.saveBook(bookToCreate)).thenReturn(book);
+	
+		BookDto dtoToGet = bookService.createBook(dto);
+		assertNotNull(dtoToGet);
+		assertEquals(book.getTitle(), dtoToGet.getTitle());
+	}
+	
 }

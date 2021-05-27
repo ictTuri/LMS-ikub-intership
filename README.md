@@ -84,7 +84,35 @@ _Testing_ runs on 2 profiles:
 
 * Controller and Service tests runs on both profiles !
 ---
+#### Controllers 
 
+* Book-Controller Operations
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/bookController.PNG?raw=true)
+
+---
+* Register-Controller Operations
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/registerController.PNG?raw=true)
+
+---
+* Rezervation-Controller Operations
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/rezervationController.PNG?raw=true)
+
+---
+* Users-Controller Operations
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/userController.PNG?raw=true)
+
+---
+* User-Roles-Controller Operations
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/userRoleController.PNG?raw=true)
+
+---
+
+---
 ## Architecture
 This application is created using Spring Boot 2.4  <br />
 * Languages*: JAVA, SQL<br />

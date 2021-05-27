@@ -323,5 +323,24 @@ class UserServiceTest {
 		});
 	}
 
+	@Test
+	void givenDtos_whenValidateUpdate_thenGoThrow() {
+		UserCreateUpdateDto user = new UserCreateUpdateDto();
+		UserEntity userToUpdate  = UserUtil.userAdmin();
+		String roleName = "ADMIN";
+		RoleEntity roleAdmin = RoleUtil.adminRole();
+		RoleEntity role = RoleUtil.secretaryRole();
+		List<RoleEntity> roleList = new ArrayList<>();
+		roleList.add(role);
+		
+		Mockito.when(roleRepository.getRole(roleName)).thenReturn(null);
+		
+		assertThrows(CustomExceptionMessage.class, ()->{userService.updateValidationsExtracted(user, userToUpdate, roleName);});
+		
+		Mockito.when(roleRepository.getRole(roleName)).thenReturn(roleAdmin);
+		
+		UserDto dto = userService.updateValidationsExtracted(user, userToUpdate, roleName);
+		assertNotNull(dto);	
+	}
 	
 }

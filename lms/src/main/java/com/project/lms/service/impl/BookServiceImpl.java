@@ -82,7 +82,7 @@ public class BookServiceImpl implements BookService {
 	public void deleteBookById(Long id) {
 		BookEntity bookToDelete = bookRepository.getById(id);
 		if(bookToDelete != null) {
-			if(bookToDelete.getTaken() == false) {
+			if(bookToDelete.getTaken().equals(false)) {
 				bookRepository.deleteBook(bookToDelete);
 			}
 			throw new CustomExceptionMessage("Ca not delete . Is Rented by a Student!");
