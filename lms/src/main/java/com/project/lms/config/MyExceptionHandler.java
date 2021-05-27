@@ -23,7 +23,7 @@ import com.project.lms.exception.CustomExceptionMessage;
 
 @Component
 @RestControllerAdvice
-public class MyExceptionHandler {
+public class MyExceptionHandler{
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)

@@ -41,6 +41,20 @@ public class UserServiceImpl implements UserService {
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
+	
+	/*
+	 * Return user by id
+	 */
+	public UserEntity userById(long id) {
+		return userRepository.getUserById(id);
+	}
+	
+	/*
+	 * Return user by username
+	 */
+	public UserEntity userByUsername(String username) {
+		return userRepository.getUserByUsername(username);
+	}
 
 	/*
 	 * Create a new user Student in database
@@ -84,7 +98,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public UserDto getUserById(Long id) {
-		UserEntity userToReturn = userRepository.getUserById(id);
+		UserEntity userToReturn = userById(id);
 		if (userToReturn != null) {
 			List<RoleEntity> roles = roleRepository.getUserRole(userToReturn);
 			return UserConverter.toDtoWithRoles(userToReturn, roles);
@@ -115,7 +129,7 @@ public class UserServiceImpl implements UserService {
 				userRole.setUser(userToSave);
 				// Save relation of user and role to UserRole table
 				userRoleRepository.saveUserRole(userRole);
-				UserEntity userToReturn = userRepository.getUserByUsername(userToSave.getUsername());
+				UserEntity userToReturn = userByUsername(userToSave.getUsername());
 				List<RoleEntity> rolesToReturn = roleRepository.getUserRole(userToReturn);
 				return UserConverter.toDtoWithRoles(userToReturn, rolesToReturn);
 			}
@@ -130,7 +144,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public UserDto updateUser(Long id, @Valid UserCreateUpdateDto user) {
-		UserEntity userToUpdate = userRepository.getUserById(id);
+		UserEntity userToUpdate = userById(id);
 		if (userToUpdate != null) {
 			if (existEmail(user, userToUpdate)) {
 				throw new CustomExceptionMessage("Email: " + user.getEmail() + " is taken!");
@@ -220,7 +234,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void hardDeleteUser(long id) {
-		UserEntity userToHardDelete = userRepository.getUserById(id);
+		UserEntity userToHardDelete = userById(id);
 		if(userToHardDelete != null) {
 			List<UserRoleEntity> listOfRelations = userRoleRepository.getThisUserRelations(userToHardDelete);
 			for(UserRoleEntity ure : listOfRelations ) {

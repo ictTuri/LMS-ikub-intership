@@ -27,14 +27,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	private final AuthenticationManager authenticationManager;
 	private final JwtConfig jwtConfig;
 	private final SecretKey secretKey;
-	private static String USERNOTAUTHENTICATED = "Unable to Authenticate! Check username and password!";
+	private static final String USERNOTAUTHENTICATED = "Unable to Authenticate! Check username and password!";
 
 	public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig,
-			SecretKey secretKey, String filterProcessesUrl) {
+			SecretKey secretKey) {
 		this.authenticationManager = authenticationManager;
 		this.jwtConfig = jwtConfig;
 		this.secretKey = secretKey;
-		super.setFilterProcessesUrl(filterProcessesUrl);
+		super.setFilterProcessesUrl("/api/v1/login");
 	}
 
 

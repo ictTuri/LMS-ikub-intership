@@ -1,0 +1,23 @@
+[{
+  "_id": 1,
+  "user": {
+    "$ref": "users",
+    "$id": 1
+  },
+  "role": {
+    "$ref": "roles",
+    "$id": 1
+  },
+  "_class": "com.project.lms.model.UserRoleEntity"
+},{
+  "_id": 2,
+  "user": {
+    "$ref": "users",
+    "$id": 2
+  },
+  "role": {
+    "$ref": "roles",
+    "$id": 3
+  },
+  "_class": "com.project.lms.model.UserRoleEntity"
+}]

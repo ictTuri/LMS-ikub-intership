@@ -38,7 +38,21 @@ public class RezervationServiceImpl implements RezervationService {
 		this.userRepository = userRepository;
 		this.bookRepository = bookRepository;
 	}
-
+	
+	/*
+	 * Returns the BookEntity by title
+	 */
+	public BookEntity bookByTitle(String title) {
+		return bookRepository.getBookByTitle(title);
+	}
+	
+	/*
+	 * Return Rezervation by id 
+	 */
+	public RezervationEntity rezervationById(long id) {
+		return rezervationRepository.findById(id);
+	}
+	
 	/*
 	 * reterns all rezervations
 	 * If non it returns an empty list
@@ -54,7 +68,7 @@ public class RezervationServiceImpl implements RezervationService {
 	 */
 	@Override
 	public RezervationDto showRezervationById(long id) {
-		RezervationEntity rezervation = rezervationRepository.findById(id);
+		RezervationEntity rezervation = rezervationById(id);
 		if (rezervation != null) {
 			return RezervationConverter.toDto(rezervation);
 		}
@@ -70,7 +84,7 @@ public class RezervationServiceImpl implements RezervationService {
 	public RezervationDto createRezervation(RezervationCreateUpdateDto rezervation) {
 		UserEntity student = userRepository.getActivatedUserByUsername(rezervation.getUsername());
 		if (student != null) {
-			BookEntity book = bookRepository.getBookByTitle(rezervation.getBookTitle());
+			BookEntity book = bookByTitle(rezervation.getBookTitle());
 			if (book != null) {
 				boolean notTaken = bookRepository.isTaken(book.getTitle());
 				if (notTaken) {
@@ -94,11 +108,11 @@ public class RezervationServiceImpl implements RezervationService {
 	 */
 	@Override
 	public RezervationDto updateRezervation(long id, @Valid RezervationCreateUpdateDto rezervation) {
-		RezervationEntity rezervationForUpdate = rezervationRepository.findById(id);
+		RezervationEntity rezervationForUpdate = rezervationById(id);
 		if (rezervationForUpdate != null) {
 			UserEntity student = userRepository.getActivatedUserByUsername(rezervation.getUsername());
 			if (student != null) {
-				BookEntity book = bookRepository.getBookByTitle(rezervation.getBookTitle());
+				BookEntity book = bookByTitle(rezervation.getBookTitle());
 				if (book != null) {
 					boolean notTaken = bookRepository.isTaken(book.getTitle());
 					return checkIfBookTaken(rezervationForUpdate, student, book, notTaken);
@@ -122,7 +136,7 @@ public class RezervationServiceImpl implements RezervationService {
 				bookRepository.updateBook(book);
 				return RezervationConverter.toDto(entity);
 			}
-			BookEntity bookNotTaken = bookRepository.getBookByTitle(rezervationForUpdate.getBook().getTitle());
+			BookEntity bookNotTaken = bookByTitle(rezervationForUpdate.getBook().getTitle());
 			bookNotTaken.setTaken(false);
 			bookRepository.updateBook(bookNotTaken);
 			RezervationEntity entity = rezervationRepository.updateRezervation(RezervationConverter.toEntityCreate(book, student));
@@ -140,10 +154,10 @@ public class RezervationServiceImpl implements RezervationService {
 	 */
 	@Override
 	public void deleteRezervation(long id) {
-		RezervationEntity rezervationToDelete = rezervationRepository.findById(id);
+		RezervationEntity rezervationToDelete = rezervationById(id);
 		if (rezervationToDelete != null) {
 			if (rezervationToDelete.getReturnDate() != null) {
-				BookEntity book = bookRepository.getBookByTitle(rezervationToDelete.getBook().getTitle());
+				BookEntity book = bookByTitle(rezervationToDelete.getBook().getTitle());
 				book.setTaken(false);
 				bookRepository.updateBook(book);
 				rezervationRepository.deleteRezervation(rezervationToDelete);
@@ -160,9 +174,9 @@ public class RezervationServiceImpl implements RezervationService {
 	 */
 	@Override
 	public RezervationDto closeRezervation(long id) {
-		RezervationEntity rezervationToClose = rezervationRepository.findById(id);
+		RezervationEntity rezervationToClose = rezervationById(id);
 		if(rezervationToClose != null) {
-			BookEntity book = bookRepository.getBookByTitle(rezervationToClose.getBook().getTitle());
+			BookEntity book = bookByTitle(rezervationToClose.getBook().getTitle());
 			book.setTaken(false);
 			rezervationToClose.setReturnDate(LocalDateTime.now());
 			rezervationRepository.updateRezervation(rezervationToClose);
@@ -171,5 +185,4 @@ public class RezervationServiceImpl implements RezervationService {
 		}
 		throw new ObjectIdNotFound("Can not find rezervation with given id");
 	}
-
 }

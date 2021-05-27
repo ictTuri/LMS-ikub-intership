@@ -38,7 +38,28 @@ public class BookServiceImpl implements BookService {
 		this.rezervationRepository = rezervationRepository;
 		this.userRepository = userRepository;
 	}
-
+	
+	/*
+	 * Returns the UserEntity of the logged in user
+	 */
+	public UserEntity thisUser() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return  userRepository.getUserByUsername(username);	
+	}
+	
+	/*
+	 * Returns the BookEntity by id
+	 */
+	public BookEntity bookById(long id) {
+		return bookRepository.getById(id);
+	}
+	
+	/*
+	 * Returns the BookEntity by title
+	 */
+	public BookEntity bookByTitle(String title) {
+		return bookRepository.getBookByTitle(title);
+	}
 	
 	/*
 	 * Returns all books from database
@@ -55,7 +76,7 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	public BookDto getBookById(Long id) {
-		BookEntity book = bookRepository.getById(id);
+		BookEntity book = bookById(id);
 		if(book != null) {
 			return BookConverter.toDto(book);
 		}
@@ -83,7 +104,7 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	public BookDto updateBookById(Long id, BookCreateUpdateDto book) {
-		BookEntity bookToUpdate = bookRepository.getById(id);
+		BookEntity bookToUpdate = bookById(id);
 		if(bookToUpdate != null) {
 			if(!(book.getTitle().equals(bookToUpdate.getTitle())) && bookRepository.checkBookByTitle(book.getTitle())) {
 				throw new CustomExceptionMessage("Book with title: "+book.getTitle()+" -already exist");
@@ -100,7 +121,7 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	public void deleteBookById(Long id) {
-		BookEntity bookToDelete = bookRepository.getById(id);
+		BookEntity bookToDelete = bookById(id);
 		if(bookToDelete != null) {
 			if(bookToDelete.getTaken().equals(false)) {
 				bookRepository.deleteBook(bookToDelete);
@@ -115,7 +136,7 @@ public class BookServiceImpl implements BookService {
 	 * If not found one throws exception
 	 */
 	public BookEntity getBookById(String title) {
-		BookEntity book = bookRepository.getBookByTitle(title);
+		BookEntity book = bookByTitle(title);
 		if(book != null) {
 			return book;
 		}
@@ -129,7 +150,7 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	public RezervationDto rezerveBookById(Long id) {
-		BookEntity bookToRezerve = bookRepository.getById(id);
+		BookEntity bookToRezerve = bookById(id);
 		if(bookToRezerve != null) {
 			if(bookToRezerve.getTaken().equals(false)) {
 				RezervationEntity entity = RezervationConverter.toEntityCreate(bookToRezerve, thisUser());
@@ -141,14 +162,6 @@ public class BookServiceImpl implements BookService {
 			throw new CustomExceptionMessage("This Book is already taken!");
 		}
 		throw new ObjectIdNotFound("Can not find book with id: "+id);
-	}
-
-	/*
-	 * Returns the UserEntity of the logged in user
-	 */
-	public UserEntity thisUser() {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		return  userRepository.getUserByUsername(username);	
 	}
 
 	/*
@@ -173,4 +186,5 @@ public class BookServiceImpl implements BookService {
 		}
 		throw new ObjectFilteredNotFound("Rezervation with Id: "+id+" Can not be found!");
 	}
+
 }

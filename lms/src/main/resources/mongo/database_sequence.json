@@ -1,0 +1,10 @@
+[{
+  "_id": "roles_sequence",
+  "seq": 3
+},{
+  "_id": "users_sequence",
+  "seq": 2
+},{
+  "_id": "user_role_sequence",
+  "seq": 2
+}]

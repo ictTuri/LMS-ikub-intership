@@ -1,0 +1,22 @@
+[{
+  "_id": 1,
+  "firstName": "admin",
+  "lastName": "admin",
+  "email": "admin@gmail.com",
+  "username": "admin",
+  "password": "$2a$10$G4vcaeDcGU54sVMUKmqTpuYSmHpXMZTGCMcxCM1I1fUUjIG4mg5Ry",
+  "activated": true,
+  "userRoles": [],
+  "_class": "com.project.lms.model.UserEntity"
+},{
+  "_id": 2,
+  "firstName": "student",
+  "lastName": "student",
+  "email": "student@gmail.com",
+  "username": "student",
+  "password": "$2a$10$aBg28ZEluX2E1yzIt6LLEeCbRU0ZYDjbnmAPyEA3ScGt.joZ7pn8O",
+  "activated": true,
+  "userRoles": [],
+  "rezervations": [],
+  "_class": "com.project.lms.model.UserEntity"
+}]

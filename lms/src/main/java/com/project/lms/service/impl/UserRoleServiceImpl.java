@@ -36,6 +36,13 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	/*
+	 * Return user-role relation by id
+	 */
+	public UserRoleEntity userRoleById(long id) {
+		return userRoleRepository.getUserRoleById(id);
+	}
+	
+	/*
 	 * Return list of all relations of user-role
 	 */
 	@Override
@@ -49,7 +56,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 	 */
 	@Override
 	public UserRoleDto getUserRoleById(Long id) {
-		UserRoleEntity userRoleToReturn = userRoleRepository.getUserRoleById(id);
+		UserRoleEntity userRoleToReturn = userRoleById(id);
 		if (userRoleToReturn != null) {
 			return UserRoleConverter.toDto(userRoleToReturn);
 		}
@@ -95,7 +102,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 	 */
 	@Override
 	public UserRoleDto updateUserRole(long id, UserRoleCreateUpdateDto userRole) {
-		UserRoleEntity userRoleToUpdate = userRoleRepository.getUserRoleById(id);
+		UserRoleEntity userRoleToUpdate = userRoleById(id);
 		if (userRoleToUpdate != null) {
 			UserEntity userToUpdate = userRepository.getUserByUsername(userRole.getUsername());
 			if (userToUpdate != null) {
@@ -136,7 +143,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 	 */
 	@Override
 	public void deleteUserRole(long id) {
-		UserRoleEntity userRoleToDelete = userRoleRepository.getUserRoleById(id);
+		UserRoleEntity userRoleToDelete = userRoleById(id);
 		if (userRoleToDelete != null) {
 			int roleListSize = roleRepository.getUserRole(userRoleToDelete.getUser()).size();
 			if (roleListSize > 1) {
