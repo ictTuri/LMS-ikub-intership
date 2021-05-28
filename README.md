@@ -65,8 +65,9 @@ _User_ Student
 ---
 #### Maven Testing
 * Run Maven Clean and Then Maven Test
-* Main Profile set to "mongo"
-* Mongo Repository Tested along with Repository Interface
+* Main Profile set to "mongo" or "sql"
+* Mongo Repository Tested along with Sql Repository
+* 80% code coverage on tests
 
 ---
 #### Technical details on testing
