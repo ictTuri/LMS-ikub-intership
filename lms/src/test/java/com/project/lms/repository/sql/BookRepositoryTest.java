@@ -1,5 +1,8 @@
-package com.project.lms.repository;
+package com.project.lms.repository.sql;
 
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.transaction.Transactional;
 
@@ -10,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.project.lms.model.BookEntity;
-import com.project.lms.repository.sql.BookRepositoryImpl;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest
@@ -81,6 +83,34 @@ class BookRepositoryTest {
 		bookRepository.deleteBook(bookOne);
 		
 		Assertions.assertNull(bookRepository.getBookByTitle(bookOne.getTitle()));
+	}
+	
+	
+	@Test
+	void givenBook_whenCheckTitle_thenGetBoolean() {
+		BookEntity bookOne = BookUtil.bookOne();
+		bookRepository.saveBook(bookOne);
+
+		boolean bookByTitle  = bookRepository.checkBookByTitle(bookOne.getTitle());
+		
+		assertTrue(bookByTitle);
+	}
+	
+	@Test
+	void givenBook_whenCheckIsTaken_thenGetBoolean() {
+		BookEntity bookOne = BookUtil.bookOne();
+		bookOne.setTaken(false);
+		bookRepository.saveBook(bookOne);
+
+		boolean bookByTitle  = bookRepository.isTaken(bookOne.getTitle());
+		assertTrue(bookByTitle);
+		
+		BookEntity bookToGet = bookRepository.getBookByTitle(bookOne.getTitle());
+		bookToGet.setTaken(true);
+		bookRepository.updateBook(bookToGet);
+		
+		boolean bookByTitleNotTaken  = bookRepository.isTaken(bookOne.getTitle());
+		assertFalse(bookByTitleNotTaken);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.project.lms.repository;
+package com.project.lms.repository.sql;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.project.lms.model.RoleEntity;
-import com.project.lms.repository.sql.RoleRepositoryImpl;
 import com.project.lms.utils.RoleUtil;
 
 @SpringBootTest

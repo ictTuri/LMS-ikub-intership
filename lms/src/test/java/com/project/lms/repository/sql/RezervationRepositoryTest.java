@@ -1,4 +1,4 @@
-package com.project.lms.repository;
+package com.project.lms.repository.sql;
 
 import java.util.List;
 
@@ -13,7 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import com.project.lms.model.BookEntity;
 import com.project.lms.model.RezervationEntity;
 import com.project.lms.model.UserEntity;
-import com.project.lms.repository.sql.RezervationRepositoryImpl;
+import com.project.lms.repository.BookRepository;
+import com.project.lms.repository.UserRepository;
 import com.project.lms.utils.BookUtil;
 import com.project.lms.utils.UserUtil;
 

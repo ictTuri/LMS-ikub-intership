@@ -127,7 +127,7 @@ public class RezervationServiceImpl implements RezervationService {
 	/*
 	 * Performs the update based on validations required
 	 */
-	private RezervationDto checkIfBookTaken(RezervationEntity rezervationForUpdate, UserEntity student, BookEntity book,
+	public RezervationDto checkIfBookTaken(RezervationEntity rezervationForUpdate, UserEntity student, BookEntity book,
 			boolean notTaken) {
 		if (notTaken) {
 			if (book.getTitle().equalsIgnoreCase(rezervationForUpdate.getBook().getTitle())) {

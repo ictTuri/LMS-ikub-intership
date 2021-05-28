@@ -1,4 +1,4 @@
-package com.project.lms.repository;
+package com.project.lms.repository.sql;
 
 import java.util.List;
 
@@ -13,9 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
-import com.project.lms.repository.sql.RoleRepositoryImpl;
-import com.project.lms.repository.sql.UserRepositoryImpl;
-import com.project.lms.repository.sql.UserRoleRepositoryImpl;
 import com.project.lms.utils.RoleUtil;
 import com.project.lms.utils.UserUtil;
 
