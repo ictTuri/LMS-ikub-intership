@@ -1,19 +1,24 @@
 package com.project.lms.repository;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.project.lms.model.UserEntity;
+import com.project.lms.repository.sql.UserRepositoryImpl;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
+@Transactional
+@ActiveProfiles("sql")
 class UserRepositoryTest {
 
 	@Autowired
-	private UserRepository userRepository;
-
+	private UserRepositoryImpl userRepository;
 	
 	@Test
 	void givenUsername_whenRetrieved_thenGetUserData() {
@@ -44,11 +49,12 @@ class UserRepositoryTest {
 	void givenUser_whenSave_thenGetCreatedUser() {
 		Integer userSize = userRepository.getAllUsers().size();
 		UserEntity user = UserUtil.userAdmin();
-
+		user.setEmail("userTest@gmail.com");
+		user.setUsername("adminTest");
 		userRepository.saveUser(user);
 		
 		Assertions.assertEquals(userSize+1, userRepository.getAllUsers().size());
-		Assertions.assertNotNull(userRepository.getUserByUsername("admin"));
+		Assertions.assertNotNull(userRepository.getUserByUsername("adminTest"));
 	}
 	
 	@Test
@@ -64,12 +70,14 @@ class UserRepositoryTest {
 	@Test
 	void givenUser_whenSoftDelete_thenGetNoResult() {
 		UserEntity user = UserUtil.userAdmin();
+		user.setEmail("userTest2@gmail.com");
+		user.setUsername("adminTestUser");
 		userRepository.saveUser(user);
 
 		user.setActivated(Boolean.FALSE);
 		userRepository.updateUser(user);
 		
-		Assertions.assertNull(userRepository.getActivatedUserById(2));
+		Assertions.assertNull(userRepository.getActivatedUserByUsername("adminTestUser"));
 	}
 
 }

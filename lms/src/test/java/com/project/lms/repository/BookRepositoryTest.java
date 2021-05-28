@@ -1,19 +1,25 @@
 package com.project.lms.repository;
 
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.project.lms.model.BookEntity;
+import com.project.lms.repository.sql.BookRepositoryImpl;
 import com.project.lms.utils.BookUtil;
 
 @SpringBootTest
+@Transactional
+@ActiveProfiles("sql")
 class BookRepositoryTest {
 
 	@Autowired
-	private BookRepository bookRepository;
+	private BookRepositoryImpl bookRepository;
 	
 	@Test
 	void givenTitle_whenRetrieved_thenGetBookData() {

@@ -3,7 +3,6 @@ package com.project.lms.repository.sql;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import org.springframework.context.annotation.Profile;
@@ -14,7 +13,7 @@ import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RoleRepository;
 
 @Repository
-@Profile({ "sql", "test" })
+@Profile("sql")
 public class RoleRepositoryImpl implements RoleRepository {
 
 	private EntityManager em;
@@ -38,8 +37,8 @@ public class RoleRepositoryImpl implements RoleRepository {
 		final String ROLE_BY_NAME = "FROM RoleEntity re  WHERE re.name = :name";
 		TypedQuery<RoleEntity> query = em.createQuery(ROLE_BY_NAME, RoleEntity.class).setParameter("name", name);
 		try {
-			return query.getSingleResult();
-		} catch (NoResultException e) {
+			return query.getResultList().get(0);
+		} catch (IllegalStateException | IndexOutOfBoundsException e) {
 			return null;
 		}
 	}

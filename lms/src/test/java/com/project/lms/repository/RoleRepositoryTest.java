@@ -2,20 +2,25 @@ package com.project.lms.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.project.lms.model.RoleEntity;
+import com.project.lms.repository.sql.RoleRepositoryImpl;
 import com.project.lms.utils.RoleUtil;
 
 @SpringBootTest
+@Transactional
+@ActiveProfiles("sql")
 class RoleRepositoryTest {
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private RoleRepositoryImpl roleRepository;
 	
 	@Test
 	void givenRole_whenRetrieved_thenGetRoleData() {

@@ -12,7 +12,7 @@ import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RezervationRepository;
 
 @Repository
-@Profile({"sql","test"})
+@Profile("sql")
 public class RezervationRepositoryImpl implements RezervationRepository {
 
 	private EntityManager em;

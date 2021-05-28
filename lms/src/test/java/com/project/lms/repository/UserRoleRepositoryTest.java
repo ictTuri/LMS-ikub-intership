@@ -2,32 +2,42 @@ package com.project.lms.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
+import com.project.lms.repository.sql.RoleRepositoryImpl;
+import com.project.lms.repository.sql.UserRepositoryImpl;
+import com.project.lms.repository.sql.UserRoleRepositoryImpl;
 import com.project.lms.utils.RoleUtil;
 import com.project.lms.utils.UserUtil;
 
 @SpringBootTest
+@Transactional
+@ActiveProfiles("sql")
 class UserRoleRepositoryTest {
 	
 	@Autowired
-	private UserRoleRepository userRoleRepo;
+	private UserRoleRepositoryImpl userRoleRepo;
 	
 	@Autowired
-	private RoleRepository roleRepo;
+	private RoleRepositoryImpl roleRepo;
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserRepositoryImpl userRepo;
 	
 	@Test
 	void givenUserRole_whenRetrievedByUser_thenCheckUserRetrieved() {
 		UserEntity user = UserUtil.userAdmin();
+		user.setEmail("email@test.com");
+		user.setUsername("userTestAdminOne");
 		RoleEntity role = RoleUtil.adminRole();
 		UserRoleEntity userRole = new UserRoleEntity();
 		userRole.setUser(user);
@@ -46,6 +56,8 @@ class UserRoleRepositoryTest {
 	@Test
 	void givenUserRole_whenUpdate_thenGetUpdatedUserRole() {
 		UserEntity user = UserUtil.userAdmin();
+		user.setUsername("admintTestthree");
+		user.setEmail("testEmail@gmail.com");
 		RoleEntity roleStudent = RoleUtil.studentRole();
 		RoleEntity roleAdmin = RoleUtil.adminRole();
 		UserRoleEntity userRole = new UserRoleEntity();
