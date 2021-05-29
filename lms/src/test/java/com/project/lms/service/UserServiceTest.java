@@ -29,9 +29,11 @@ import com.project.lms.dto.UserRegisterDto;
 import com.project.lms.enums.Roles;
 import com.project.lms.exception.CustomExceptionMessage;
 import com.project.lms.exception.ObjectIdNotFound;
+import com.project.lms.model.RezervationEntity;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
+import com.project.lms.repository.RezervationRepository;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
 import com.project.lms.repository.UserRoleRepository;
@@ -50,6 +52,9 @@ class UserServiceTest {
 	
 	@Mock
 	private RoleRepository roleRepository;
+	
+	@Mock
+	private RezervationRepository rezervationRepository;
 	
 	@Mock
 	private UserRoleRepository userRoleRepository;
@@ -296,6 +301,7 @@ class UserServiceTest {
 	@Test
 	void givenUser_whenHardDelete_thenThrowNothing() {
 		long id = 1;
+		List<RezervationEntity> rezervationList = new ArrayList<>();
 		UserEntity userToDelete = UserUtil.userTest();
 		userToDelete.setId(id);
 		userToDelete.setActivated(true);
@@ -304,6 +310,7 @@ class UserServiceTest {
 		userRole.setRole(RoleUtil.adminRole());
 		userRole.setUser(userToDelete);
 		
+		Mockito.when(rezervationRepository.myRezervations(userToDelete)).thenReturn(rezervationList);
 		Mockito.when(userRoleRepository.getThisUserRelations(userToDelete)).thenReturn(list);
 		Mockito.when(userRepository.getUserById(id)).thenReturn(userToDelete);
 		

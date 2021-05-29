@@ -251,6 +251,7 @@ class RezervationServiceTest {
 		RezervationEntity rezervation = new RezervationEntity();
 		rezervation.setBook(book);
 		rezervation.setStudent(user);
+		rezervation.setId(Long.valueOf(4));
 		boolean notTaken = true;
 		
 		Mockito.when(rezervationRepository.updateRezervation(RezervationConverter.toEntityCreate(book, user))).thenReturn(rezervation);

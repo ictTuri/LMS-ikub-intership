@@ -16,9 +16,11 @@ import com.project.lms.dto.UserDto;
 import com.project.lms.enums.Roles;
 import com.project.lms.exception.CustomExceptionMessage;
 import com.project.lms.exception.ObjectIdNotFound;
+import com.project.lms.model.RezervationEntity;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.model.UserEntity;
 import com.project.lms.model.UserRoleEntity;
+import com.project.lms.repository.RezervationRepository;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
 import com.project.lms.repository.UserRoleRepository;
@@ -32,14 +34,17 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
 	private UserRoleRepository userRoleRepository;
+	private RezervationRepository rezervationRepository;
 
 	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-			UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+			UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
+			RezervationRepository rezervationRepository) {
 		super();
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.rezervationRepository = rezervationRepository;
 	}
 	
 	/*
@@ -236,14 +241,33 @@ public class UserServiceImpl implements UserService {
 	public void hardDeleteUser(long id) {
 		UserEntity userToHardDelete = userById(id);
 		if(userToHardDelete != null) {
-			List<UserRoleEntity> listOfRelations = userRoleRepository.getThisUserRelations(userToHardDelete);
-			for(UserRoleEntity ure : listOfRelations ) {
-				userRoleRepository.deleteUserRole(ure);
+			int size = validRezervations(userToHardDelete);
+			if(size <= 0) {
+				List<UserRoleEntity> listOfRelations = userRoleRepository.getThisUserRelations(userToHardDelete);
+				for(UserRoleEntity ure : listOfRelations ) {
+					userRoleRepository.deleteUserRole(ure);
+				}
+					userRepository.deleteUser(userToHardDelete);
+			}else {
+				throw new CustomExceptionMessage("User has unReturned book, can not delete !");
 			}
-				userRepository.deleteUser(userToHardDelete);
 		}else {
 			throw new ObjectIdNotFound("Can not find user with id: "+id);
 		}	
+	}
+
+	/*
+	 * return how many rezervation are unclosed for user
+	 */
+	private int validRezervations(UserEntity userToHardDelete) {
+		List<RezervationEntity> listRezervation = rezervationRepository.myRezervations(userToHardDelete);
+		int size = 0;
+		for(RezervationEntity re : listRezervation) {
+			if(re.getReturnDate() != null) {
+				size++;
+			}
+		}
+		return size;
 	}
 	
 
