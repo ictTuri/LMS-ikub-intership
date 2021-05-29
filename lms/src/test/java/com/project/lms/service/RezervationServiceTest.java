@@ -243,23 +243,4 @@ class RezervationServiceTest {
 			rezervationService.updateRezervation(id, rezervationDto);
 		});
 	}
-	
-	@Test
-	void givenData_whenValidate_thenPerformUpdate() {
-		UserEntity user = UserUtil.userAdmin();
-		BookEntity book = BookUtil.bookFive();
-		RezervationEntity rezervation = new RezervationEntity();
-		rezervation.setBook(book);
-		rezervation.setStudent(user);
-		rezervation.setId(Long.valueOf(4));
-		boolean notTaken = true;
-		
-		Mockito.when(rezervationRepository.updateRezervation(RezervationConverter.toEntityCreate(book, user))).thenReturn(rezervation);
-		RezervationDto reezrvationReturned = rezervationService.checkIfBookTaken(rezervation, user, book, notTaken);
-		
-		assertNotNull(reezrvationReturned);
-		assertEquals(reezrvationReturned.getBookTitle(), book.getTitle());
-		
-	}
-	
 }

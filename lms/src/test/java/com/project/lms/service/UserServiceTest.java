@@ -329,6 +329,18 @@ class UserServiceTest {
 			userService.hardDeleteUser(id);
 		});
 	}
+	
+	@Test
+	void givenDto_whenUpdate_thenGoThrow() {
+		UserCreateUpdateDto userDto = new UserCreateUpdateDto();
+		
+		long id = 1;
+
+		when(userRepository.getUserById(id)).thenReturn(null);
+		
+		assertThrows(ObjectIdNotFound.class, ()->userService.updateUser(id, userDto));
+		
+	}
 
 	@Test
 	void givenDtos_whenValidateUpdate_thenGoThrow() {

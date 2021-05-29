@@ -17,12 +17,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
 @Document(collection = "roles")
 public class RoleEntity {
@@ -44,31 +46,10 @@ public class RoleEntity {
 	private String name;
 	
 	
-	
 	@Override
 	public String toString() {
 		return "RoleEntity [id=" + id + ", name=" + name + "]";
 	}
-
-	public RoleEntity(String name) {
-		super();
-		this.name = name;
-	}
-
-	public RoleEntity(Long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-
-	public RoleEntity(Long id, Set<UserRoleEntity> userRoles, String name) {
-		super();
-		this.id = id;
-		this.userRoles = userRoles;
-		this.name = name;
-	}
-	
-
 }
 	
 	
