@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -67,8 +68,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 							.plusDays(jwtConfig.getTokenExpirationAfterDays())))
 					.compressWith(CompressionCodecs.DEFLATE)
 					.signWith(secretKey).compact();
-
-			response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
+			
+			Cookie cookie = new Cookie("token", token);
+			cookie.setPath("/");
+		    cookie.setSecure(true);
+		    cookie.setHttpOnly(true);
+			response.addCookie(cookie);
+	//		response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
 	}
 	
 }

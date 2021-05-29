@@ -9,7 +9,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,7 +23,6 @@ import com.project.lms.exception.CustomExceptionMessage;
 
 @Component
 @RestControllerAdvice
-@ControllerAdvice
 public class MyExceptionHandler{
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -49,7 +47,7 @@ public class MyExceptionHandler{
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
 		ErrorFormat errorBody = new ErrorFormat();
 		errorBody.setMessage(ex.getMessage());
-		errorBody.setDesc(request.getDescription(true));
+		errorBody.setDesc(request.getDescription(false));
 		errorBody.setSuggestion("Contact Admin");
 
 		return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);

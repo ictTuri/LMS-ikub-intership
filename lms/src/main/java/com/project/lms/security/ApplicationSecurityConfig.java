@@ -56,7 +56,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 						.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
 						.authorizeRequests()
 						.anyRequest()
-						.authenticated();
+						.authenticated()
+						.and()
+						.logout().logoutUrl("/logout")
+						.deleteCookies("token").invalidateHttpSession(true);
 	}
 
 	@Override
