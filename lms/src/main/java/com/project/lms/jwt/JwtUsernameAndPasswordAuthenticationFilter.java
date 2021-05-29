@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lms.exception.InvalidCredentialsException;
 
+import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.IOException;
 
@@ -64,6 +65,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 					.setIssuedAt(new Date())
 					.setExpiration(java.sql.Date.valueOf(LocalDate.now()
 							.plusDays(jwtConfig.getTokenExpirationAfterDays())))
+					.compressWith(CompressionCodecs.DEFLATE)
 					.signWith(secretKey).compact();
 
 			response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);

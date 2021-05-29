@@ -11,7 +11,7 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "application.jwt")
 @Component
 public class JwtConfig {
-	 private String secretKey;
+	 	private String secretKey;
 	    private String tokenPrefix;
 	    private Integer tokenExpirationAfterDays;
 	    

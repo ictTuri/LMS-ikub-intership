@@ -31,7 +31,7 @@ public class ApplicationUserService implements UserDetailsService{
 	
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws InvalidCredentialsException {
 		UserEntity userEntity = userRepository.getActivatedUserByUsername(username);
 		if (userEntity == null) {
 			throw new UsernameNotFoundException("User: "+username+" not found or not activated!");

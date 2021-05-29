@@ -48,11 +48,9 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
 		try {
 
-			@SuppressWarnings("deprecation")
-			Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
-			Claims body = claimsJws.getBody();
+			Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
 			
+			Claims body = claimsJws.getBody();
 			String username = body.getSubject();
 
 			@SuppressWarnings("unchecked")

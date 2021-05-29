@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 
 @Configuration
 public class JwtSecretKey {
 
     private final JwtConfig jwtConfig;
+  
 
     @Autowired
     public JwtSecretKey(JwtConfig jwtConfig) {
@@ -20,6 +22,7 @@ public class JwtSecretKey {
 
     @Bean
     public SecretKey secretKey() {
-        return Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes());
+    	final String encodedKey = Encoders.BASE64.encode(jwtConfig.getSecretKey().getBytes());
+        return Keys.hmacShaKeyFor(encodedKey.getBytes());
     }
 }
