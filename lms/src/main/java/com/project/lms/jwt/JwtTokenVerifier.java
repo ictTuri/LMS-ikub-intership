@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -35,20 +36,17 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
-
+		
 		Cookie cookie = WebUtils.getCookie(request, "token");
 		if(cookie == null) {
 			 throw new SecurityException("JWT token missing");
 		}
-			String token = cookie.getValue();
-		try {
 			
+		String token = cookie.getValue();
+		try {	
 			Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-			
 			Claims body = claimsJws.getBody();
 			String username = body.getSubject();
-
 			@SuppressWarnings("unchecked")
 			var authorities = (List<Map<String, String>>) body.get("authorities");
 
@@ -64,9 +62,12 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 			SecurityContextHolder.clearContext();
 			throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
 		}
-
 		filterChain.doFilter(request, response);
+	}
 
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return new AntPathMatcher().matchStart("swagger",  request.getServletPath());
 	}
 
 }

@@ -2,10 +2,10 @@ package com.project.lms.security;
 
 import javax.crypto.SecretKey;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,13 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.project.lms.auth.ApplicationUserService;
 import com.project.lms.auth.RestAuthenticationEntryPoint;
-import com.project.lms.jwt.JwtConfig;
 import com.project.lms.jwt.JwtTokenVerifier;
-import com.project.lms.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -30,22 +29,24 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final PasswordEncoder passwordEncoder;
 	private final ApplicationUserService applicationUserService;
-	private final SecretKey secretKey;
-	private final JwtConfig jwtConfig;
 	private final LogoutSuccessHandler logoutSuccess;
+	private final SecretKey secretKey;
 	private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
 	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService,
-			SecretKey secretKey, JwtConfig jwtConfig, LogoutSuccessHandler logoutSuccess,
+			LogoutSuccessHandler logoutSuccess, SecretKey secretKey,
 			RestAuthenticationEntryPoint authenticationEntryPoint) {
 		super();
 		this.passwordEncoder = passwordEncoder;
 		this.applicationUserService = applicationUserService;
-		this.secretKey = secretKey;
-		this.jwtConfig = jwtConfig;
 		this.logoutSuccess = logoutSuccess;
 		this.authenticationEntryPoint = authenticationEntryPoint;
+		this.secretKey = secretKey;
 	}
+	
+	public JwtTokenVerifier jwtTokenVerifier(){
+        return new JwtTokenVerifier(secretKey);
+    }
 
 	@Override
     public void configure(WebSecurity http) {
@@ -55,14 +56,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 
 		http.csrf().disable()
 						.sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 						.and()
-						.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-						.addFilterAfter(new JwtTokenVerifier(secretKey),JwtUsernameAndPasswordAuthenticationFilter.class)
+						.addFilterAfter(jwtTokenVerifier(), UsernamePasswordAuthenticationFilter.class)
 						.authorizeRequests()
 						.anyRequest()
 						.authenticated()
@@ -71,6 +70,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 						.logoutUrl("/api/v1/_logout").logoutSuccessHandler(logoutSuccess)
 						.deleteCookies("token").invalidateHttpSession(true);
 	
+		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+	// .authorizeRequests().antMatchers("/api/**").permitAll().and()
 	}
 
 	@Override
@@ -87,9 +88,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private String[] getDisabledUrlPaths() {
-		return new String[] {"/api/v1/register","/open/**","/h2-console/**","/h2-console", "/api/register", "/webjars/**", "/v2/api-docs/**",
+		return new String[] {"/api/v1/register", "/api/v1/_login", "/open/**", "/h2-console/**","/h2-console", "/api/register", "/webjars/**", "/v2/api-docs/**",
 				"/swagger-resources/**", "/swagger-ui.html", "/swagger/**", "/favicon.ico", "/api/swagger.json",
 				"/actuator/health" };
+	}
+
+	@Bean
+	@Override
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
 	}
 
 }

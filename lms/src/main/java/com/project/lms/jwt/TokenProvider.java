@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
+import javax.servlet.http.Cookie;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -34,4 +35,12 @@ public class TokenProvider{
 					.signWith(secretKey).compact();
 
 	   }
+	
+	public Cookie createCookie(String token) {
+		Cookie cookie = new Cookie("token", token);
+		cookie.setPath("/");
+	    cookie.setSecure(true);
+	    cookie.setHttpOnly(true);
+	    return cookie;
+   }
 }
