@@ -2,6 +2,7 @@ package com.project.lms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -20,6 +21,12 @@ public class AppConfiguration {
           .apis(RequestHandlerSelectors.any())              
           .paths(PathSelectors.any())                          
           .build();                                           
+	}
+	
+	
+	@Bean
+	public LogoutSuccessHandler logoutSuccessHandler() {
+	    return new CustomLogoutSuccessHandler();
 	}
 	
 }

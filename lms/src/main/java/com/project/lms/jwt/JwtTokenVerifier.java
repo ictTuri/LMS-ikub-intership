@@ -27,24 +27,15 @@ import io.jsonwebtoken.Jwts;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
 	private final SecretKey secretKey;
-//	private final JwtConfig jwtConfig;
 
-	public JwtTokenVerifier(SecretKey secretKey, JwtConfig jwtConfig) {
+	public JwtTokenVerifier(SecretKey secretKey) {
 		this.secretKey = secretKey;
-//		this.jwtConfig = jwtConfig;
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-//		String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
-//
-//		if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
-//			filterChain.doFilter(request, response);
-//			return;
-//		}
-//
-//		String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
+
 
 		Cookie cookie = WebUtils.getCookie(request, "token");
 		if(cookie == null) {
