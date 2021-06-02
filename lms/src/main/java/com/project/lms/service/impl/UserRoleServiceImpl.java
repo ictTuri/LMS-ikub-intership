@@ -110,6 +110,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 				RoleEntity roleToUpdate = roleRepository.getRole(roleName);
 				if (roleToUpdate != null) {
 					List<RoleEntity> roleList = roleRepository.getUserRole(userToUpdate);
+					// Checks connection between user and role
 					boolean foundRole = isUserRoleConnected(roleList, userRole);
 					if (!foundRole) {
 						userRoleToUpdate.setRole(roleToUpdate);

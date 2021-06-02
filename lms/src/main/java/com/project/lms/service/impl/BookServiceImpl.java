@@ -155,6 +155,7 @@ public class BookServiceImpl implements BookService {
 			if(bookToRezerve.getTaken().equals(false)) {
 				RezervationEntity entity = RezervationConverter.toEntityCreate(bookToRezerve, thisUser());
 				rezervationRepository.saveRezervation(entity);
+				// update book taken data so can not be taken by others
 				bookToRezerve.setTaken(true);
 				bookRepository.updateBook(bookToRezerve);
 				return RezervationConverter.toDto(entity);

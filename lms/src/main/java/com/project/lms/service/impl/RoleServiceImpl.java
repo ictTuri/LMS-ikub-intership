@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.project.lms.converter.RoleConverter;
 import com.project.lms.dto.RoleCreateUpdateDto;
 import com.project.lms.dto.RoleDto;
+import com.project.lms.exception.CustomExceptionMessage;
 import com.project.lms.model.RoleEntity;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.service.RoleService;
@@ -27,8 +28,11 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public RoleDto createNewRole(RoleCreateUpdateDto role) {
 		RoleEntity roleToSave = RoleConverter.toEntity(role);
-		roleRepo.saveRole(roleToSave);
-		return RoleConverter.toDto(roleToSave);
+		if(roleRepo.getRole(roleToSave.getName()).equals(null)) {
+			roleRepo.saveRole(roleToSave);
+			return RoleConverter.toDto(roleToSave);
+		}
+		throw new CustomExceptionMessage("Role already Exist");
 	}
 
 	

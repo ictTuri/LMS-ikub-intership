@@ -72,9 +72,11 @@ public class UserServiceImpl implements UserService {
 				if(!existUsername) {
 					boolean existEmail = userRepository.existEmail(user.getEmail());
 					if(!existEmail) {
+						// Set static role to registered user
 						RoleEntity role = roleRepository.getRole("STUDENT");
 						UserEntity userToCreate = UserConverter.toEntity(user);
 						userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+						// Create a user role relation on process
 						UserRoleEntity userRole = new UserRoleEntity();
 						userRole.setRole(role);
 						userRole.setUser(userToCreate);
@@ -129,11 +131,13 @@ public class UserServiceImpl implements UserService {
 				UserEntity userToSave = UserConverter.toEntity(user);
 				// Save user on DB
 				userRepository.saveUser(userToSave);
+				// Create a user role relation on process
 				UserRoleEntity userRole = new UserRoleEntity();
 				userRole.setRole(roleToInsert);
 				userRole.setUser(userToSave);
 				// Save relation of user and role to UserRole table
 				userRoleRepository.saveUserRole(userRole);
+				// Get the updated new user
 				UserEntity userToReturn = userByUsername(userToSave.getUsername());
 				List<RoleEntity> rolesToReturn = roleRepository.getUserRole(userToReturn);
 				return UserConverter.toDtoWithRoles(userToReturn, rolesToReturn);

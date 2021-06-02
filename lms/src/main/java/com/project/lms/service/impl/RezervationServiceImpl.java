@@ -54,7 +54,7 @@ public class RezervationServiceImpl implements RezervationService {
 	}
 	
 	/*
-	 * reterns all rezervations
+	 * returns all rezervations
 	 * If non it returns an empty list
 	 */
 	@Override
@@ -130,12 +130,15 @@ public class RezervationServiceImpl implements RezervationService {
 	public RezervationDto checkIfBookTaken(RezervationEntity rezervationForUpdate, UserEntity student, BookEntity book,
 			boolean notTaken) {
 		if (notTaken) {
+			// If new book is not taken than change to taken on new updated rezervation
 			if (book.getTitle().equalsIgnoreCase(rezervationForUpdate.getBook().getTitle())) {
+				// Checks if new book is the same as the previous one
 				RezervationEntity entity = rezervationRepository.updateRezervation(RezervationConverter.toEntityCreate(book, student));
 				book.setTaken(true);
 				bookRepository.updateBook(book);
 				return RezervationConverter.toDto(entity);
 			}
+			// If new book is different then update new one and the previous one as returned
 			BookEntity bookNotTaken = bookByTitle(rezervationForUpdate.getBook().getTitle());
 			bookNotTaken.setTaken(false);
 			bookRepository.updateBook(bookNotTaken);

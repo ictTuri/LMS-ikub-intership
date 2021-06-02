@@ -71,7 +71,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 						.deleteCookies("token").invalidateHttpSession(true);
 	
 		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
-	// .authorizeRequests().antMatchers("/api/**").permitAll().and()
 	}
 
 	@Override
@@ -92,7 +91,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/swagger-resources/**", "/swagger-ui.html", "/swagger/**", "/favicon.ico", "/api/swagger.json",
 				"/actuator/health" };
 	}
-
+	
 	@Bean
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
