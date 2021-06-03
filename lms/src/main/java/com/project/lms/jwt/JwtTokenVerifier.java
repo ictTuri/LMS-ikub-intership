@@ -31,6 +31,11 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	public JwtTokenVerifier(SecretKey secretKey) {
 		this.secretKey = secretKey;
 	}
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return new AntPathMatcher().matchStart("swagger", request.getContextPath());
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -62,11 +67,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 			throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
 		}
 		filterChain.doFilter(request, response);
-	}
-
-	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return new AntPathMatcher().matchStart("swagger",  request.getServletPath());
 	}
 
 }

@@ -56,8 +56,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 		
 		http.csrf().disable()
 						.sessionManagement()
@@ -71,6 +69,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 						.logout()
 						.logoutUrl("/api/v1/_logout").logoutSuccessHandler(logoutSuccess)
 						.deleteCookies("token").invalidateHttpSession(true);
+		
+		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 
 	}
 
