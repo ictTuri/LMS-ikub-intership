@@ -98,8 +98,6 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-mongodb</artifactId>
-			<!-- <exclusions> <exclusion> <groupId>org.mongodb</groupId> <artifactId>mongo-java-driver</artifactId> 
-				</exclusion> </exclusions> -->
 		</dependency>
 		<!-- JPA dependency -->
 		<dependency>

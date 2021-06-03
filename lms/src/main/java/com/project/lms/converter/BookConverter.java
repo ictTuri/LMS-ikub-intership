@@ -12,7 +12,7 @@ public class BookConverter {
 	private BookConverter() {}
 	
 	public static BookDto toDto(BookEntity book) {
-		BookDto bookToReturn = new BookDto();
+		var bookToReturn = new BookDto();
 		bookToReturn.setId(book.getId());
 		bookToReturn.setTitle(book.getTitle());
 		bookToReturn.setTaken(book.getTaken());
@@ -20,7 +20,7 @@ public class BookConverter {
 	}
 	
 	public static BookEntity toEntity(BookCreateUpdateDto book) {
-		BookEntity bookToReturn = new BookEntity();
+		var bookToReturn = new BookEntity();
 		bookToReturn.setId(null);
 		bookToReturn.setTitle(book.getTitle());
 		bookToReturn.setTaken(false);

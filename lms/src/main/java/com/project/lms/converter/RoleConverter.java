@@ -12,14 +12,14 @@ public class RoleConverter {
 private RoleConverter() {}
 	
 	public static RoleDto toDto(RoleEntity role) {
-		RoleDto roleToReturn = new RoleDto();
+		var roleToReturn = new RoleDto();
 		roleToReturn.setId(role.getId());
 		roleToReturn.setName(role.getName());
 		return roleToReturn;
 	}
 	
 	public static RoleEntity toEntity(RoleCreateUpdateDto role) {
-		RoleEntity roleToReturn = new RoleEntity();
+		var roleToReturn = new RoleEntity();
 		roleToReturn.setName(role.getName());
 		return roleToReturn;
 	}

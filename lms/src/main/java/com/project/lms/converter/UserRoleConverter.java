@@ -11,7 +11,7 @@ public class UserRoleConverter {
 	private UserRoleConverter() {}
 	
 	public static UserRoleDto toDto(UserRoleEntity userRole) {
-		UserRoleDto userRoleToReturn = new UserRoleDto();
+		var userRoleToReturn = new UserRoleDto();
 		userRoleToReturn.setId(userRole.getId());
 		userRoleToReturn.setUser(UserConverter.toDto(userRole.getUser()));
 		userRoleToReturn.setRole(RoleConverter.toDto(userRole.getRole()));

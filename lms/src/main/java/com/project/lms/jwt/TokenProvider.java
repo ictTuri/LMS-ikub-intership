@@ -37,7 +37,7 @@ public class TokenProvider{
 	   }
 	
 	public Cookie createCookie(String token) {
-		Cookie cookie = new Cookie("token", token);
+		var cookie = new Cookie("token", token);
 		cookie.setPath("/");
 	    cookie.setSecure(true);
 	    cookie.setHttpOnly(true);

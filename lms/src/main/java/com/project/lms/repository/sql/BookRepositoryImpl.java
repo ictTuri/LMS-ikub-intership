@@ -24,9 +24,11 @@ public class BookRepositoryImpl implements BookRepository {
 		this.em = em;
 	}
 
+	private static final String TITLE = "title";
+	
 	@Override
 	public List<BookEntity> getAll() {
-		final String GET_ALL_BOOKS = "FROM BookEntity ";
+		final var GET_ALL_BOOKS = "FROM BookEntity ";
 		return em.createQuery(GET_ALL_BOOKS, BookEntity.class).getResultList();
 	}
 
@@ -57,9 +59,9 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public boolean checkBookByTitle(String title) {
-		final String BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
+		final var BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
 		TypedQuery<BookEntity> query = em.createQuery(BOOK_BY_TITLE, BookEntity.class)
-				.setParameter("title", title);
+				.setParameter(TITLE, title);
 		try {
 			return query.getResultList().get(0) != null;
 		} catch (IndexOutOfBoundsException e) {
@@ -69,9 +71,9 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public BookEntity getBookByTitle(String title) {
-		final String BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
+		final var BOOK_BY_TITLE = "FROM BookEntity be WHERE be.title = :title";
 		TypedQuery<BookEntity> query = em.createQuery(BOOK_BY_TITLE, BookEntity.class)
-				.setParameter("title", title);
+				.setParameter(TITLE, title);
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
@@ -81,9 +83,9 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public boolean isTaken(String bookTitle) {
-		final String BOOK_NOT_TAKEN = "FROM BookEntity be WHERE be.title = :title and taken = false";
+		final var BOOK_NOT_TAKEN = "FROM BookEntity be WHERE be.title = :title and taken = false";
 		TypedQuery<BookEntity> query = em.createQuery(BOOK_NOT_TAKEN, BookEntity.class)
-				.setParameter("title", bookTitle);
+				.setParameter(TITLE, bookTitle);
 		try {
 			return query.getResultList().get(0) != null;
 		} catch (IndexOutOfBoundsException e) {

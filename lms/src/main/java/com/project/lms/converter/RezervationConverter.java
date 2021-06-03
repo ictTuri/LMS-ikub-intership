@@ -15,7 +15,7 @@ public class RezervationConverter {
 	}
 
 	public static RezervationDto toDto(RezervationEntity rezervation) {
-		RezervationDto rezervationToReturn = new RezervationDto();
+		var rezervationToReturn = new RezervationDto();
 		rezervationToReturn.setId(rezervation.getId());
 		rezervationToReturn.setStudentUsername(rezervation.getStudent().getUsername());
 		rezervationToReturn.setBookTitle(rezervation.getBook().getTitle());
@@ -33,7 +33,7 @@ public class RezervationConverter {
 	}
 
 	public static RezervationEntity toEntityCreate(BookEntity book,	UserEntity student) {
-		RezervationEntity rezervationToReturn = new RezervationEntity();
+		var rezervationToReturn = new RezervationEntity();
 		rezervationToReturn.setBook(book);
 		rezervationToReturn.setStudent(student);
 		rezervationToReturn.setRezervationDate(LocalDateTime.now());

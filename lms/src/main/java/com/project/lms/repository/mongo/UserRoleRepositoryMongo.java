@@ -26,39 +26,42 @@ public class UserRoleRepositoryMongo implements UserRoleRepository{
 		this.mt = mt;
 		this.ss = ss;
 	}
+	
+	private static final String USER_ROLE = "user_role";
+	private static final String USER = "user";
 
 	@Override
 	public void saveUserRole(UserRoleEntity userRole) {
 		// Save new User-Role relation
 		userRole.setId(ss.generateSequence(UserRoleEntity.SEQUENCE_NAME));
-		mt.insert(userRole, "user_role");
+		mt.insert(userRole, USER_ROLE);
 	}
 
 	@Override
 	public List<UserRoleEntity> getAllUserRoles() {
-		return mt.findAll(UserRoleEntity.class, "user_role");
+		return mt.findAll(UserRoleEntity.class, USER_ROLE);
 	}
 
 	@Override
 	public UserRoleEntity getUserRoleById(Long id) {
-		return mt.findById(id, UserRoleEntity.class, "user_role");
+		return mt.findById(id, UserRoleEntity.class, USER_ROLE);
 	}
 
 	@Override
 	public void deleteUserRole(UserRoleEntity userRoleToDelete) {
 		// remove a user role relation
-		mt.remove(userRoleToDelete, "user_role");
+		mt.remove(userRoleToDelete, USER_ROLE);
 	}
 
 	@Override
 	public UserRoleEntity updateUserRole(UserRoleEntity userRoleToUpdate) {
-		return mt.save(userRoleToUpdate, "user_role");
+		return mt.save(userRoleToUpdate, USER_ROLE);
 	}
 
 	@Override
 	public List<UserRoleEntity> getThisUserRelations(UserEntity userToHardDelete) {
-		Query query = new Query()
-				.addCriteria(Criteria.where("user").is(userToHardDelete));
+		var query = new Query()
+				.addCriteria(Criteria.where(USER).is(userToHardDelete));
 		return mt.find(query, UserRoleEntity.class);
 	}
 

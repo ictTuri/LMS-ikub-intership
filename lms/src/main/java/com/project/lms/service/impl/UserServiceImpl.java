@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 						UserEntity userToCreate = UserConverter.toEntity(user);
 						userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
 						// Create a user role relation on process
-						UserRoleEntity userRole = new UserRoleEntity();
+						var userRole = new UserRoleEntity();
 						userRole.setRole(role);
 						userRole.setUser(userToCreate);
 						// Save User on DB
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
 				// Save user on DB
 				userRepository.saveUser(userToSave);
 				// Create a user role relation on process
-				UserRoleEntity userRole = new UserRoleEntity();
+				var userRole = new UserRoleEntity();
 				userRole.setRole(roleToInsert);
 				userRole.setUser(userToSave);
 				// Save relation of user and role to UserRole table
@@ -199,7 +199,7 @@ public class UserServiceImpl implements UserService {
 				userRepository.updateUser(userConverted);
 				return UserConverter.toDtoWithRoles(userToUpdate, roles);
 			} else {
-				UserRoleEntity userRoleRelation = new UserRoleEntity();
+				var userRoleRelation = new UserRoleEntity();
 				userRoleRelation.setRole(roleToInsert);
 				userRoleRelation.setUser(userConverted);
 				userRepository.updateUser(userConverted);
@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/*
-	 * Hard Delee a user from DB 
+	 * Hard Delete a user from DB 
 	 * Also deletes the user roles
 	 */
 	@Override
@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	private int validRezervations(UserEntity userToHardDelete) {
 		List<RezervationEntity> listRezervation = rezervationRepository.myRezervations(userToHardDelete);
-		int size = 0;
+		var size = 0;
 		for(RezervationEntity re : listRezervation) {
 			if(re.getReturnDate() != null) {
 				size++;

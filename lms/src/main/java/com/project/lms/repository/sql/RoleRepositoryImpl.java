@@ -23,6 +23,8 @@ public class RoleRepositoryImpl implements RoleRepository {
 		this.em = em;
 	}
 
+	private static final String USER = "user";
+	private static final String NAME = "name";
 	@Override
 	public RoleEntity getRoleById(Long id) {
 		try {
@@ -34,8 +36,8 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@Override
 	public RoleEntity getRole(String name) {
-		final String ROLE_BY_NAME = "FROM RoleEntity re  WHERE re.name = :name";
-		TypedQuery<RoleEntity> query = em.createQuery(ROLE_BY_NAME, RoleEntity.class).setParameter("name", name);
+		final var ROLE_BY_NAME = "FROM RoleEntity re  WHERE re.name = :name";
+		TypedQuery<RoleEntity> query = em.createQuery(ROLE_BY_NAME, RoleEntity.class).setParameter(NAME, name);
 		try {
 			return query.getResultList().get(0);
 		} catch (IllegalStateException | IndexOutOfBoundsException e) {
@@ -45,8 +47,8 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@Override
 	public List<RoleEntity> getUserRole(UserEntity user) {
-		final String GET_USER_ROLES = "SELECT re FROM RoleEntity re JOIN FETCH UserRoleEntity ure ON ure.role = re.id WHERE ure.user = :user";
-		return em.createQuery(GET_USER_ROLES, RoleEntity.class).setParameter("user", user).getResultList();
+		final var GET_USER_ROLES = "SELECT re FROM RoleEntity re JOIN FETCH UserRoleEntity ure ON ure.role = re.id WHERE ure.user = :user";
+		return em.createQuery(GET_USER_ROLES, RoleEntity.class).setParameter(USER, user).getResultList();
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@Override
 	public List<RoleEntity> getAllRoles() {
-		final String GET_ALL_ROLES = "FROM RoleEntity";
+		final var GET_ALL_ROLES = "FROM RoleEntity";
 		return em.createQuery(GET_ALL_ROLES, RoleEntity.class).getResultList();
 	}
 }

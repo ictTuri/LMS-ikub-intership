@@ -14,7 +14,7 @@ public class UserConverter {
 	private UserConverter() {}
 	
 	public static UserDto toDto(UserEntity user) {
-		UserDto userToReturn = new UserDto();
+		var userToReturn = new UserDto();
 		userToReturn.setId(user.getId());
 		userToReturn.setFirstName(user.getFirstName());
 		userToReturn.setLastName(user.getLastName());
@@ -30,7 +30,7 @@ public class UserConverter {
 			rolesName.add(re.getName());
 		}
 		
-		UserDto userToReturn = new UserDto();
+		var userToReturn = new UserDto();
 		userToReturn.setId(user.getId());
 		userToReturn.setFirstName(user.getFirstName());
 		userToReturn.setLastName(user.getLastName());
@@ -42,7 +42,7 @@ public class UserConverter {
 	}
 	
 	public static UserEntity toEntity(UserCreateUpdateDto user) {
-		UserEntity userToReturn = new UserEntity();
+		var userToReturn = new UserEntity();
 		userToReturn.setId(null);
 		userToReturn.setFirstName(user.getFirstName());
 		userToReturn.setLastName(user.getLastName());
@@ -54,7 +54,7 @@ public class UserConverter {
 	}
 	
 	public static UserEntity toEntity(UserRegisterDto user) {
-		UserEntity userToReturn = new UserEntity();
+		var userToReturn = new UserEntity();
 		userToReturn.setId(null);
 		userToReturn.setFirstName(user.getFirstName());
 		userToReturn.setLastName(user.getLastName());

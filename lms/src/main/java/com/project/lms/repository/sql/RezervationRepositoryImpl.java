@@ -1,5 +1,6 @@
 package com.project.lms.repository.sql;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,10 +22,12 @@ public class RezervationRepositoryImpl implements RezervationRepository {
 		super();
 		this.em = em;
 	}
+	
+	private static final String USER = "user";
 
 	@Override
 	public List<RezervationEntity> findAll() {
-		final String GET_ALL_REZERVATIONS = "FROM RezervationEntity ";
+		final var GET_ALL_REZERVATIONS = "FROM RezervationEntity ";
 		return em.createQuery(GET_ALL_REZERVATIONS, RezervationEntity.class).getResultList();
 	}
 
@@ -55,12 +58,12 @@ public class RezervationRepositoryImpl implements RezervationRepository {
 
 	@Override
 	public List<RezervationEntity> myRezervations(UserEntity thisUser) {
-		final String GET_THIS_USER_REZERVATIONS = "SELECT re FROM RezervationEntity re WHERE re.student = :user";
+		final var GET_THIS_USER_REZERVATIONS = "SELECT re FROM RezervationEntity re WHERE re.student = :user";
 		try{
 			return em.createQuery(GET_THIS_USER_REZERVATIONS, RezervationEntity.class)
-					.setParameter("user", thisUser).getResultList();
+					.setParameter(USER, thisUser).getResultList();
 		}catch(IllegalStateException e) {
-			return null;
+			return Collections.emptyList();
 		}
 	}
 	

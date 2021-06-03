@@ -27,6 +27,10 @@ public class RoleRepositoryMongo implements RoleRepository {
 		this.mt = mt;
 		this.ss = ss;
 	}
+	
+	private static final String NAME = "name";
+	private static final String USER = "user";
+	private static final String ROLES = "roles";
 
 	@Override
 	public RoleEntity getRoleById(Long id) {
@@ -35,13 +39,13 @@ public class RoleRepositoryMongo implements RoleRepository {
 
 	@Override
 	public RoleEntity getRole(String name) {
-		Query query = new Query().addCriteria(Criteria.where("name").is(name));
+		var query = new Query().addCriteria(Criteria.where(NAME).is(name));
 		return mt.findOne(query, RoleEntity.class);
 	}
 
 	@Override
 	public List<RoleEntity> getUserRole(UserEntity user){
-		Query query = new Query().addCriteria(Criteria.where("user").is(user));
+		var query = new Query().addCriteria(Criteria.where(USER).is(user));
 		List<UserRoleEntity> list  = mt.find(query, UserRoleEntity.class);
 		List<RoleEntity> listRoles = new ArrayList<>();
 		for(UserRoleEntity ure : list) {
@@ -54,12 +58,12 @@ public class RoleRepositoryMongo implements RoleRepository {
 	public void saveRole(RoleEntity role) {
 		// Save a new role
 		role.setId(ss.generateSequence(RoleEntity.SEQUENCE_NAME));
-		mt.insert(role, "roles");
+		mt.insert(role, ROLES);
 	}
 
 	@Override
 	public List<RoleEntity> getAllRoles() {
-		return mt.findAll(RoleEntity.class,	 "roles");
+		return mt.findAll(RoleEntity.class,	 ROLES);
 	}
 
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.lms.exception.InvalidCredentialsException;
 import com.project.lms.model.RoleEntity;
-import com.project.lms.model.UserEntity;
 import com.project.lms.repository.RoleRepository;
 import com.project.lms.repository.UserRepository;
 
@@ -32,7 +31,7 @@ public class ApplicationUserService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws InvalidCredentialsException {
-		UserEntity userEntity = userRepository.getActivatedUserByUsername(username);
+		var userEntity = userRepository.getActivatedUserByUsername(username);
 		if (userEntity == null) {
 			throw new UsernameNotFoundException("User: "+username+" not found or not activated!");
 		}

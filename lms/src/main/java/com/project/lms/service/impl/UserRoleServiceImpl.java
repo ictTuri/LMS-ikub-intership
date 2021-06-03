@@ -35,6 +35,8 @@ public class UserRoleServiceImpl implements UserRoleService {
 		this.roleRepository = roleRepository;
 	}
 
+	private static final String USER_ROLE_RELATION_TEXT= "User Role Relation with id: ";
+	
 	/*
 	 * Return user-role relation by id
 	 */
@@ -60,7 +62,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 		if (userRoleToReturn != null) {
 			return UserRoleConverter.toDto(userRoleToReturn);
 		}
-		throw new ObjectIdNotFound("User Role Relation with id: " + id + " can not be found");
+		throw new ObjectIdNotFound(USER_ROLE_RELATION_TEXT + id + " can not be found");
 	}
 
 	/*
@@ -75,7 +77,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 			String roleName = userRole.getRole().toUpperCase();
 			RoleEntity roleToConnect = roleRepository.getRole(roleName);
 			if (roleToConnect != null) {
-				boolean foundRole = false;
+				var foundRole = false;
 				List<RoleEntity> roleList = roleRepository.getUserRole(userToConnect);
 				for (RoleEntity re : roleList) {
 					if (re.getName().equals(roleToConnect.getName())) {
@@ -83,7 +85,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 					}
 				}
 				if (!foundRole) {
-					UserRoleEntity userRoleToAdd = new UserRoleEntity();
+					var userRoleToAdd = new UserRoleEntity();
 					userRoleToAdd.setRole(roleToConnect);
 					userRoleToAdd.setUser(userToConnect);
 					userRoleRepository.saveUserRole(userRoleToAdd);
@@ -111,7 +113,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 				if (roleToUpdate != null) {
 					List<RoleEntity> roleList = roleRepository.getUserRole(userToUpdate);
 					// Checks connection between user and role
-					boolean foundRole = isUserRoleConnected(roleList, userRole);
+					var foundRole = isUserRoleConnected(roleList, userRole);
 					if (!foundRole) {
 						userRoleToUpdate.setRole(roleToUpdate);
 						userRoleToUpdate.setUser(userToUpdate);
@@ -123,7 +125,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 			}
 			throw new ObjectIdNotFound("User with given username: " + userRole.getUsername() + " not found!");
 		}
-		throw new ObjectIdNotFound("User Role Relation with id: " + id + " not found !");
+		throw new ObjectIdNotFound(USER_ROLE_RELATION_TEXT + id + " not found !");
 	}
 
 	/*
@@ -153,7 +155,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 				throw new CustomExceptionMessage("This user has only this role!");
 			}
 		}else {
-			throw new ObjectIdNotFound("User Role Relation with id: " + id + " was not found!");
+			throw new ObjectIdNotFound(USER_ROLE_RELATION_TEXT + id + " was not found!");
 		}
 	}
 

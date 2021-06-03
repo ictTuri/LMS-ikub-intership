@@ -24,10 +24,11 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 		this.em = em;
 	}
 
+	private static final String USER = "user";
 
 	@Override
 	public List<UserRoleEntity> getAllUserRoles() {
-		final String GET_ALL_USER_ROLES = "FROM UserRoleEntity";
+		final var GET_ALL_USER_ROLES = "FROM UserRoleEntity";
 		return em.createQuery(GET_ALL_USER_ROLES, UserRoleEntity.class).getResultList();
 	}
 
@@ -58,9 +59,9 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 
 	@Override
 	public List<UserRoleEntity> getThisUserRelations(UserEntity userToHardDelete) {
-		final String GET_THIS_USER_RELATIONS = "FROM UserRoleEntity ure WHERE ure.user = :user";
+		final var GET_THIS_USER_RELATIONS = "FROM UserRoleEntity ure WHERE ure.user = :user";
 		TypedQuery<UserRoleEntity> query = em.createQuery(GET_THIS_USER_RELATIONS, UserRoleEntity.class)
-				.setParameter("user", userToHardDelete);
+				.setParameter(USER, userToHardDelete);
 		try {
 			return query.getResultList();
 		} catch (IllegalStateException e) {

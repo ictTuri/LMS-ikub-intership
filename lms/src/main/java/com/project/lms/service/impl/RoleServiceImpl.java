@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public RoleDto createNewRole(RoleCreateUpdateDto role) {
 		RoleEntity roleToSave = RoleConverter.toEntity(role);
-		if(roleRepo.getRole(roleToSave.getName()).equals(null)) {
+		if(roleRepo.getRole(roleToSave.getName()) == null) {
 			roleRepo.saveRole(roleToSave);
 			return RoleConverter.toDto(roleToSave);
 		}

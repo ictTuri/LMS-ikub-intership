@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +36,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		Cookie cookie = WebUtils.getCookie(request, "token");
+		var cookie = WebUtils.getCookie(request, "token");
 		if(cookie == null) {
 			 throw new SecurityException("JWT token missing");
 		}
@@ -45,7 +44,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 		String token = cookie.getValue();
 		try {	
 			Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-			Claims body = claimsJws.getBody();
+			var body = claimsJws.getBody();
 			String username = body.getSubject();
 			@SuppressWarnings("unchecked")
 			var authorities = (List<Map<String, String>>) body.get("authorities");

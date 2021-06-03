@@ -45,7 +45,7 @@ public class MyExceptionHandler{
 			UserNotFoundException.class,
 			BadCredentialsException.class})
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
-		ErrorFormat errorBody = new ErrorFormat();
+		var errorBody = new ErrorFormat();
 		errorBody.setMessage(ex.getMessage());
 		errorBody.setDesc(request.getDescription(false));
 		errorBody.setSuggestion("Contact Admin");

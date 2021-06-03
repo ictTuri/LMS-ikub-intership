@@ -24,6 +24,10 @@ public class BookRepositoryMongo implements BookRepository{
 		this.mt = mt;
 		this.ss = ss;
 	}
+	
+	private static final String TITLE = "title";
+	private static final String BOOKS = "books";
+	private static final String TAKEN = "taken";
 
 	@Override
 	public List<BookEntity> getAll() {
@@ -43,34 +47,34 @@ public class BookRepositoryMongo implements BookRepository{
 
 	@Override
 	public BookEntity updateBook(BookEntity bookToUpdate) {
-		return mt.save(bookToUpdate, "books");
+		return mt.save(bookToUpdate, BOOKS);
 	}
 
 	@Override
 	public void deleteBook(BookEntity bookToDelete) {
 		//Deletes book from DB
-		mt.remove(bookToDelete, "books");
+		mt.remove(bookToDelete, BOOKS);
 	}
 
 	@Override
 	public boolean checkBookByTitle(String title) {
-		Query query = new Query()
-				.addCriteria(Criteria.where("title").is(title));
+		var query = new Query()
+				.addCriteria(Criteria.where(TITLE).is(title));
 			return mt.findOne(query, BookEntity.class) != null;
 	}
 
 	@Override
 	public BookEntity getBookByTitle(String title) {
-		Query query = new Query()
-				.addCriteria(Criteria.where("title").is(title));
+		var query = new Query()
+				.addCriteria(Criteria.where(TITLE).is(title));
 		return mt.findOne(query, BookEntity.class);
 	}
 
 	@Override
 	public boolean isTaken(String bookTitle) {
-		Query query = new Query()
-				.addCriteria(Criteria.where("title").is(bookTitle))
-				.addCriteria(Criteria.where("taken").is(false));
+		var query = new Query()
+				.addCriteria(Criteria.where(TITLE).is(bookTitle))
+				.addCriteria(Criteria.where(TAKEN).is(false));
 			return mt.findOne(query, BookEntity.class) != null;
 	}
 

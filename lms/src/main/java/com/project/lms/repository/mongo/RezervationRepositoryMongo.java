@@ -26,10 +26,13 @@ public class RezervationRepositoryMongo implements RezervationRepository {
 		this.mt = mt;
 		this.ss = ss;
 	}
-
+	
+	private static final String REZERVATIONS = "rezervations";
+	private static final String STUDENT = "student";
+	
 	@Override
 	public List<RezervationEntity> findAll() {
-		return mt.findAll(RezervationEntity.class, "rezervations");
+		return mt.findAll(RezervationEntity.class, REZERVATIONS);
 	}
 
 	@Override
@@ -45,19 +48,19 @@ public class RezervationRepositoryMongo implements RezervationRepository {
 
 	@Override
 	public RezervationEntity updateRezervation(RezervationEntity entityCreate) {
-		return mt.save(entityCreate, "rezervations");
+		return mt.save(entityCreate, REZERVATIONS);
 	}
 
 	@Override
 	public void deleteRezervation(RezervationEntity rezervationToDelete) {
 		//Deletes rezervations from DB
-		mt.remove(rezervationToDelete, "rezervations");
+		mt.remove(rezervationToDelete, REZERVATIONS);
 	}
 
 	@Override
 	public List<RezervationEntity> myRezervations(UserEntity thisUser){
-		Query query = new Query()
-				.addCriteria(Criteria.where("student").is(thisUser));
+		var query = new Query()
+				.addCriteria(Criteria.where(STUDENT).is(thisUser));
 		return mt.find(query, RezervationEntity.class);
 	}
 

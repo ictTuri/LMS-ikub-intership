@@ -57,6 +57,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+		
 		http.csrf().disable()
 						.sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -69,8 +71,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 						.logout()
 						.logoutUrl("/api/v1/_logout").logoutSuccessHandler(logoutSuccess)
 						.deleteCookies("token").invalidateHttpSession(true);
-	
-		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider() {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		var provider = new DaoAuthenticationProvider();
 		provider.setPasswordEncoder(passwordEncoder);
 		provider.setUserDetailsService(applicationUserService);
 		return provider;
