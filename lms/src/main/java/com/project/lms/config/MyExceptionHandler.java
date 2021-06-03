@@ -39,10 +39,7 @@ public class MyExceptionHandler{
 	}
 
 	@ExceptionHandler(value = { CustomExceptionMessage.class, 
-			ObjectFilteredNotFound.class, 
-			ObjectIdNotFound.class, 
 			InvalidCredentialsException.class,
-			UserNotFoundException.class,
 			BadCredentialsException.class})
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
 		var errorBody = new ErrorFormat();
@@ -51,6 +48,19 @@ public class MyExceptionHandler{
 		errorBody.setSuggestion("Contact Admin");
 
 		return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@ExceptionHandler(value = {ObjectFilteredNotFound.class, 
+			ObjectIdNotFound.class, 
+			UserNotFoundException.class})
+	protected ResponseEntity<Object> handleNotFoundExceptions(RuntimeException ex, WebRequest request) {
+		var errorBody = new ErrorFormat();
+		errorBody.setMessage(ex.getMessage());
+		errorBody.setDesc(request.getDescription(false));
+		errorBody.setSuggestion("Contact Admin");
+
+		return new ResponseEntity<>(errorBody, HttpStatus.NOT_FOUND);
 
 	}
 
