@@ -35,14 +35,15 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		var cookie = WebUtils.getCookie(request, "token");
-		if(cookie == null) {
-			 throw new SecurityException("JWT token missing");
+		if (cookie == null) {
+			response.sendError(404, "Not authenticated!");
+			return;
 		}
-			
+
 		String token = cookie.getValue();
-		try {	
+		try {
 			Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
 			Claims body = claimsJws.getBody();
 			String username = body.getSubject();
@@ -63,7 +64,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 		}
 		filterChain.doFilter(request, response);
 	}
-	
+
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 		return new AntPathMatcher().matchStart("swagger", request.getRequestURL().toString());
