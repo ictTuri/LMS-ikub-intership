@@ -37,12 +37,14 @@ public class BookController {
 	}
 
 	@GetMapping()
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY','ROLE_STUDENT')")
 	public ResponseEntity<List<BookDto>> showAllBooks(){
 		logger.info("Viewing all book!");
 		return new ResponseEntity<>(bookService.getAllBooks(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_SECRETARY','ROLE_STUDENT')")
 	public ResponseEntity<BookDto> showBookById(@PathVariable("id") Long id){
 		logger.info("Viewing book with id: {}",id);
 		return new ResponseEntity<>(bookService.getBookById(id),HttpStatus.OK);

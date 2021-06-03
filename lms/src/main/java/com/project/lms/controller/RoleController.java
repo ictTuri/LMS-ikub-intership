@@ -27,13 +27,13 @@ public class RoleController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<RoleDto>> showAllRoles(){
 		return new ResponseEntity<>(roleService.showAllRoles(),HttpStatus.OK);
 	}
 	
 	@PostMapping()
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<RoleDto> createNewRole(@RequestBody RoleCreateUpdateDto role){
 		return new ResponseEntity<>(roleService.createNewRole(role),HttpStatus.CREATED);
 	}

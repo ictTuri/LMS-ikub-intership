@@ -31,11 +31,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	public JwtTokenVerifier(SecretKey secretKey) {
 		this.secretKey = secretKey;
 	}
-	
-	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return new AntPathMatcher().matchStart("swagger", request.getContextPath());
-	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -49,7 +44,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 		String token = cookie.getValue();
 		try {	
 			Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-			var body = claimsJws.getBody();
+			Claims body = claimsJws.getBody();
 			String username = body.getSubject();
 			@SuppressWarnings("unchecked")
 			var authorities = (List<Map<String, String>>) body.get("authorities");
@@ -67,6 +62,11 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 			throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
 		}
 		filterChain.doFilter(request, response);
+	}
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return new AntPathMatcher().matchStart("swagger", request.getRequestURL().toString());
 	}
 
 }
