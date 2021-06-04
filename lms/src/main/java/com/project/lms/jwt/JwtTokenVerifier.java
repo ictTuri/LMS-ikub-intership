@@ -45,7 +45,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 		String token = cookie.getValue();
 		try {
 			Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-			Claims body = claimsJws.getBody();
+			var body = claimsJws.getBody();
 			String username = body.getSubject();
 			@SuppressWarnings("unchecked")
 			var authorities = (List<Map<String, String>>) body.get("authorities");

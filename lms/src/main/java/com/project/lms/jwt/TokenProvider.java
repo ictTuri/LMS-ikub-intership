@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 
 @Component
@@ -30,6 +31,7 @@ public class TokenProvider{
 					.setIssuedAt(new Date())
 					.setExpiration(java.sql.Date.valueOf(LocalDate.now()
 							.plusDays(jwtConfig.getTokenExpirationAfterDays())))
+					.compressWith(CompressionCodecs.DEFLATE)
 					.signWith(secretKey).compact();
 
 	   }

@@ -12,7 +12,7 @@ management system. Managing three types of users (Admin,Secretary and Student)
 and different books on the library.
 
 #### Registration, Login with (JWT)
-After registration, users will wait for his accout activation.After activation he can login
+After registration, users will wait for his account activation.After activation he can login
 and proceed as per his/her role and authorities granted.
 Admin after login he/her can have access on managing the users, activating them and deleting.
 Secretary after login can have access on creating, viewing, updating and deleting books 
@@ -53,7 +53,7 @@ _User_ Admin :
 _User_ Secretary:
 * Access to create, read, update and delete books
 * Can not add a book if the book already exist
-* Can not delete book idf it is taken/rezerved
+* Can not delete book if it is taken/rezerved
 * Have Crud Access on Rezervation Table
 * Can Close a rezervation 
 
@@ -78,18 +78,58 @@ _Testing_ runs on 2 profiles:
 * It is not transactional so the tests are made having that in mind
 * If test does not run in your end / check their order as the data get saved from one to another
 
-* "test":
+* "sql":
 * It test the sql repository operations
 * It initializes an embedded H2 database
 * It is transactional so the tests are made having that in mind
 
 * Controller and Service tests runs on both profiles !
+
+---
+## Build
+Clone this repo through a bash terminal and type the following commands:
+```
+git clone https://github.com/ictTuri/LMS_IKub_Internship.git
+```
+* To Run on Postgresql database:
+Move to lms/src/main/resources/application-sql.properties 
+Create your own database and update the properties.
+At lms/src/main/resources/application.properties make sure profile is sql 
+Run the app and it will populate initial data:
+" username: admin, password: admin "
+" username: secretary password: secretary "
+" username: student password: student "
+
+* To Run on Mongo database:
+Move to lms/src/main/resources/application-Mongo.properties 
+Create your own database and update the properties.
+At lms/src/main/resources/mongo you have predefine Json data for the database
+Import the data to database.
+At lms/src/main/resources/application.properties make sure profile is mongo 
+Run the app and it will populate initial data:
+" username: admin, password: admin "
+" username: student password: student "
+---
+#### Analysis
+* SonarQuber Report
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/sonarqube.png?raw=true)
+
 ---
 #### Controllers 
+* Swagger UI api Docs
 
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/apidocs.PNG?raw=true)
+
+---
 * Book-Controller Operations
 
 ![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/bookController.PNG?raw=true)
+
+---
+* Login-Logout-Controller Operations
+
+![Schema](https://github.com/ictTuri/LMS_IKub_Internship/blob/main/img/loginLogoutController.PNG?raw=true)
 
 ---
 * Register-Controller Operations
@@ -116,7 +156,7 @@ _Testing_ runs on 2 profiles:
 ---
 ## Architecture
 This application is created using Spring Boot 2.4  <br />
-* Languages*: JAVA, SQL<br />
-* Tools*: STS Spring Tool SUite, Sonarlint, Postgresql and H2 for testing, Jpa Hibernate, Lombok<br />
+* Languages*: JAVA, SQL, Spring Boot Framework<br />
+* Tools*: STS Spring Tool Suite, Sonarlint, SonarQube, Postgresql and H2 for testing, jaCoCo, Jpa Hibernate, Lombok<br />
 JUnit, Logger, Spring Security Jwt<br />
 * Type of Application*: Rest Api <br />
