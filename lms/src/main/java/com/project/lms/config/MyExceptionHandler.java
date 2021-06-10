@@ -39,7 +39,6 @@ public class MyExceptionHandler{
 	}
 
 	@ExceptionHandler(value = { CustomExceptionMessage.class, 
-			InvalidCredentialsException.class,
 			BadCredentialsException.class})
 	protected ResponseEntity<Object> handleCustomExceptions(RuntimeException ex, WebRequest request) {
 		var errorBody = new ErrorFormat();
@@ -48,6 +47,17 @@ public class MyExceptionHandler{
 		errorBody.setSuggestion("Contact Admin");
 
 		return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@ExceptionHandler(value = {InvalidCredentialsException.class})
+	protected ResponseEntity<Object> handleBadCredentials(RuntimeException ex, WebRequest request) {
+		var errorBody = new ErrorFormat();
+		errorBody.setMessage(ex.getMessage());
+		errorBody.setDesc(request.getDescription(false));
+		errorBody.setSuggestion("Check Credentials!");
+
+		return new ResponseEntity<>(errorBody, HttpStatus.UNAUTHORIZED);
 
 	}
 	
