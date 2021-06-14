@@ -36,34 +36,34 @@ public class UserController {
 	}
 
 	@GetMapping()
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<UserDto>> showAllUsers(){
 		return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> showUserById(@PathVariable("id") Long id){
 		logger.info("Viewing user with id: {}",id);
 		return new ResponseEntity<>(userService.getUserById(id),HttpStatus.OK);
 	}
 	
 	@PostMapping()
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserCreateUpdateDto user){
 		logger.info("Creating new user: {}",user);
 		return new ResponseEntity<>(userService.createUser(user),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> updateUser(@PathVariable("id") long id, @Valid @RequestBody UserCreateUpdateDto user){
 		logger.info("Updating user with id: {} and body: {}",id,user);
 		return new ResponseEntity<>(userService.updateUser(id,user),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> softDeleteUser(@PathVariable("id") long id){
 		logger.info("Soft Deleting user with id: {}",id);
 		userService.softDeleteUser(id);
@@ -71,7 +71,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}/hardDelete")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> hardDeleteUser(@PathVariable("id") long id){
 		logger.info("Hard Deleting user with id: {}",id);
 		userService.hardDeleteUser(id);

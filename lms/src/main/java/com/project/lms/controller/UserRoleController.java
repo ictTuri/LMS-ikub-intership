@@ -36,34 +36,34 @@ public class UserRoleController {
 	}
 	
 	@GetMapping()
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<UserRoleDto>> showUserRolesData(){
 		return new ResponseEntity<>(userRoleService.getAllUserRole(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserRoleDto> showUserRoleById(@PathVariable("id") Long id){
 		logger.info("Viewing user roles with id: {}",id);
 		return new ResponseEntity<>(userRoleService.getUserRoleById(id),HttpStatus.OK);
 	}
 	
 	@PostMapping()
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserRoleDto> createUserRole(@Valid @RequestBody UserRoleCreateUpdateDto userRole){
 		logger.info("Creating new user role: {}",userRole);
 		return new ResponseEntity<>(userRoleService.createUserRole(userRole),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserRoleDto> updateUserRole(@PathVariable("id") long id ,@Valid @RequestBody UserRoleCreateUpdateDto userRole){
 		logger.info("Updating user role relation with id: {} and body: {}",id, userRole);
 		return new ResponseEntity<>(userRoleService.updateUserRole(id,userRole),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> softDeleteUser(@PathVariable("id") long id){
 		logger.info("Deleting user role relation with id: {}",id);
 		userRoleService.deleteUserRole(id);

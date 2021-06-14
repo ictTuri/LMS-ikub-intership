@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.project.lms.auth.ApplicationUserService;
+import com.project.lms.auth.DeniedAccessHandlerCustom;
 import com.project.lms.auth.RestAuthenticationEntryPoint;
 import com.project.lms.jwt.JwtTokenVerifier;
 
@@ -32,16 +33,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final LogoutSuccessHandler logoutSuccess;
 	private final SecretKey secretKey;
 	private final RestAuthenticationEntryPoint authenticationEntryPoint;
+	private final DeniedAccessHandlerCustom accessDeniedHandler;
 
 	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService,
 			LogoutSuccessHandler logoutSuccess, SecretKey secretKey,
-			RestAuthenticationEntryPoint authenticationEntryPoint) {
+			RestAuthenticationEntryPoint authenticationEntryPoint,
+			DeniedAccessHandlerCustom accessDeniedHandler) {
 		super();
 		this.passwordEncoder = passwordEncoder;
 		this.applicationUserService = applicationUserService;
 		this.logoutSuccess = logoutSuccess;
 		this.authenticationEntryPoint = authenticationEntryPoint;
 		this.secretKey = secretKey;
+		this.accessDeniedHandler = accessDeniedHandler;
 	}
 	
 	public JwtTokenVerifier jwtTokenVerifier(){
@@ -56,7 +60,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+		http.cors();
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 		http.csrf().disable()
 						.sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

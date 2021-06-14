@@ -58,14 +58,14 @@ public class BookController {
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_SECRETARY')")
+	@PreAuthorize("hasRole('ROLE_SECRETARY')")
 	public ResponseEntity<BookDto> updateBookById(@Valid @PathVariable("id") long id,@RequestBody BookCreateUpdateDto book){
 		logger.info("Updating book with id: {}, setting title: {}",id,book.getTitle());
 		return new ResponseEntity<>(bookService.updateBookById(id, book),HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_SECRETARY','ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_SECRETARY','ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteBookById(@PathVariable("id") long id){
 		logger.info("Deleting book with id: {}",id);
 		bookService.deleteBookById(id);
